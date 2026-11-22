@@ -904,15 +904,15 @@ function render(id,built,o={}){
     let layer='';
     if(k==='blood'){
       if(id==='bee') layer=el(150,256,50,58,'#B7E07A','opacity=".3"')+paths(['M150 306 L150 112'],'#9BCB55',7)+[262,240,218].map(y=>`<circle cx="150" cy="${y}" r="6" fill="#9BCB55"/>`).join('');
-      else layer=paths(c.vessels,V,2.5,'transform="translate(4 3)"')+paths(c.vessels,R,3)+heart(...c.heartAt);
+      else layer=paths(c.vessels,V,2.5,'transform="translate(4 3)"')+paths(c.vessels,R,3)+`<g data-org="heart"><circle cx="${c.heartAt[0]}" cy="${c.heartAt[1]}" r="${20*c.heartAt[2]}" fill="#fff" fill-opacity="0"/>${heart(...c.heartAt)}</g>`;
     } else if(k==='nerves'){
       layer=paths(c.nerves,N,2.6)+(c.ganglia?c.ganglia.map(y=>`<circle cx="150" cy="${y}" r="6" fill="${N}"/>`).join(''):'')+
-        (c.lateral?paths(['M104 186 Q170 176 232 186'],'#FFE27A',3,'stroke-dasharray="2 6"'):'')+c.brain;
+        (c.lateral?paths(['M104 186 Q170 176 232 186'],'#FFE27A',3,'stroke-dasharray="2 6"'):'')+`<g data-org="brain">${c.brain}</g>`;
     } else layer=c[k];
-    s+=`<g class="${o.pop===k?'pop':''}">${layer}</g>`;
+    s+=`<g class="${o.pop===k?'pop':''}" data-sys="${k}">${layer}</g>`;
   }
   if(built.coat){
-    s+=`<g class="${o.pop==='coat'?'pop':''}" opacity="${o.xray?0.28:1}"><g fill="${coat[1]}" stroke="${coat[1]}" stroke-width="7" stroke-linejoin="round">${c.sil}</g><g fill="${coat[0]}">${c.sil}</g><rect x="0" y="0" width="300" height="340" fill="url(#gShade)" clip-path="url(#cSil)"/>${c.coatExtra.replace(/COAT0/g,coat[0]).replace(/COAT1/g,coat[1])}</g>`;
+    s+=`<g class="${o.pop==='coat'?'pop':''}" opacity="${o.xray?0.28:1}"${o.xray?' style="pointer-events:none"':''}><g fill="${coat[1]}" stroke="${coat[1]}" stroke-width="7" stroke-linejoin="round">${c.sil}</g><g fill="${coat[0]}">${c.sil}</g><rect x="0" y="0" width="300" height="340" fill="url(#gShade)" clip-path="url(#cSil)"/>${c.coatExtra.replace(/COAT0/g,coat[0]).replace(/COAT1/g,coat[1])}</g>`;
   }
   if(dressed&&!o.xray){
     if(F.top&&A.top) s+=topWear(F.top,A.top);
@@ -1192,9 +1192,35 @@ $('again').onclick=()=>{if(!cur)return;const f=info(S.creature,cur);const t=leve
 $('more').onclick=()=>{if(!cur)return;gainOnce('m:'+S.creature+cur,5);level=Math.max(level,2);glow(null);say(info(S.creature,cur).more,nudge);};
 $('wow').onclick=()=>{if(!cur)return;gainOnce('w:'+S.creature+cur,5);level=3;glow(null);say(info(S.creature,cur).wow,nudge);};
 $('xray').onclick=()=>{xray=!xray;$('xray').classList.toggle('on',xray);drawAv(null);
-  say(xray?`X-ray vision! Now we can see inside ${S.name}. Can you find the heart?`:`Back to normal. Hello, ${S.name}!`);};
+  say(xray?`X-ray vision! Now we can see inside ${S.name}. Tap any part to find out about it. Can you find the heart?`:`Back to normal. Hello, ${S.name}!`);FIND=xray?{t:'heart',got:{}}:null;};
 const GIGGLE=['Hee hee, that tickles!','Hi! I love you!','Boop!','Can we build more?','I feel so cosy!','Wheee!'];
-$('av').onclick=()=>{if(S.built.coat&&!xray)say(GIGGLE[Math.floor(Math.random()*GIGGLE.length)]);};
+$('av').onclick=e=>{
+  let g=e.target.closest&&e.target.closest('[data-sys]'),o=null;
+  if(g&&(xray||!S.built.coat)){
+    const stack=(document.elementsFromPoint?document.elementsFromPoint(e.clientX,e.clientY):[e.target]).filter(n=>n.closest&&n.closest('#av')&&n.closest('[data-sys]'));
+    const pick=stack.find(n=>n.closest('[data-org]'))||stack.find(n=>{const f=getComputedStyle(n).fill;return f&&f!=='none'&&n.tagName!=='g';})||stack[0];
+    if(pick){g=pick.closest('[data-sys]');o=pick.closest('[data-org]');}
+    organTap(g.dataset.sys,o&&o.dataset.org,o||g,e);return;}
+  if(S.built.coat&&!xray)say(GIGGLE[Math.floor(Math.random()*GIGGLE.length)]);};
+let FIND=null;
+const FIND_ORDER=['heart','brain','breath','tummy','bones','muscles'];
+function findKey(t){return t==='heart'?'blood':t==='brain'?'nerves':t;}
+function findName(t){if(t==='heart')return TR('the heart','serce');if(t==='brain')return TR('the brain','mózg');const n=info(S.creature,t).t||t;return VOICE_LANG==='pl'?n.toLowerCase():'the '+n.toLowerCase();}
+function organTap(k,org,el,ev){
+  const f=info(S.creature,k);cur=k;level=1;glow(null);try{drawSys();}catch(x){}
+  const name=org==='heart'?TR('The heart','Serce'):org==='brain'?TR('The brain','Mózg'):f.t;
+  try{el.style.transformBox='fill-box';el.style.transformOrigin='center';el.animate([{transform:'scale(1)',filter:'drop-shadow(0 0 0 #FFD43B)'},{transform:'scale(1.12)',filter:'drop-shadow(0 0 8px #FFD43B)'},{transform:'scale(1)',filter:'drop-shadow(0 0 0 #FFD43B)'}],{duration:900,easing:'ease-in-out'});}catch(x){}
+  if(ev){const s=document.createElement('span');s.className='spark';s.textContent='✨';s.style.position='fixed';s.style.left=(ev.clientX-10)+'px';s.style.top=(ev.clientY-14)+'px';s.style.zIndex=60;document.body.appendChild(s);setTimeout(()=>s.remove(),1300);}
+  let txt=`${org?'':name+'! '}${org==='heart'?TR('The heart is a pump. It pushes blood all around the body, day and night, and never takes a break.','Serce to pompa. Pcha krew po całym ciele, w dzień i w nocy, i nigdy nie robi przerwy.'):org==='brain'?TR('The brain is the boss of the body. It thinks, remembers, and sends messages along the nerves.','Mózg to szef całego ciała. Myśli, pamięta i wysyła wiadomości nerwami.'):f.short}`;
+  if(FIND){const hit=findKey(FIND.t)===k&&(FIND.t!=='heart'||org==='heart'||S.creature==='bee')&&(FIND.t!=='brain'||org==='brain');
+    if(hit){FIND.got[FIND.t]=1;gain(5);confetti($('avp'),40);
+      const next=FIND_ORDER.find(t=>!FIND.got[t]&&S.built[findKey(t)]&&!(t==='heart'&&S.creature==='bee'&&FIND.got.heart));
+      txt=TR(`Yes! You found ${findName(FIND.t)}! `,`Tak! Udało się znaleźć: ${findName(FIND.t)}! `)+txt;
+      if(next){FIND.t=next;txt+=' '+TR(`Now, can you find ${findName(next)}?`,`A teraz znajdziesz: ${findName(next)}?`);}
+      else{FIND=null;stat('xray');txt+=' '+TR('You found everything! You are a super X-ray detective!','Wszystko znalezione! Jesteś super detektywem rentgenowskim!');setTimeout(()=>confetti(document.body,80),600);}
+    } else txt+=' '+TR(`Can you find ${findName(FIND.t)}?`,`Spróbuj znaleźć: ${findName(FIND.t)}.`);}
+  say(txt);
+}
 function finale(fresh){
   if(fresh){sparkle();setTimeout(sparkle,500);setTimeout(sparkle,1000);}
   say(`Hooray! ${S.name} is all built! All the systems work together, like a team. The brain is the boss, the heart pumps, the ${S.creature==='fish'?'gills breathe':S.creature==='bee'?'breathing tubes bring in air':'lungs breathe'}, and the tummy makes energy. Now ${S.name} needs some clothes! Tap the yellow dress-up button. Or choose a job!`);
@@ -3436,15 +3462,15 @@ function render(id,built,o={}){
     let layer='';
     if(k==='blood'){
       if(id==='bee') layer=el(150,256,50,58,'#B7E07A','opacity=".3"')+paths(['M150 306 L150 112'],'#9BCB55',7)+[262,240,218].map(y=>`<circle cx="150" cy="${y}" r="6" fill="#9BCB55"/>`).join('');
-      else layer=paths(c.vessels,V,2.5,'transform="translate(4 3)"')+paths(c.vessels,R,3)+heart(...c.heartAt);
+      else layer=paths(c.vessels,V,2.5,'transform="translate(4 3)"')+paths(c.vessels,R,3)+`<g data-org="heart"><circle cx="${c.heartAt[0]}" cy="${c.heartAt[1]}" r="${20*c.heartAt[2]}" fill="#fff" fill-opacity="0"/>${heart(...c.heartAt)}</g>`;
     } else if(k==='nerves'){
       layer=paths(c.nerves,N,2.6)+(c.ganglia?c.ganglia.map(y=>`<circle cx="150" cy="${y}" r="6" fill="${N}"/>`).join(''):'')+
-        (c.lateral?paths(['M104 186 Q170 176 232 186'],'#FFE27A',3,'stroke-dasharray="2 6"'):'')+c.brain;
+        (c.lateral?paths(['M104 186 Q170 176 232 186'],'#FFE27A',3,'stroke-dasharray="2 6"'):'')+`<g data-org="brain">${c.brain}</g>`;
     } else layer=c[k];
-    s+=`<g class="${o.pop===k?'pop':''}">${layer}</g>`;
+    s+=`<g class="${o.pop===k?'pop':''}" data-sys="${k}">${layer}</g>`;
   }
   if(built.coat){
-    s+=`<g class="${o.pop==='coat'?'pop':''}" opacity="${o.xray?0.28:1}"><g fill="${coat[1]}" stroke="${coat[1]}" stroke-width="7" stroke-linejoin="round">${c.sil}</g><g fill="${coat[0]}">${c.sil}</g><rect x="0" y="0" width="300" height="340" fill="url(#gShade)" clip-path="url(#cSil)"/>${c.coatExtra.replace(/COAT0/g,coat[0]).replace(/COAT1/g,coat[1])}</g>`;
+    s+=`<g class="${o.pop==='coat'?'pop':''}" opacity="${o.xray?0.28:1}"${o.xray?' style="pointer-events:none"':''}><g fill="${coat[1]}" stroke="${coat[1]}" stroke-width="7" stroke-linejoin="round">${c.sil}</g><g fill="${coat[0]}">${c.sil}</g><rect x="0" y="0" width="300" height="340" fill="url(#gShade)" clip-path="url(#cSil)"/>${c.coatExtra.replace(/COAT0/g,coat[0]).replace(/COAT1/g,coat[1])}</g>`;
   }
   if(dressed&&!o.xray){
     if(F.top&&A.top) s+=topWear(F.top,A.top);
@@ -3724,9 +3750,35 @@ $('again').onclick=()=>{if(!cur)return;const f=info(S.creature,cur);const t=leve
 $('more').onclick=()=>{if(!cur)return;gainOnce('m:'+S.creature+cur,5);level=Math.max(level,2);glow(null);say(info(S.creature,cur).more,nudge);};
 $('wow').onclick=()=>{if(!cur)return;gainOnce('w:'+S.creature+cur,5);level=3;glow(null);say(info(S.creature,cur).wow,nudge);};
 $('xray').onclick=()=>{xray=!xray;$('xray').classList.toggle('on',xray);drawAv(null);
-  say(xray?`Wzrok rentgenowski! Widzimy, co jest w środku. Znajdziesz serce?`:`Wracamy do normalności. Cześć, ${S.name}!`);};
+  say(xray?`Wzrok rentgenowski! Widzimy, co jest w środku. Dotknij dowolnej części, żeby się o niej dowiedzieć. Znajdziesz serce?`:`Wracamy do normalności. Cześć, ${S.name}!`);FIND=xray?{t:'heart',got:{}}:null;};
 const GIGGLE=['Hee hee, that tickles!','Hi! I love you!','Boop!','Can we build more?','I feel so cosy!','Wheee!'];
-$('av').onclick=()=>{if(S.built.coat&&!xray)say(GIGGLE[Math.floor(Math.random()*GIGGLE.length)]);};
+$('av').onclick=e=>{
+  let g=e.target.closest&&e.target.closest('[data-sys]'),o=null;
+  if(g&&(xray||!S.built.coat)){
+    const stack=(document.elementsFromPoint?document.elementsFromPoint(e.clientX,e.clientY):[e.target]).filter(n=>n.closest&&n.closest('#av')&&n.closest('[data-sys]'));
+    const pick=stack.find(n=>n.closest('[data-org]'))||stack.find(n=>{const f=getComputedStyle(n).fill;return f&&f!=='none'&&n.tagName!=='g';})||stack[0];
+    if(pick){g=pick.closest('[data-sys]');o=pick.closest('[data-org]');}
+    organTap(g.dataset.sys,o&&o.dataset.org,o||g,e);return;}
+  if(S.built.coat&&!xray)say(GIGGLE[Math.floor(Math.random()*GIGGLE.length)]);};
+let FIND=null;
+const FIND_ORDER=['heart','brain','breath','tummy','bones','muscles'];
+function findKey(t){return t==='heart'?'blood':t==='brain'?'nerves':t;}
+function findName(t){if(t==='heart')return TR('the heart','serce');if(t==='brain')return TR('the brain','mózg');const n=info(S.creature,t).t||t;return VOICE_LANG==='pl'?n.toLowerCase():'the '+n.toLowerCase();}
+function organTap(k,org,el,ev){
+  const f=info(S.creature,k);cur=k;level=1;glow(null);try{drawSys();}catch(x){}
+  const name=org==='heart'?TR('The heart','Serce'):org==='brain'?TR('The brain','Mózg'):f.t;
+  try{el.style.transformBox='fill-box';el.style.transformOrigin='center';el.animate([{transform:'scale(1)',filter:'drop-shadow(0 0 0 #FFD43B)'},{transform:'scale(1.12)',filter:'drop-shadow(0 0 8px #FFD43B)'},{transform:'scale(1)',filter:'drop-shadow(0 0 0 #FFD43B)'}],{duration:900,easing:'ease-in-out'});}catch(x){}
+  if(ev){const s=document.createElement('span');s.className='spark';s.textContent='✨';s.style.position='fixed';s.style.left=(ev.clientX-10)+'px';s.style.top=(ev.clientY-14)+'px';s.style.zIndex=60;document.body.appendChild(s);setTimeout(()=>s.remove(),1300);}
+  let txt=`${org?'':name+'! '}${org==='heart'?TR('The heart is a pump. It pushes blood all around the body, day and night, and never takes a break.','Serce to pompa. Pcha krew po całym ciele, w dzień i w nocy, i nigdy nie robi przerwy.'):org==='brain'?TR('The brain is the boss of the body. It thinks, remembers, and sends messages along the nerves.','Mózg to szef całego ciała. Myśli, pamięta i wysyła wiadomości nerwami.'):f.short}`;
+  if(FIND){const hit=findKey(FIND.t)===k&&(FIND.t!=='heart'||org==='heart'||S.creature==='bee')&&(FIND.t!=='brain'||org==='brain');
+    if(hit){FIND.got[FIND.t]=1;gain(5);confetti($('avp'),40);
+      const next=FIND_ORDER.find(t=>!FIND.got[t]&&S.built[findKey(t)]&&!(t==='heart'&&S.creature==='bee'&&FIND.got.heart));
+      txt=TR(`Yes! You found ${findName(FIND.t)}! `,`Tak! Udało się znaleźć: ${findName(FIND.t)}! `)+txt;
+      if(next){FIND.t=next;txt+=' '+TR(`Now, can you find ${findName(next)}?`,`A teraz znajdziesz: ${findName(next)}?`);}
+      else{FIND=null;stat('xray');txt+=' '+TR('You found everything! You are a super X-ray detective!','Wszystko znalezione! Jesteś super detektywem rentgenowskim!');setTimeout(()=>confetti(document.body,80),600);}
+    } else txt+=' '+TR(`Can you find ${findName(FIND.t)}?`,`Spróbuj znaleźć: ${findName(FIND.t)}.`);}
+  say(txt);
+}
 function finale(fresh){
   if(fresh){sparkle();setTimeout(sparkle,500);setTimeout(sparkle,1000);}
   say(`Hurra! ${S.name} jest ${G('gotowy','gotowa')}! Wszystkie układy pracują razem, jak drużyna. Mózg jest szefem, serce pompuje, ${S.creature==='fish'?'skrzela oddychają':S.creature==='bee'?'rurki oddechowe wpuszczają powietrze':'płuca oddychają'}, a brzuszek robi energię. Teraz ${S.name} potrzebuje ubranek! Dotknij żółtego przycisku ubierania. Albo wybierz pracę!`);
