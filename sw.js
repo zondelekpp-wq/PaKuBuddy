@@ -1,5 +1,5 @@
 /* PaKuBuddy service worker – works fully offline after the first visit */
-const VERSION='2026.11.22-1';
+const VERSION='2026.11.22-2';
 const CACHE='pakubuddy-'+VERSION;
 const FILES=['./','index.html','family.js','install.js','manifest.webmanifest','icon.svg','icon-192.png','icon-512.png','icon-maskable.png','apple-touch-icon.png','qr.svg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES.map(f=>new Request(f,{cache:'reload'})))).then(()=>self.skipWaiting()));});
