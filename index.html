@@ -204,9 +204,11 @@ button{font-family:inherit;color:inherit;border:none;cursor:pointer}
 .reader .now{background:#FFF1A8;border-radius:8px;box-shadow:0 0 0 3px #FFF1A8}
 .rbtns{display:flex;gap:10px;align-items:center;justify-content:center;font-size:18px;color:#A48BC9}
 .rbtns button{font-size:24px;padding:10px 20px;border-radius:18px;background:#fff;box-shadow:0 4px 0 #EBDDF6}
-.piano{display:flex;gap:6px;height:90px}
-.piano button{flex:1;border-radius:0 0 16px 16px;box-shadow:0 5px 0 rgba(0,0,0,.12)}
-.piano button:active{transform:translateY(4px);box-shadow:none}
+.piano{display:flex;gap:4px;height:150px;min-height:150px;flex:none;position:relative;background:#5A4570;border-radius:18px;padding:8px 8px 10px;touch-action:none;user-select:none;-webkit-user-select:none}
+.piano .pw{flex:1;position:relative;background:linear-gradient(#fff 0,#fff 62%,var(--kc) 62%);border-radius:4px 4px 12px 12px;box-shadow:0 5px 0 rgba(0,0,0,.18);display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-weight:700;font-size:16px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .08s,box-shadow .08s}
+.piano .pb{position:absolute;top:8px;width:calc((100% - 16px)/16);height:58%;background:linear-gradient(#3A2E4F,#1E1830);border-radius:0 0 8px 8px;box-shadow:0 4px 0 rgba(0,0,0,.35);z-index:2;margin-left:8px;transition:transform .08s}
+.piano .down,.piano button:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+#sub > *,#dress .side > *{flex-shrink:0}
 .fxpop{position:absolute;font-size:56px;pointer-events:none;animation:fxpop 1.6s ease-out forwards}
 @keyframes fxpop{0%{opacity:0;transform:scale(.3)}25%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:translateY(-80px) scale(1)}}
 .hop svg{animation:hop .6s ease}
@@ -421,7 +423,7 @@ button:active{transform:scale(.93)}
  .food{font-size:12px;border-radius:14px;padding:6px 2px}.food span{font-size:28px}
  .reader{font-size:19px;padding:12px 14px;border-radius:18px}
  .rbtns button{font-size:19px;padding:8px 14px}
- .piano{height:64px}
+ .piano{height:120px;min-height:120px}.piano .pw{font-size:13px}
  #avp4 .bigbtn{font-size:18px;padding:10px 18px}
  .tline{padding:8px 4px 6px}.tline::before{top:34px}
  .tnode{flex:0 0 96px}.tnode .tdot{width:44px;height:44px;font-size:22px}
@@ -1810,6 +1812,7 @@ function A_(id){ // home actions per creature
    why:"Why do we play? Playing makes muscles strong, helps the brain learn, and makes us happy! Young animals practise grown-up skills by playing."},
   cuddle:{e:'🤗',n:'Cuddle',need:'fun',fx:'💖',do:`Aww, a big cuddle! ${S.name} feels so happy.`,why:"Hugs and cuddles make our bodies release a happy chemical called oxytocin. It helps us feel safe and loved."},
   story:{e:'📖',n:'Story'},
+  school:{e:'🏫',n:'School'},
   music:{e:'🎵',n:'Music'}
  };
  A.potty.need='potty';A.wash.need='clean';if(A.teeth)A.teeth.need='clean';
@@ -1933,6 +1936,7 @@ function doAct(k){
   const A=A_(),a=A[k];closeSub();
   if(k==='eat'){openFood();return;}
   if(k==='story'){openStories();return;}
+  if(k==='school'){openSchool();return;}
   if(k==='music'){openMusic();return;}
   if(k==='sleep'){goSleep();return;}
   lastAct=a;
@@ -2015,19 +2019,24 @@ function readPage(){
   },$('reader'));
 }
 /* music */
+const SOLF=VOICE_LANG==='pl'?['do','re','mi','fa','sol','la','si','do']:['C','D','E','F','G','A','B','C'];
 function openMusic(){
   const sub=openSub();
   const keys=['C5','D5','E5','F5','G5','A5','B5','C6'],cols=['#FF8FB8','#FFA94D','#FFD43B','#69DB7C','#63E6BE','#74C0FC','#B197FC','#E599F7'];
   sub.innerHTML=`<div class="subhead">Music time! 🎶<button class="x" id="xSub">✖</button></div><div class="foods">`+
    SONGS.map((s,i)=>`<button class="food" data-m="${i}"><span>${s.e}</span>${s.t}</button>`).join('')+`</div>
-   <div class="piano">`+keys.map((k,i)=>`<button data-k="${k}" style="background:${cols[i]}"></button>`).join('')+`</div>
+   <div class="piano">`+keys.map((k,i)=>`<button class="pw" data-k="${k}" style="--kc:${cols[i]}"><span>${SOLF[i]}</span></button>`).join('')+
+   [['C#5',1],['D#5',2],['F#5',4],['G#5',5],['A#5',6]].map(([k,i])=>`<button class="pb" data-k="${k}" style="left:calc(${i}*100%/8 - 100%/32)"></button>`).join('')+`</div>
    <div class="rbtns"><button id="mStop">⏹ Stop</button></div>`;
   $('xSub').onclick=()=>{stopSong();closeSub();};
   $('mStop').onclick=stopSong;
   sub.querySelectorAll('[data-m]').forEach(bt=>bt.onclick=()=>{const s=SONGS[+bt.dataset.m];tok++;try{speechSynthesis.cancel()}catch(x){};
     caption([`${S.name} is playing: ${s.t} 🎶`],-1);playSong(s,{then:()=>{stat('songs');gain(3);bump('fun',25);afterAct();say(`That was fun! Music makes ${S.name} want to dance!`);}});});
-  sub.querySelectorAll('.piano button').forEach(bt=>bt.onclick=()=>{if(!ensureAC())return;pianoNote(freq(bt.dataset.k),AC.currentTime+0.01,0.6,0.7);
-    $('av4').classList.add('hop');setTimeout(()=>$('av4').classList.remove('hop'),300);});
+  sub.querySelectorAll('.piano button').forEach(bt=>{
+    const play=e=>{e.preventDefault();if(!ensureAC())return;pianoNote(freq(bt.dataset.k),AC.currentTime+0.01,0.9,0.7);bt.classList.add('down');setTimeout(()=>bt.classList.remove('down'),180);
+      const r=bt.getBoundingClientRect();const n=document.createElement('span');n.className='spark';n.textContent=rnd(['🎵','🎶','♪']);n.style.position='fixed';n.style.left=(r.left+r.width/2-10)+'px';n.style.top=(r.top-10)+'px';n.style.zIndex=60;document.body.appendChild(n);setTimeout(()=>n.remove(),1200);
+      $('av4').classList.add('hop');setTimeout(()=>$('av4').classList.remove('hop'),300);};
+    bt.addEventListener('pointerdown',play);bt.onclick=e=>e.preventDefault();});
   say(`Music time! Pick a song, and ${S.name} will dance. Or play the rainbow piano yourself!`);
 }
 function openHome(fromWork){
@@ -4333,6 +4342,7 @@ function A_(id){ // home actions per creature
    why:"Why do we play? Playing makes muscles strong, helps the brain learn, and makes us happy! Young animals practise grown-up skills by playing."},
   cuddle:{e:'🤗',n:'Cuddle',need:'fun',fx:'💖',do:`Aww, a big cuddle! ${S.name} feels so happy.`,why:"Hugs and cuddles make our bodies release a happy chemical called oxytocin. It helps us feel safe and loved."},
   story:{e:'📖',n:'Story'},
+  school:{e:'🏫',n:'School'},
   music:{e:'🎵',n:'Music'}
  };
  A.potty.need='potty';A.wash.need='clean';if(A.teeth)A.teeth.need='clean';
@@ -4456,6 +4466,7 @@ function doAct(k){
   const A=A_(),a=A[k];closeSub();
   if(k==='eat'){openFood();return;}
   if(k==='story'){openStories();return;}
+  if(k==='school'){openSchool();return;}
   if(k==='music'){openMusic();return;}
   if(k==='sleep'){goSleep();return;}
   lastAct=a;
@@ -4538,19 +4549,24 @@ function readPage(){
   },$('reader'));
 }
 /* music */
+const SOLF=VOICE_LANG==='pl'?['do','re','mi','fa','sol','la','si','do']:['C','D','E','F','G','A','B','C'];
 function openMusic(){
   const sub=openSub();
   const keys=['C5','D5','E5','F5','G5','A5','B5','C6'],cols=['#FF8FB8','#FFA94D','#FFD43B','#69DB7C','#63E6BE','#74C0FC','#B197FC','#E599F7'];
   sub.innerHTML=`<div class="subhead">Czas na muzykę! 🎶<button class="x" id="xSub">✖</button></div><div class="foods">`+
    SONGS.map((s,i)=>`<button class="food" data-m="${i}"><span>${s.e}</span>${s.t}</button>`).join('')+`</div>
-   <div class="piano">`+keys.map((k,i)=>`<button data-k="${k}" style="background:${cols[i]}"></button>`).join('')+`</div>
+   <div class="piano">`+keys.map((k,i)=>`<button class="pw" data-k="${k}" style="--kc:${cols[i]}"><span>${SOLF[i]}</span></button>`).join('')+
+   [['C#5',1],['D#5',2],['F#5',4],['G#5',5],['A#5',6]].map(([k,i])=>`<button class="pb" data-k="${k}" style="left:calc(${i}*100%/8 - 100%/32)"></button>`).join('')+`</div>
    <div class="rbtns"><button id="mStop">⏹ Stop</button></div>`;
   $('xSub').onclick=()=>{stopSong();closeSub();};
   $('mStop').onclick=stopSong;
   sub.querySelectorAll('[data-m]').forEach(bt=>bt.onclick=()=>{const s=SONGS[+bt.dataset.m];tok++;try{speechSynthesis.cancel()}catch(x){};
     caption([`Teraz gra: ${s.t} 🎶`],-1);playSong(s,{then:()=>{stat('songs');gain(3);bump('fun',25);afterAct();say(`Ale fajnie! Przy muzyce aż chce się tańczyć!`);}});});
-  sub.querySelectorAll('.piano button').forEach(bt=>bt.onclick=()=>{if(!ensureAC())return;pianoNote(freq(bt.dataset.k),AC.currentTime+0.01,0.6,0.7);
-    $('av4').classList.add('hop');setTimeout(()=>$('av4').classList.remove('hop'),300);});
+  sub.querySelectorAll('.piano button').forEach(bt=>{
+    const play=e=>{e.preventDefault();if(!ensureAC())return;pianoNote(freq(bt.dataset.k),AC.currentTime+0.01,0.9,0.7);bt.classList.add('down');setTimeout(()=>bt.classList.remove('down'),180);
+      const r=bt.getBoundingClientRect();const n=document.createElement('span');n.className='spark';n.textContent=rnd(['🎵','🎶','♪']);n.style.position='fixed';n.style.left=(r.left+r.width/2-10)+'px';n.style.top=(r.top-10)+'px';n.style.zIndex=60;document.body.appendChild(n);setTimeout(()=>n.remove(),1200);
+      $('av4').classList.add('hop');setTimeout(()=>$('av4').classList.remove('hop'),300);};
+    bt.addEventListener('pointerdown',play);bt.onclick=e=>e.preventDefault();});
   say(`Czas na muzykę! Wybierz piosenkę, a ja zatańczę. Albo zagraj na tęczowym pianinku!`);
 }
 function openHome(fromWork){
@@ -6135,6 +6151,7 @@ function A_(id){
    why:"Dlaczego się bawimy? Zabawa wzmacnia mięśnie, pomaga mózgowi się uczyć i daje radość! Małe zwierzątka przez zabawę ćwiczą to, co będą robić jako dorosłe."},
   cuddle:{e:'🤗',n:'Przytulas',need:'fun',fx:'💖',do:`Aaa, wielki przytulas! ${S.name} jest taki szczęśliwy.`.replace('taki szczęśliwy',G('taki szczęśliwy','taka szczęśliwa')),why:"Kiedy się przytulamy, ciało wytwarza wesołą substancję, oksytocynę. Dzięki niej czujemy się bezpiecznie i kochani."},
   story:{e:'📖',n:'Bajka'},
+  school:{e:'🏫',n:'Szkoła'},
   music:{e:'🎵',n:'Muzyka'}
  };
  A.potty.need='potty';A.wash.need='clean';if(A.teeth)A.teeth.need='clean';
