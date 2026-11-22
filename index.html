@@ -341,6 +341,11 @@ button:active{transform:scale(.93)}
 .mFig{width:50%;padding-bottom:4%}.mFig svg{width:100%;height:auto}
 .mFig .eye{animation:look 7s ease-in-out infinite}
 .mInfo{display:flex;flex-direction:column;gap:10px;overflow:auto;padding-right:4px}
+.mInfo,.meetStage,.exStage,.exSide,.exBody{min-height:0}
+.mInfo > *,.exBody > *,#mQuiz > *,.exSide > *{flex-shrink:0}
+.exSide .exBody{flex-shrink:1}
+.mInfo,.exBody{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-bottom:12px}
+.qbox,.setbox{max-height:calc(100% - 16px);overflow:auto}
 .mname{font-size:28px;font-weight:600}
 .myears{font-size:16px;color:#8B6AE0;font-weight:500}
 .mbio{font-size:20px;line-height:1.5;background:#FBF8FF;border-radius:18px;padding:12px 14px}
@@ -2498,9 +2503,11 @@ function meetQuiz(){
     const q=list[i][VOICE_LANG],ans=shuffle([1,2,3]);let tried=false;
     $('mQuiz').innerHTML=`<div class="qq">${q[0]}</div>`+ans.map(a=>`<button class="qa" data-a="${a}">${q[a]}</button>`).join('')+`<div class="qx"></div>`;
     stag($('mQuiz').querySelectorAll('.qa'),60);
+    setTimeout(()=>{try{$('mQuiz').scrollIntoView({block:'start',behavior:'smooth'});}catch(e){}},120);
     $('mQuiz').querySelectorAll('.qa').forEach(b=>b.onclick=()=>{
       if(b.classList.contains('no')||$('mQuiz').querySelector('.qa.yes'))return;
       if(+b.dataset.a===1){b.classList.add('yes');if(!tried){ok++;stat('quiz');gain(15);}confetti(b,24);$('mQuiz').querySelector('.qx').textContent=q[4];
+        setTimeout(()=>{try{$('mQuiz').querySelector('.qx').scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}},100);
         say(TR('Correct! ','Dobrze! ')+q[4],()=>{i++;step();});}
       else{tried=true;b.classList.add('no');try{b.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'none'}],{duration:350});}catch(e){}say(TR('Not quite. Try again!','Jeszcze nie. Spróbuj ponownie!'));}
     });
@@ -5028,9 +5035,11 @@ function meetQuiz(){
     const q=list[i][VOICE_LANG],ans=shuffle([1,2,3]);let tried=false;
     $('mQuiz').innerHTML=`<div class="qq">${q[0]}</div>`+ans.map(a=>`<button class="qa" data-a="${a}">${q[a]}</button>`).join('')+`<div class="qx"></div>`;
     stag($('mQuiz').querySelectorAll('.qa'),60);
+    setTimeout(()=>{try{$('mQuiz').scrollIntoView({block:'start',behavior:'smooth'});}catch(e){}},120);
     $('mQuiz').querySelectorAll('.qa').forEach(b=>b.onclick=()=>{
       if(b.classList.contains('no')||$('mQuiz').querySelector('.qa.yes'))return;
       if(+b.dataset.a===1){b.classList.add('yes');if(!tried){ok++;stat('quiz');gain(15);}confetti(b,24);$('mQuiz').querySelector('.qx').textContent=q[4];
+        setTimeout(()=>{try{$('mQuiz').querySelector('.qx').scrollIntoView({block:'nearest',behavior:'smooth'});}catch(e){}},100);
         say(TR('Correct! ','Dobrze! ')+q[4],()=>{i++;step();});}
       else{tried=true;b.classList.add('no');try{b.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'none'}],{duration:350});}catch(e){}say(TR('Not quite. Try again!','Jeszcze nie. Spróbuj ponownie!'));}
     });
