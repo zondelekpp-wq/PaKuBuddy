@@ -350,6 +350,9 @@ button:active{transform:scale(.93)}
 .warp .clock{font-size:120px}
 .warp .wtxt{font-size:34px;font-weight:600;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.25)}
 @media (orientation:portrait){.meetbox{grid-template-columns:1fr;grid-template-rows:42% 58%}}
+/* long words (e.g. Polish) never get cut */
+.card b,.card small,.name,.job,.sys,.act,.it small,.food,.fig b{max-width:100%;overflow-wrap:anywhere;text-align:center;hyphens:auto}
+.gcards .card b{font-size:clamp(20px,4.2vw,34px)}
 /* ===== phones ===== */
 @media (max-width:760px),(max-height:520px){
  .screen{padding:8px 10px 10px}
@@ -369,6 +372,8 @@ button:active{transform:scale(.93)}
  .card svg{max-height:120px}
  .card b{font-size:17px}.card small{font-size:12px}
  .gcards{padding:6px 2%;gap:12px}
+ .gcards .card b{font-size:21px}
+ .gcards .card{padding:10px 6px}
  .names{grid-template-columns:repeat(2,1fr);gap:10px}
  .name{font-size:22px;padding:14px 6px}
  .namewrap .avsmall{max-width:150px}
