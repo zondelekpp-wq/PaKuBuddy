@@ -2358,7 +2358,12 @@ async function showMore(k){
 (function(){const fit=()=>{const b=document.getElementById('pakuInstall')||document.getElementById('pakuBack');document.documentElement.style.setProperty('--barH',(b?b.offsetHeight:0)+'px');};
  try{new MutationObserver(fit).observe(document.body,{childList:true});}catch(e){}addEventListener('resize',fit);setTimeout(fit,300);})();
 /* offline */
-if('serviceWorker' in navigator&&location.protocol==='https:'){try{navigator.serviceWorker.register('sw.js').catch(()=>{});}catch(e){}}
+if('serviceWorker' in navigator&&location.protocol==='https:'){try{
+  const hadCtl=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{try{r.update();}catch(e){}}).catch(()=>{});
+  /* a newer version took over: reload once so the new layout shows straight away */
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadCtl)return;try{if(sessionStorage.getItem('pb.reloaded'))return;sessionStorage.setItem('pb.reloaded','1');}catch(e){}location.reload();});
+}catch(e){}}
 setTimeout(()=>{try{window.PaKuFamily&&PaKuFamily.refresh();}catch(e){}},1500);
 
 })();</script>
@@ -4116,7 +4121,12 @@ async function showMore(k){
 (function(){const fit=()=>{const b=document.getElementById('pakuInstall')||document.getElementById('pakuBack');document.documentElement.style.setProperty('--barH',(b?b.offsetHeight:0)+'px');};
  try{new MutationObserver(fit).observe(document.body,{childList:true});}catch(e){}addEventListener('resize',fit);setTimeout(fit,300);})();
 /* offline */
-if('serviceWorker' in navigator&&location.protocol==='https:'){try{navigator.serviceWorker.register('sw.js').catch(()=>{});}catch(e){}}
+if('serviceWorker' in navigator&&location.protocol==='https:'){try{
+  const hadCtl=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{try{r.update();}catch(e){}}).catch(()=>{});
+  /* a newer version took over: reload once so the new layout shows straight away */
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!hadCtl)return;try{if(sessionStorage.getItem('pb.reloaded'))return;sessionStorage.setItem('pb.reloaded','1');}catch(e){}location.reload();});
+}catch(e){}}
 setTimeout(()=>{try{window.PaKuFamily&&PaKuFamily.refresh();}catch(e){}},1500);
 
 /* ===== POLSKA WERSJA: dane ===== */
