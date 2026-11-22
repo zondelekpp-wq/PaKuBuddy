@@ -180,6 +180,9 @@ button{font-family:inherit;color:inherit;border:none;cursor:pointer}
 .avpanel{transition:background .8s}
 .avpanel.night{background:#2E2A5A !important}
 .avpanel.night #scene4 span{opacity:.15}
+.avpanel.asleep #av4 svg{animation:sleepBreath 3.6s ease-in-out infinite;transform-origin:50% 90%}
+@keyframes sleepBreath{0%,100%{transform:scale(1,1)}50%{transform:scale(1.025,.985)}}
+.avpanel.asleep #av4 .eye,.avpanel.asleep #av4 .mouthO{animation:none}
 .needs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 14px;background:#fff;border-radius:22px;padding:10px 14px;box-shadow:0 5px 0 #EBDDF6}
 .need{display:flex;align-items:center;gap:6px;font-size:22px}
 .bar{flex:1;height:14px;border-radius:7px;background:#F1EAF8;overflow:hidden}
@@ -756,12 +759,15 @@ function render(id,built,o={}){
   }
   if(dressed&&!o.xray){
     if(F.top&&A.top) s+=topWear(F.top,A.top);
+    if(F.bottom&&A.top) s+=bottomWear(F.bottom,A.top);
     if(F.shoes) s+=A.feet.map(f=>at([f[0],f[1],f[2]*(f[0]<150?-1:1),0,f[2]],SHOES[F.shoes.id].d(F.shoes.c,F.shoes.p))).join('');
     if(id==='human') s+=hairDraw(Lk,'front');
     if(F.neck) s+=at(A.neck,NECK[F.neck.id].d(F.neck.c,F.neck.p));
   }
   if(c.mouth)s+=`<ellipse class="mouthO" cx="${c.mouth[0]}" cy="${c.mouth[1]}" rx="${c.mouth[2]}" ry="${c.mouth[3]}" fill="#7A2E52"/>`;
-  s+=c.face+(o.gender==='girl'?c.eyes.map(([x,y,k])=>lash(x,y,k,id==='fish'?-1:(x<150?-1:1))).join(''):'');
+  s+=c.face;
+  if(o.mood==='asleep'&&built.coat&&!o.xray) s+=c.eyes.map(([x,y,k])=>{const d=id==='fish'?-1:(x<150?-1:1);return (id==='fish'?`<circle cx="${x+2}" cy="${y-2}" r="17" fill="${coat[0]}" stroke="${coat[1]}" stroke-width="2"/>`:`<ellipse cx="${x}" cy="${y}" rx="${9.5*k}" ry="${11.5*k}" fill="${coat[0]}"/>`)+`<path d="M${x-8.5*k} ${y-1*k} Q${x} ${y+8*k} ${x+8.5*k} ${y-1*k}" stroke="${INK}" stroke-width="${2.8*k}" fill="none" stroke-linecap="round"/>`+(o.gender==='girl'?`<path d="M${x+d*6*k} ${y+3*k} L${x+d*10*k} ${y+7*k} M${x+d*2*k} ${y+5.5*k} L${x+d*3.5*k} ${y+10*k}" stroke="${INK}" stroke-width="${2.2*k}" stroke-linecap="round"/>`:'');}).join('')+`<g class="snore">${c.eyes.map(([x,y,k])=>`<ellipse cx="${x+(x<150?-6:6)*k}" cy="${y+14*k}" rx="${7*k}" ry="${4*k}" fill="#FF9EC4" opacity=".55"/>`).join('')}</g>`;
+  else s+=(o.gender==='girl'?c.eyes.map(([x,y,k])=>lash(x,y,k,id==='fish'?-1:(x<150?-1:1))).join(''):'');
   if(dressed&&!o.xray){
     if(F.glasses) s+=GLASSES[F.glasses.id].d(F.glasses.c,c.eyes);
     if(F.hat){const H=HATS[F.hat.id],a=A.hat;s+=`<g transform="translate(${a[0]} ${a[1]+H.sink*a[2]}) rotate(${a[3]}) scale(${a[2]})">${H.d(F.hat.c,F.hat.p)}</g>`;}
@@ -873,6 +879,7 @@ const NAMES={girl:['Mochi','Luna','Coco','Peaches','Daisy','Bella','Rosie','Bubb
 /* ---------- state ---------- */
 let S={creature:null,name:null,built:{}};
 try{const j=JSON.parse(localStorage.getItem('buddyBuilder')||'null');if(j)S=j;}catch(e){}
+try{const O=S.outfit;if(O&&O.top&&O.top.id==='dress'){O.bottom={id:'skirt',c:O.top.c,p:O.top.p};O.top.id='blouse';}if(O&&O.top&&O.top.id==='tutu'){O.bottom={id:'tutu',c:O.top.c,p:O.top.p};delete O.top;}}catch(e){}
 const save=()=>{try{localStorage.setItem('buddyBuilder',JSON.stringify(S))}catch(e){}};
 let muted=false,slow=false,xray=false,cur=null,level=0;
 
@@ -1099,7 +1106,8 @@ const NECK={
  bandana:{e:'🔻',n:'bandana',d:(c,p)=>paint('<path d="M-42 -8 L42 -8 L0 34Z"/>',c,p)},
  medal:{e:'🏅',n:'medal',d:(c,p)=>paint('<path d="M-16 -10 L0 14 L16 -10"/>',c,p)+`<circle cx="0" cy="24" r="12" fill="#F5C542" stroke="#D9A520" stroke-width="2"/>`+star(0,24,6,'#FFF3B0')}
 };
-const TOPS={tshirt:{e:'👕',n:'T-shirt'},dress:{e:'👗',n:'dress'},tutu:{e:'🩰',n:'tutu'},jumper:{e:'🧶',n:'jumper'},hero:{e:'🦸',n:'superhero suit'}};
+const TOPS={tshirt:{e:'👕',n:'T-shirt'},blouse:{e:'👚',n:'blouse'},frill:{e:'🎀',n:'frilly blouse'},jumper:{e:'🧶',n:'jumper'},hero:{e:'🦸',n:'superhero suit'}};
+const BOTTOMS={skirt:{e:'<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M12 8 H28 L35 31 Q20 36 5 31Z" fill="#FF8FB8" stroke="#E35D96" stroke-width="2" stroke-linejoin="round"/><rect x="11" y="6" width="18" height="5" rx="2.5" fill="#E35D96"/></svg>',n:'skirt'},pleated:{e:'<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M12 8 H28 L35 32 H5Z" fill="#9775FA" stroke="#7048E8" stroke-width="2" stroke-linejoin="round"/><path d="M16 10 L12 32 M20 10 V32 M24 10 L28 32" stroke="#7048E8" stroke-width="1.8"/><rect x="11" y="6" width="18" height="5" rx="2.5" fill="#7048E8"/></svg>',n:'pleated skirt'},tutu:{e:'🩰',n:'tutu skirt'},bubble:{e:'<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M12 8 H28 Q38 20 32 30 Q20 36 8 30 Q2 20 12 8Z" fill="#FFD43B" stroke="#F59F00" stroke-width="2"/><rect x="11" y="6" width="18" height="5" rx="2.5" fill="#F59F00"/></svg>',n:'puffy skirt'},long:{e:'<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M13 5 H27 L33 36 Q20 39 7 36Z" fill="#63E6BE" stroke="#20C997" stroke-width="2" stroke-linejoin="round"/><path d="M8 31 Q20 34 32 31" stroke="#fff" stroke-width="2" fill="none"/><rect x="12" y="4" width="16" height="5" rx="2.5" fill="#20C997"/></svg>',n:'long skirt'},shorts:{e:'🩳',n:'shorts'}};
 function topWear(t,T){
   const {id,c,p}=t,[x,y,w,h]=T.sk;
   let inner=paint(`<rect x="0" y="${T.y0}" width="300" height="${T.waist-T.y0}"/>`,c,p);
@@ -1107,11 +1115,24 @@ function topWear(t,T){
   if(id==='jumper') inner+=paint(`<rect x="0" y="${T.waist-12}" width="300" height="12"/>`,darken(c,0.85));
   if(id==='hero') inner+=star(T.collar[0],(T.y0+T.waist)/2+4,16,'#FFD43B');
   let s=`<g clip-path="url(#cTop)">${inner}</g>`;
-  if(id==='dress') s+=paint(`<path d="M${x-w*0.62} ${y-2} L${x+w*0.62} ${y-2} L${x+w} ${y+h} Q${x} ${y+h+10} ${x-w} ${y+h}Z"/>`,c,p);
-  if(id==='tutu'){const pts=[];for(let i=12;i>=0;i--){pts.push(`${(x-w+2*w*i/12).toFixed(1)} ${(i%2?y+h*0.62:y+h*0.32).toFixed(1)}`);}
-    s+=paint(`<path d="M${x-w*0.7} ${y-4} L${x+w*0.7} ${y-4} L${pts.join(' L')}Z"/>`,c,p);}
+  if(id==='blouse'||id==='frill'){const [cx,cy]=T.collar;
+    s+=`<path d="M${cx-2} ${cy+1} Q${cx-16} ${cy+2} ${cx-18} ${cy+12} Q${cx-8} ${cy+16} ${cx-1} ${cy+6}Z M${cx+2} ${cy+1} Q${cx+16} ${cy+2} ${cx+18} ${cy+12} Q${cx+8} ${cy+16} ${cx+1} ${cy+6}Z" fill="#fff" stroke="${darken(c,0.8)}" stroke-width="1.6"/>`;
+    for(let i=1;i<=3;i++){const by=cy+12+i*((T.waist-cy-14)/4);if(by<T.waist-4)s+=`<circle cx="${cx}" cy="${by.toFixed(1)}" r="2.6" fill="#fff" stroke="${darken(c,0.8)}" stroke-width="1"/>`;}
+    if(id==='frill'){const fy=T.waist-3;let d='';for(let i=0;i<8;i++){const fx=x-w*0.72+i*(w*1.44/8);d+=`<circle cx="${(fx+w*0.09).toFixed(1)}" cy="${fy}" r="${(w*0.1).toFixed(1)}"/>`;}s+=paint(d,darken(c,0.92),'plain');}}
   if(id==='hero') s+=`<path d="M${x-w*0.7} ${y} L${x+w*0.7} ${y}" stroke="#FFD43B" stroke-width="7" stroke-linecap="round"/>`;
   return s;
+}
+function bottomWear(b,T){
+  const {id,c,p}=b,[x,y,w,h]=T.sk;let s='';const band=`<rect x="${x-w*0.72}" y="${y-7}" width="${w*1.44}" height="9" rx="4.5" fill="${darken(c,0.8)}"/>`;
+  if(id==='skirt') s+=paint(`<path d="M${x-w*0.7} ${y-3} L${x+w*0.7} ${y-3} L${x+w} ${y+h*0.78} Q${x} ${y+h*0.98} ${x-w} ${y+h*0.78}Z"/>`,c,p);
+  if(id==='pleated'){s+=paint(`<path d="M${x-w*0.7} ${y-3} L${x+w*0.7} ${y-3} L${x+w*0.98} ${y+h*0.8} L${x-w*0.98} ${y+h*0.8}Z"/>`,c,p);
+    for(let i=-2;i<=2;i++)s+=`<path d="M${x+i*w*0.26} ${y} L${x+i*w*0.37} ${y+h*0.8}" stroke="${darken(c,0.78)}" stroke-width="2"/>`;}
+  if(id==='tutu'){const pts=[];for(let i=12;i>=0;i--){pts.push(`${(x-w*1.05+2.1*w*i/12).toFixed(1)} ${(i%2?y+h*0.62:y+h*0.36).toFixed(1)}`);}
+    s+=paint(`<path d="M${x-w*0.7} ${y-4} L${x+w*0.7} ${y-4} L${pts.join(' L')}Z"/>`,c,p)+`<path d="M${x-w*0.95} ${y+h*0.3} Q${x} ${y+h*0.45} ${x+w*0.95} ${y+h*0.3}" stroke="#fff" stroke-opacity=".7" stroke-width="2.5" fill="none"/>`;}
+  if(id==='bubble') s+=paint(`<path d="M${x-w*0.7} ${y-3} L${x+w*0.7} ${y-3} Q${x+w*1.08} ${y+h*0.35} ${x+w*0.82} ${y+h*0.66} Q${x} ${y+h*0.84} ${x-w*0.82} ${y+h*0.66} Q${x-w*1.08} ${y+h*0.35} ${x-w*0.7} ${y-3}Z"/>`,c,p);
+  if(id==='long') s+=paint(`<path d="M${x-w*0.7} ${y-3} L${x+w*0.7} ${y-3} L${x+w*0.95} ${y+h*1.45} Q${x} ${y+h*1.6} ${x-w*0.95} ${y+h*1.45}Z"/>`,c,p)+`<path d="M${x-w*0.9} ${y+h*1.3} Q${x} ${y+h*1.45} ${x+w*0.9} ${y+h*1.3}" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  if(id==='shorts') s+=paint(`<path d="M${x-w*0.72} ${y-3} L${x+w*0.72} ${y-3} L${x+w*0.82} ${y+h*0.55} L${x+w*0.08} ${y+h*0.55} L${x} ${y+h*0.22} L${x-w*0.08} ${y+h*0.55} L${x-w*0.82} ${y+h*0.55}Z"/>`,c,p);
+  return s+band;
 }
 const SHOES={
  trainers:{e:'👟',n:'trainers',d:(c,p)=>paint('<path d="M-18 -2 Q-19 -18 -6 -18 L4 -18 Q20 -14 22 -2Z"/>',c,p)+'<rect x="-20" y="-4" width="44" height="7" rx="3.5" fill="#fff" stroke="#E5DDEE" stroke-width="1.5"/>'},
@@ -1183,17 +1204,18 @@ $('backG').onclick=openChoose;
 /* ---------- dress screen ---------- */
 const P=()=>S.gender==='girl'?{he:'she',He:'She',his:'her',him:'her'}:{he:'he',He:'He',his:'his',him:'him'};
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
-const CATS={hat:HATS,glasses:GLASSES,neck:NECK,top:TOPS,shoes:SHOES,hand:HOLD,back:BACK,hair:HAIR};
+const CATS={hat:HATS,glasses:GLASSES,neck:NECK,top:TOPS,bottom:BOTTOMS,shoes:SHOES,hand:HOLD,back:BACK,hair:HAIR};
 let tab='hat';
 function tabsFor(){
-  const t=[['hat','🎩','Hats'],['glasses','👓','Glasses'],['neck','🎀','Neck'],['top','👗','Clothes'],['shoes','👟','Shoes'],['hand','🎈','Hold'],['back','🦸','Wings'],['hair','💇','Hair'],['body','🎨','Colour']];
-  return t.filter(([k])=>!(k==='hair'&&S.creature!=='human')&&!((k==='top'||k==='shoes')&&S.creature==='fish'));
+  const t=[['hat','🎩','Hats'],['glasses','👓','Glasses'],['neck','🎀','Neck'],['top','👚','Tops'],['bottom','<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M12 8 H28 L35 31 Q20 36 5 31Z" fill="#FF8FB8" stroke="#E35D96" stroke-width="2" stroke-linejoin="round"/><rect x="11" y="6" width="18" height="5" rx="2.5" fill="#E35D96"/></svg>','Skirts'],['shoes','👟','Shoes'],['hand','🎈','Hold'],['back','🦸','Wings'],['hair','💇','Hair'],['body','🎨','Colour']];
+  return t.filter(([k])=>!(k==='hair'&&S.creature!=='human')&&!((k==='top'||k==='bottom'||k==='shoes')&&S.creature==='fish'));
 }
 const WHY={
  hat:"Hats keep the sun off your face in summer, and keep your head warm in winter. Some hats, like crowns, are just for fun!",
  glasses:"Some people wear glasses to help them see clearly. The glass bends light, so it lands in just the right spot inside the eye. Sunglasses protect your eyes from bright sunshine.",
  neck:"Scarves keep your neck warm when it's cold and windy. Bow ties, medals and necklaces are for looking extra special!",
  top:"Clothes keep us warm, protect our skin from the sun and from scratches, and let us show off our favourite colours. People need clothes because we don't have thick fur or feathers.",
+ bottom:"Skirts and shorts let your legs move freely when you run, jump and twirl. A pleated skirt has folds, so it opens up like a fan when you spin!",
  shoes:"Shoes protect your feet from sharp stones, hot sand and cold puddles. Wellies keep your feet dry when it rains!",
  hand:"Holding something uses your hand muscles and your brain together. Your brain tells your fingers how tightly to squeeze!",
  back:"Capes and wings are for pretend play! Pretending is great for your brain. It helps you imagine and make up stories.",
@@ -1211,7 +1233,7 @@ function drawDress(){
   else{
     const list=CATS[tab],ent=Object.entries(list);
     const selId=tab==='hair'?(S.look.hair||'short'):(cur?cur.id:'none');
-    $('items').innerHTML=(tab==='hair'?'':`<button class="it ${selId==='none'?'sel':''}" data-i="none">❌<small>None</small></button>`)+
+    $('items').innerHTML=(tab==='hair'?'':`<button class="it ${selId==='none'?'sel':''}" data-i="none">❌<small>${LANG==="pl"?"Nic":"None"}</small></button>`)+
       ent.map(([id,v])=>`<button class="it ${id===selId?'sel':''}" data-i="${id}">${v.e}<small>${v.n}</small></button>`).join('');
     $('items').querySelectorAll('.it').forEach(b=>b.onclick=()=>pickItem(b.dataset.i));
   }
@@ -1225,13 +1247,13 @@ function drawDress(){
   drawAv2();
 }
 function tabSay(){
-  const n=S.name,T={hat:`Hats! Which hat should ${n} wear?`,glasses:`Glasses! Pick some cool glasses.`,neck:`Something for ${n}'s neck!`,top:`Clothes! Do you like a dress, a T-shirt, or a superhero suit?`,shoes:`Shoes! Which shoes will ${n} wear?`,hand:`What will ${n} hold?`,back:`Capes and wings! Who wants to fly?`,hair:`Hair! Pick a hairstyle, then pick a colour.`,body:S.creature==='human'?`Skin colour! Pick the one you like.`:`Colours! What colour should ${n} be?`};
+  const n=S.name,T={hat:`Hats! Which hat should ${n} wear?`,glasses:`Glasses! Pick some cool glasses.`,neck:`Something for ${n}'s neck!`,top:`Tops! A blouse, a T-shirt, or a superhero suit?`,bottom:`Skirts! A tutu, a pleated skirt, or a puffy one? There are shorts too!`,shoes:`Shoes! Which shoes will ${n} wear?`,hand:`What will ${n} hold?`,back:`Capes and wings! Who wants to fly?`,hair:`Hair! Pick a hairstyle, then pick a colour.`,body:S.creature==='human'?`Skin colour! Pick the one you like.`:`Colours! What colour should ${n} be?`};
   say(T[tab]+(tab!=='body'&&tab!=='hair'?' Then pick a colour and a pattern!':''));
 }
 const CHEERS=()=>[`${S.name} looks so cute!`,`Ooh, very fancy!`,`${P().He} loves it!`,`Perfect!`,`So stylish!`,`Wow, beautiful!`];
 function pickItem(id){
   if(tab==='hair'){S.look.hair=id;save();drawDress();say(`${HAIR[id].n}! ${rnd(CHEERS())}`);return;}
-  if(id==='none'){delete S.outfit[tab];save();drawDress();say(`No ${tab==='top'?'clothes':tab==='hand'?'toy':'more'}. Okay!`);return;}
+  if(id==='none'){delete S.outfit[tab];save();drawDress();say(`No ${tab==='top'?'top':tab==='bottom'?'skirt':tab==='hand'?'toy':'more'}. Okay!`);return;}
   const prev=S.outfit[tab]||{};
   S.outfit[tab]={id,c:prev.c||rnd(PAL)[0],p:prev.p||'plain'};stat('outfits');save();drawDress();
   const nm=CATS[tab][id].n;say(`${nm[0].toUpperCase()+nm.slice(1)}! ${rnd(CHEERS())}`);
@@ -1248,12 +1270,12 @@ function pickPat(p){
 }
 $('why').onclick=()=>{
   let t=tab==='body'?(S.creature==='human'?WHY.body_human:WHY.body):WHY[tab];
-  if(['top','shoes','hat'].includes(tab)&&S.creature!=='human')t+=ANIMAL_NOTE;
+  if(['top','bottom','shoes','hat'].includes(tab)&&S.creature!=='human')t+=ANIMAL_NOTE;
   say(t);
 };
 $('surprise').onclick=()=>{
   const o={};
-  for(const [k] of tabsFor()){if(!CATS[k]||k==='hair')continue;if(Math.random()<(k==='hat'||k==='top'?0.9:0.5))o[k]={id:rnd(Object.keys(CATS[k])),c:rnd(PAL)[0],p:rnd(PATS)[0]};}
+  for(const [k] of tabsFor()){if(!CATS[k]||k==='hair')continue;if(Math.random()<(k==='hat'||k==='top'?0.9:k==='bottom'?0.75:0.5))o[k]={id:rnd(Object.keys(CATS[k])),c:rnd(PAL)[0],p:rnd(PATS)[0]};}
   if(S.creature==='human'){S.look.hair=rnd(Object.keys(HAIR).filter(x=>x!=='none'));S.look.hairColor=rnd(HAIRC)[0];}
   S.outfit=o;save();drawDress();sparkle2();
   say(rnd([`Ta-da! A surprise outfit!`,`Abracadabra! New clothes!`,`Whoosh! Look at ${S.name} now!`]));
@@ -1644,7 +1666,7 @@ function A_(id){ // home actions per creature
  if(!A.teeth)delete A.teeth;
  return A;
 }
-const SLEEP_FACT={human:'',dog:" Dogs sleep about twelve hours a day, and sometimes their paws twitch when they dream!",bunny:" Bunnies sometimes sleep with their eyes open!",chick:" Some birds can sleep with half of their brain, while the other half watches for danger!",bee:" Tired bees sleep too, sometimes holding on to a flower with their jaws!",fish:" Fish don't have eyelids, so they rest with their eyes open."};
+const SLEEP_FACT={human:'',dog:" Dogs sleep about twelve hours a day, and sometimes their paws twitch when they dream!",bunny:" Bunnies sometimes sleep with their eyes open!",chick:" Some birds can sleep with half of their brain, while the other half watches for danger!",bee:" Tired bees sleep too, sometimes holding on to a flower with their jaws!",fish:" Real fish don't have eyelids, so they rest with their eyes open. Our fish is just pretending!"};
 const NEED_LINE={food:"My tummy is rumbling! Can I have something to eat?",water:"I'm thirsty!",potty:"I need the toilet!",clean:"I feel a bit grubby!",energy:"I'm sleepy... yawn!",fun:"I'm bored! Let's play!"};
 
 /* ---------- stories (retold from public-domain classics) ---------- */
@@ -1751,7 +1773,7 @@ function drawHome(){
   $('acts4').querySelectorAll('.act').forEach(bt=>bt.onclick=()=>doAct(bt.dataset.a));
   $('whyBtn').classList.toggle('hidden',!lastAct);
 }
-function drawAv4(){$('av4').innerHTML=render(S.creature,S.built,OPT({mood:moodNow()}));}
+function drawAv4(){$('av4').innerHTML=render(S.creature,S.built,OPT({mood:night?'asleep':moodNow()}));$('avp4').classList.toggle('asleep',!!night);}
 function fx(e,n=1){const p=$('avp4');for(let i=0;i<n;i++){const s=document.createElement('span');s.className='fxpop';s.textContent=e;s.style.left=(n>1?20+Math.random()*60:45)+'%';s.style.top=(n>1?30+Math.random()*50:40)+'%';s.style.animationDelay=(i*0.12)+'s';p.appendChild(s);setTimeout(()=>s.remove(),1800);}}
 function bump(k,v){S.needs[k]=Math.max(15,Math.min(100,S.needs[k]+v));}
 function afterAct(){save();drawHome();drawAv4();}
@@ -1787,14 +1809,14 @@ function openFood(){
   say(`What should ${S.name} eat? Tap a food to try it.`);
 }
 function goSleep(){
-  night=true;$('avp4').classList.add('night');$('wake').classList.remove('hidden');closeSub();
+  night=true;$('avp4').classList.add('night');drawAv4();$('wake').classList.remove('hidden');closeSub();
   lastAct={why:"Why do we sleep? While you sleep, your brain tidies up everything you learned, your body grows, and your muscles get repaired. Children need lots of sleep, about ten to thirteen hours!"+SLEEP_FACT[S.creature]};
   say(`Goodnight, ${S.name}. Sweet dreams! Shh, here's a lullaby.`,()=>playSong(SONGS[1],{loop:true,vol:0.13,quiet:true}));
   zzz();
 }
 function zzz(){if(!night)return;const s=document.createElement('span');s.className='spark';s.textContent='💤';s.style.left=(45+Math.random()*20)+'%';s.style.top='35%';$('avp4').appendChild(s);setTimeout(()=>s.remove(),1500);setTimeout(zzz,1200);}
 $('wake').onclick=()=>{
-  night=false;stopSong();$('avp4').classList.remove('night');$('wake').classList.add('hidden');
+  night=false;stopSong();$('avp4').classList.remove('night');$('wake').classList.add('hidden');drawAv4();
   S.needs.energy=100;bump('food',-10);bump('potty',-15);afterAct();fx('☀️');
   say(`Good morning, ${S.name}! What a lovely sleep. Lots of energy now! Tap the question mark to find out why we sleep.`,()=>setTimeout(nudgeNeed,600));
 };
@@ -2519,12 +2541,15 @@ function render(id,built,o={}){
   }
   if(dressed&&!o.xray){
     if(F.top&&A.top) s+=topWear(F.top,A.top);
+    if(F.bottom&&A.top) s+=bottomWear(F.bottom,A.top);
     if(F.shoes) s+=A.feet.map(f=>at([f[0],f[1],f[2]*(f[0]<150?-1:1),0,f[2]],SHOES[F.shoes.id].d(F.shoes.c,F.shoes.p))).join('');
     if(id==='human') s+=hairDraw(Lk,'front');
     if(F.neck) s+=at(A.neck,NECK[F.neck.id].d(F.neck.c,F.neck.p));
   }
   if(c.mouth)s+=`<ellipse class="mouthO" cx="${c.mouth[0]}" cy="${c.mouth[1]}" rx="${c.mouth[2]}" ry="${c.mouth[3]}" fill="#7A2E52"/>`;
-  s+=c.face+(o.gender==='girl'?c.eyes.map(([x,y,k])=>lash(x,y,k,id==='fish'?-1:(x<150?-1:1))).join(''):'');
+  s+=c.face;
+  if(o.mood==='asleep'&&built.coat&&!o.xray) s+=c.eyes.map(([x,y,k])=>{const d=id==='fish'?-1:(x<150?-1:1);return (id==='fish'?`<circle cx="${x+2}" cy="${y-2}" r="17" fill="${coat[0]}" stroke="${coat[1]}" stroke-width="2"/>`:`<ellipse cx="${x}" cy="${y}" rx="${9.5*k}" ry="${11.5*k}" fill="${coat[0]}"/>`)+`<path d="M${x-8.5*k} ${y-1*k} Q${x} ${y+8*k} ${x+8.5*k} ${y-1*k}" stroke="${INK}" stroke-width="${2.8*k}" fill="none" stroke-linecap="round"/>`+(o.gender==='girl'?`<path d="M${x+d*6*k} ${y+3*k} L${x+d*10*k} ${y+7*k} M${x+d*2*k} ${y+5.5*k} L${x+d*3.5*k} ${y+10*k}" stroke="${INK}" stroke-width="${2.2*k}" stroke-linecap="round"/>`:'');}).join('')+`<g class="snore">${c.eyes.map(([x,y,k])=>`<ellipse cx="${x+(x<150?-6:6)*k}" cy="${y+14*k}" rx="${7*k}" ry="${4*k}" fill="#FF9EC4" opacity=".55"/>`).join('')}</g>`;
+  else s+=(o.gender==='girl'?c.eyes.map(([x,y,k])=>lash(x,y,k,id==='fish'?-1:(x<150?-1:1))).join(''):'');
   if(dressed&&!o.xray){
     if(F.glasses) s+=GLASSES[F.glasses.id].d(F.glasses.c,c.eyes);
     if(F.hat){const H=HATS[F.hat.id],a=A.hat;s+=`<g transform="translate(${a[0]} ${a[1]+H.sink*a[2]}) rotate(${a[3]}) scale(${a[2]})">${H.d(F.hat.c,F.hat.p)}</g>`;}
@@ -2636,6 +2661,7 @@ const NAMES={girl:['Mochi','Luna','Coco','Peaches','Daisy','Bella','Rosie','Bubb
 /* ---------- state ---------- */
 let S={creature:null,name:null,built:{}};
 try{const j=JSON.parse(localStorage.getItem('buddyBuilder')||'null');if(j)S=j;}catch(e){}
+try{const O=S.outfit;if(O&&O.top&&O.top.id==='dress'){O.bottom={id:'skirt',c:O.top.c,p:O.top.p};O.top.id='blouse';}if(O&&O.top&&O.top.id==='tutu'){O.bottom={id:'tutu',c:O.top.c,p:O.top.p};delete O.top;}}catch(e){}
 const save=()=>{try{localStorage.setItem('buddyBuilder',JSON.stringify(S))}catch(e){}};
 let muted=false,slow=false,xray=false,cur=null,level=0;
 
@@ -2862,7 +2888,8 @@ const NECK={
  bandana:{e:'🔻',n:'bandana',d:(c,p)=>paint('<path d="M-42 -8 L42 -8 L0 34Z"/>',c,p)},
  medal:{e:'🏅',n:'medal',d:(c,p)=>paint('<path d="M-16 -10 L0 14 L16 -10"/>',c,p)+`<circle cx="0" cy="24" r="12" fill="#F5C542" stroke="#D9A520" stroke-width="2"/>`+star(0,24,6,'#FFF3B0')}
 };
-const TOPS={tshirt:{e:'👕',n:'T-shirt'},dress:{e:'👗',n:'dress'},tutu:{e:'🩰',n:'tutu'},jumper:{e:'🧶',n:'jumper'},hero:{e:'🦸',n:'superhero suit'}};
+const TOPS={tshirt:{e:'👕',n:'T-shirt'},blouse:{e:'👚',n:'blouse'},frill:{e:'🎀',n:'frilly blouse'},jumper:{e:'🧶',n:'jumper'},hero:{e:'🦸',n:'superhero suit'}};
+const BOTTOMS={skirt:{e:'<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M12 8 H28 L35 31 Q20 36 5 31Z" fill="#FF8FB8" stroke="#E35D96" stroke-width="2" stroke-linejoin="round"/><rect x="11" y="6" width="18" height="5" rx="2.5" fill="#E35D96"/></svg>',n:'skirt'},pleated:{e:'<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M12 8 H28 L35 32 H5Z" fill="#9775FA" stroke="#7048E8" stroke-width="2" stroke-linejoin="round"/><path d="M16 10 L12 32 M20 10 V32 M24 10 L28 32" stroke="#7048E8" stroke-width="1.8"/><rect x="11" y="6" width="18" height="5" rx="2.5" fill="#7048E8"/></svg>',n:'pleated skirt'},tutu:{e:'🩰',n:'tutu skirt'},bubble:{e:'<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M12 8 H28 Q38 20 32 30 Q20 36 8 30 Q2 20 12 8Z" fill="#FFD43B" stroke="#F59F00" stroke-width="2"/><rect x="11" y="6" width="18" height="5" rx="2.5" fill="#F59F00"/></svg>',n:'puffy skirt'},long:{e:'<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M13 5 H27 L33 36 Q20 39 7 36Z" fill="#63E6BE" stroke="#20C997" stroke-width="2" stroke-linejoin="round"/><path d="M8 31 Q20 34 32 31" stroke="#fff" stroke-width="2" fill="none"/><rect x="12" y="4" width="16" height="5" rx="2.5" fill="#20C997"/></svg>',n:'long skirt'},shorts:{e:'🩳',n:'shorts'}};
 function topWear(t,T){
   const {id,c,p}=t,[x,y,w,h]=T.sk;
   let inner=paint(`<rect x="0" y="${T.y0}" width="300" height="${T.waist-T.y0}"/>`,c,p);
@@ -2870,11 +2897,24 @@ function topWear(t,T){
   if(id==='jumper') inner+=paint(`<rect x="0" y="${T.waist-12}" width="300" height="12"/>`,darken(c,0.85));
   if(id==='hero') inner+=star(T.collar[0],(T.y0+T.waist)/2+4,16,'#FFD43B');
   let s=`<g clip-path="url(#cTop)">${inner}</g>`;
-  if(id==='dress') s+=paint(`<path d="M${x-w*0.62} ${y-2} L${x+w*0.62} ${y-2} L${x+w} ${y+h} Q${x} ${y+h+10} ${x-w} ${y+h}Z"/>`,c,p);
-  if(id==='tutu'){const pts=[];for(let i=12;i>=0;i--){pts.push(`${(x-w+2*w*i/12).toFixed(1)} ${(i%2?y+h*0.62:y+h*0.32).toFixed(1)}`);}
-    s+=paint(`<path d="M${x-w*0.7} ${y-4} L${x+w*0.7} ${y-4} L${pts.join(' L')}Z"/>`,c,p);}
+  if(id==='blouse'||id==='frill'){const [cx,cy]=T.collar;
+    s+=`<path d="M${cx-2} ${cy+1} Q${cx-16} ${cy+2} ${cx-18} ${cy+12} Q${cx-8} ${cy+16} ${cx-1} ${cy+6}Z M${cx+2} ${cy+1} Q${cx+16} ${cy+2} ${cx+18} ${cy+12} Q${cx+8} ${cy+16} ${cx+1} ${cy+6}Z" fill="#fff" stroke="${darken(c,0.8)}" stroke-width="1.6"/>`;
+    for(let i=1;i<=3;i++){const by=cy+12+i*((T.waist-cy-14)/4);if(by<T.waist-4)s+=`<circle cx="${cx}" cy="${by.toFixed(1)}" r="2.6" fill="#fff" stroke="${darken(c,0.8)}" stroke-width="1"/>`;}
+    if(id==='frill'){const fy=T.waist-3;let d='';for(let i=0;i<8;i++){const fx=x-w*0.72+i*(w*1.44/8);d+=`<circle cx="${(fx+w*0.09).toFixed(1)}" cy="${fy}" r="${(w*0.1).toFixed(1)}"/>`;}s+=paint(d,darken(c,0.92),'plain');}}
   if(id==='hero') s+=`<path d="M${x-w*0.7} ${y} L${x+w*0.7} ${y}" stroke="#FFD43B" stroke-width="7" stroke-linecap="round"/>`;
   return s;
+}
+function bottomWear(b,T){
+  const {id,c,p}=b,[x,y,w,h]=T.sk;let s='';const band=`<rect x="${x-w*0.72}" y="${y-7}" width="${w*1.44}" height="9" rx="4.5" fill="${darken(c,0.8)}"/>`;
+  if(id==='skirt') s+=paint(`<path d="M${x-w*0.7} ${y-3} L${x+w*0.7} ${y-3} L${x+w} ${y+h*0.78} Q${x} ${y+h*0.98} ${x-w} ${y+h*0.78}Z"/>`,c,p);
+  if(id==='pleated'){s+=paint(`<path d="M${x-w*0.7} ${y-3} L${x+w*0.7} ${y-3} L${x+w*0.98} ${y+h*0.8} L${x-w*0.98} ${y+h*0.8}Z"/>`,c,p);
+    for(let i=-2;i<=2;i++)s+=`<path d="M${x+i*w*0.26} ${y} L${x+i*w*0.37} ${y+h*0.8}" stroke="${darken(c,0.78)}" stroke-width="2"/>`;}
+  if(id==='tutu'){const pts=[];for(let i=12;i>=0;i--){pts.push(`${(x-w*1.05+2.1*w*i/12).toFixed(1)} ${(i%2?y+h*0.62:y+h*0.36).toFixed(1)}`);}
+    s+=paint(`<path d="M${x-w*0.7} ${y-4} L${x+w*0.7} ${y-4} L${pts.join(' L')}Z"/>`,c,p)+`<path d="M${x-w*0.95} ${y+h*0.3} Q${x} ${y+h*0.45} ${x+w*0.95} ${y+h*0.3}" stroke="#fff" stroke-opacity=".7" stroke-width="2.5" fill="none"/>`;}
+  if(id==='bubble') s+=paint(`<path d="M${x-w*0.7} ${y-3} L${x+w*0.7} ${y-3} Q${x+w*1.08} ${y+h*0.35} ${x+w*0.82} ${y+h*0.66} Q${x} ${y+h*0.84} ${x-w*0.82} ${y+h*0.66} Q${x-w*1.08} ${y+h*0.35} ${x-w*0.7} ${y-3}Z"/>`,c,p);
+  if(id==='long') s+=paint(`<path d="M${x-w*0.7} ${y-3} L${x+w*0.7} ${y-3} L${x+w*0.95} ${y+h*1.45} Q${x} ${y+h*1.6} ${x-w*0.95} ${y+h*1.45}Z"/>`,c,p)+`<path d="M${x-w*0.9} ${y+h*1.3} Q${x} ${y+h*1.45} ${x+w*0.9} ${y+h*1.3}" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  if(id==='shorts') s+=paint(`<path d="M${x-w*0.72} ${y-3} L${x+w*0.72} ${y-3} L${x+w*0.82} ${y+h*0.55} L${x+w*0.08} ${y+h*0.55} L${x} ${y+h*0.22} L${x-w*0.08} ${y+h*0.55} L${x-w*0.82} ${y+h*0.55}Z"/>`,c,p);
+  return s+band;
 }
 const SHOES={
  trainers:{e:'👟',n:'trainers',d:(c,p)=>paint('<path d="M-18 -2 Q-19 -18 -6 -18 L4 -18 Q20 -14 22 -2Z"/>',c,p)+'<rect x="-20" y="-4" width="44" height="7" rx="3.5" fill="#fff" stroke="#E5DDEE" stroke-width="1.5"/>'},
@@ -2946,17 +2986,18 @@ $('backG').onclick=openChoose;
 /* ---------- dress screen ---------- */
 const P=()=>S.gender==='girl'?{he:'she',He:'She',his:'her',him:'her'}:{he:'he',He:'He',his:'his',him:'him'};
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
-const CATS={hat:HATS,glasses:GLASSES,neck:NECK,top:TOPS,shoes:SHOES,hand:HOLD,back:BACK,hair:HAIR};
+const CATS={hat:HATS,glasses:GLASSES,neck:NECK,top:TOPS,bottom:BOTTOMS,shoes:SHOES,hand:HOLD,back:BACK,hair:HAIR};
 let tab='hat';
 function tabsFor(){
-  const t=[['hat','🎩','Hats'],['glasses','👓','Glasses'],['neck','🎀','Neck'],['top','👗','Clothes'],['shoes','👟','Shoes'],['hand','🎈','Hold'],['back','🦸','Wings'],['hair','💇','Hair'],['body','🎨','Colour']];
-  return t.filter(([k])=>!(k==='hair'&&S.creature!=='human')&&!((k==='top'||k==='shoes')&&S.creature==='fish'));
+  const t=[['hat','🎩','Hats'],['glasses','👓','Glasses'],['neck','🎀','Neck'],['top','👚','Tops'],['bottom','<svg viewBox="0 0 40 40" width="1em" height="1em" style="vertical-align:middle"><path d="M12 8 H28 L35 31 Q20 36 5 31Z" fill="#FF8FB8" stroke="#E35D96" stroke-width="2" stroke-linejoin="round"/><rect x="11" y="6" width="18" height="5" rx="2.5" fill="#E35D96"/></svg>','Skirts'],['shoes','👟','Shoes'],['hand','🎈','Hold'],['back','🦸','Wings'],['hair','💇','Hair'],['body','🎨','Colour']];
+  return t.filter(([k])=>!(k==='hair'&&S.creature!=='human')&&!((k==='top'||k==='bottom'||k==='shoes')&&S.creature==='fish'));
 }
 const WHY={
  hat:"Hats keep the sun off your face in summer, and keep your head warm in winter. Some hats, like crowns, are just for fun!",
  glasses:"Some people wear glasses to help them see clearly. The glass bends light, so it lands in just the right spot inside the eye. Sunglasses protect your eyes from bright sunshine.",
  neck:"Scarves keep your neck warm when it's cold and windy. Bow ties, medals and necklaces are for looking extra special!",
  top:"Clothes keep us warm, protect our skin from the sun and from scratches, and let us show off our favourite colours. People need clothes because we don't have thick fur or feathers.",
+ bottom:"Skirts and shorts let your legs move freely when you run, jump and twirl. A pleated skirt has folds, so it opens up like a fan when you spin!",
  shoes:"Shoes protect your feet from sharp stones, hot sand and cold puddles. Wellies keep your feet dry when it rains!",
  hand:"Holding something uses your hand muscles and your brain together. Your brain tells your fingers how tightly to squeeze!",
  back:"Capes and wings are for pretend play! Pretending is great for your brain. It helps you imagine and make up stories.",
@@ -2974,7 +3015,7 @@ function drawDress(){
   else{
     const list=CATS[tab],ent=Object.entries(list);
     const selId=tab==='hair'?(S.look.hair||'short'):(cur?cur.id:'none');
-    $('items').innerHTML=(tab==='hair'?'':`<button class="it ${selId==='none'?'sel':''}" data-i="none">❌<small>None</small></button>`)+
+    $('items').innerHTML=(tab==='hair'?'':`<button class="it ${selId==='none'?'sel':''}" data-i="none">❌<small>${LANG==="pl"?"Nic":"None"}</small></button>`)+
       ent.map(([id,v])=>`<button class="it ${id===selId?'sel':''}" data-i="${id}">${v.e}<small>${v.n}</small></button>`).join('');
     $('items').querySelectorAll('.it').forEach(b=>b.onclick=()=>pickItem(b.dataset.i));
   }
@@ -2988,7 +3029,7 @@ function drawDress(){
   drawAv2();
 }
 function tabSay(){
-  const n=S.name,T={hat:`Hats! Which hat should ${n} wear?`,glasses:`Glasses! Pick some cool glasses.`,neck:`Something for ${n}'s neck!`,top:`Clothes! Do you like a dress, a T-shirt, or a superhero suit?`,shoes:`Shoes! Which shoes will ${n} wear?`,hand:`What will ${n} hold?`,back:`Capes and wings! Who wants to fly?`,hair:`Hair! Pick a hairstyle, then pick a colour.`,body:S.creature==='human'?`Skin colour! Pick the one you like.`:`Colours! What colour should ${n} be?`};
+  const n=S.name,T={hat:`Hats! Which hat should ${n} wear?`,glasses:`Glasses! Pick some cool glasses.`,neck:`Something for ${n}'s neck!`,top:`Tops! A blouse, a T-shirt, or a superhero suit?`,bottom:`Skirts! A tutu, a pleated skirt, or a puffy one? There are shorts too!`,shoes:`Shoes! Which shoes will ${n} wear?`,hand:`What will ${n} hold?`,back:`Capes and wings! Who wants to fly?`,hair:`Hair! Pick a hairstyle, then pick a colour.`,body:S.creature==='human'?`Skin colour! Pick the one you like.`:`Colours! What colour should ${n} be?`};
   say(T[tab]+(tab!=='body'&&tab!=='hair'?' Then pick a colour and a pattern!':''));
 }
 const CHEERS=()=>[`Ale słodko!`,`Ooo, jak elegancko!`,`Podoba mi się!`,`Idealnie!`,`Super styl!`,`Wow, pięknie!`];
@@ -3011,12 +3052,12 @@ function pickPat(p){
 }
 $('why').onclick=()=>{
   let t=tab==='body'?(S.creature==='human'?WHY.body_human:WHY.body):WHY[tab];
-  if(['top','shoes','hat'].includes(tab)&&S.creature!=='human')t+=ANIMAL_NOTE;
+  if(['top','bottom','shoes','hat'].includes(tab)&&S.creature!=='human')t+=ANIMAL_NOTE;
   say(t);
 };
 $('surprise').onclick=()=>{
   const o={};
-  for(const [k] of tabsFor()){if(!CATS[k]||k==='hair')continue;if(Math.random()<(k==='hat'||k==='top'?0.9:0.5))o[k]={id:rnd(Object.keys(CATS[k])),c:rnd(PAL)[0],p:rnd(PATS)[0]};}
+  for(const [k] of tabsFor()){if(!CATS[k]||k==='hair')continue;if(Math.random()<(k==='hat'||k==='top'?0.9:k==='bottom'?0.75:0.5))o[k]={id:rnd(Object.keys(CATS[k])),c:rnd(PAL)[0],p:rnd(PATS)[0]};}
   if(S.creature==='human'){S.look.hair=rnd(Object.keys(HAIR).filter(x=>x!=='none'));S.look.hairColor=rnd(HAIRC)[0];}
   S.outfit=o;save();drawDress();sparkle2();
   say(rnd([`Ta-dam! Strój niespodzianka!`,`Abrakadabra! Nowe ubranka!`,`Hop! Patrz, jak teraz wyglądam!`]));
@@ -3407,7 +3448,7 @@ function A_(id){ // home actions per creature
  if(!A.teeth)delete A.teeth;
  return A;
 }
-const SLEEP_FACT={human:'',dog:" Dogs sleep about twelve hours a day, and sometimes their paws twitch when they dream!",bunny:" Bunnies sometimes sleep with their eyes open!",chick:" Some birds can sleep with half of their brain, while the other half watches for danger!",bee:" Tired bees sleep too, sometimes holding on to a flower with their jaws!",fish:" Fish don't have eyelids, so they rest with their eyes open."};
+const SLEEP_FACT={human:'',dog:" Dogs sleep about twelve hours a day, and sometimes their paws twitch when they dream!",bunny:" Bunnies sometimes sleep with their eyes open!",chick:" Some birds can sleep with half of their brain, while the other half watches for danger!",bee:" Tired bees sleep too, sometimes holding on to a flower with their jaws!",fish:" Real fish don't have eyelids, so they rest with their eyes open. Our fish is just pretending!"};
 const NEED_LINE={food:"My tummy is rumbling! Can I have something to eat?",water:"I'm thirsty!",potty:"I need the toilet!",clean:"I feel a bit grubby!",energy:"I'm sleepy... yawn!",fun:"I'm bored! Let's play!"};
 
 /* ---------- stories (retold from public-domain classics) ---------- */
@@ -3514,7 +3555,7 @@ function drawHome(){
   $('acts4').querySelectorAll('.act').forEach(bt=>bt.onclick=()=>doAct(bt.dataset.a));
   $('whyBtn').classList.toggle('hidden',!lastAct);
 }
-function drawAv4(){$('av4').innerHTML=render(S.creature,S.built,OPT({mood:moodNow()}));}
+function drawAv4(){$('av4').innerHTML=render(S.creature,S.built,OPT({mood:night?'asleep':moodNow()}));$('avp4').classList.toggle('asleep',!!night);}
 function fx(e,n=1){const p=$('avp4');for(let i=0;i<n;i++){const s=document.createElement('span');s.className='fxpop';s.textContent=e;s.style.left=(n>1?20+Math.random()*60:45)+'%';s.style.top=(n>1?30+Math.random()*50:40)+'%';s.style.animationDelay=(i*0.12)+'s';p.appendChild(s);setTimeout(()=>s.remove(),1800);}}
 function bump(k,v){S.needs[k]=Math.max(15,Math.min(100,S.needs[k]+v));}
 function afterAct(){save();drawHome();drawAv4();}
@@ -3550,14 +3591,14 @@ function openFood(){
   say(`Co zjemy? Dotknij jedzenia, żeby spróbować.`);
 }
 function goSleep(){
-  night=true;$('avp4').classList.add('night');$('wake').classList.remove('hidden');closeSub();
+  night=true;$('avp4').classList.add('night');drawAv4();$('wake').classList.remove('hidden');closeSub();
   lastAct={why:"Dlaczego śpimy? W czasie snu mózg porządkuje wszystko, czego się nauczyliśmy, ciało rośnie, a mięśnie się naprawiają. Dzieci potrzebują dużo snu, około dziesięciu do trzynastu godzin!"+SLEEP_FACT[S.creature]};
   say(`Dobranoc, ${S.name}. Słodkich snów! Ciii, oto kołysanka.`,()=>playSong(SONGS[1],{loop:true,vol:0.13,quiet:true}));
   zzz();
 }
 function zzz(){if(!night)return;const s=document.createElement('span');s.className='spark';s.textContent='💤';s.style.left=(45+Math.random()*20)+'%';s.style.top='35%';$('avp4').appendChild(s);setTimeout(()=>s.remove(),1500);setTimeout(zzz,1200);}
 $('wake').onclick=()=>{
-  night=false;stopSong();$('avp4').classList.remove('night');$('wake').classList.add('hidden');
+  night=false;stopSong();$('avp4').classList.remove('night');$('wake').classList.add('hidden');drawAv4();
   S.needs.energy=100;bump('food',-10);bump('potty',-15);afterAct();fx('☀️');
   say(`Dzień dobry, ${S.name}! Ale cudowny sen. Teraz jest mnóstwo energii! Dotknij znaku zapytania, żeby dowiedzieć się, po co śpimy.`,()=>setTimeout(nudgeNeed,600));
 };
@@ -4212,7 +4253,8 @@ const setN=(o,arr)=>Object.keys(o).forEach((k,i)=>{o[k].n=arr[i];});
 setN(HATS,['czapeczka urodzinowa','korona','duża kokarda','wianek','czapka zimowa','cylinder','kapelusz czarodzieja','czapka z daszkiem','diadem']);
 setN(GLASSES,['okrągłe okulary','okulary serduszka','okulary gwiazdki','okulary przeciwsłoneczne']);
 setN(NECK,['muszka','szalik','naszyjnik','chustka','medal']);
-setN(TOPS,['koszulka','sukienka','spódniczka tutu','sweter','strój superbohatera']);
+setN(TOPS,['koszulka','bluzeczka','bluzeczka z falbanką','sweter','strój superbohatera']);
+setN(BOTTOMS,['spódniczka','spódniczka plisowana','spódniczka tutu','bufiasta spódniczka','długa spódniczka','szorty']);
 setN(SHOES,['trampki','kozaki','baletki','kalosze']);
 setN(HOLD,['balonik','różdżka','kwiatek','lody','miś']);
 setN(BACK,['peleryna','skrzydła wróżki','skrzydła z piór','skrzydła motyla']);
@@ -4229,13 +4271,14 @@ Object.assign(WHY,{
  glasses:"Niektórzy noszą okulary, żeby lepiej widzieć. Szkło zagina światło tak, żeby trafiło w dobre miejsce w oku. Okulary przeciwsłoneczne chronią oczy przed mocnym słońcem.",
  neck:"Szalik grzeje szyję, kiedy jest zimno i wieje wiatr. Muszki, medale i naszyjniki są po to, żeby wyglądać wyjątkowo!",
  top:"Ubrania grzeją, chronią skórę przed słońcem i zadrapaniami, i pozwalają pokazać ulubione kolory. Ludzie potrzebują ubrań, bo nie mają grubego futra ani piórek.",
+ bottom:"Spódniczki i szorty pozwalają nogom swobodnie się ruszać, kiedy biegasz, skaczesz i kręcisz się w kółko. Spódniczka plisowana ma zakładki, więc przy obrocie rozkłada się jak wachlarz!",
  shoes:"Buty chronią stopy przed ostrymi kamykami, gorącym piaskiem i zimnymi kałużami. Kalosze trzymają stopy w suchości, kiedy pada!",
  hand:"Trzymanie czegoś to wspólna praca mięśni dłoni i mózgu. Mózg mówi palcom, jak mocno ścisnąć!",
  back:"Peleryny i skrzydła są do zabawy w udawanie! Udawanie jest świetne dla mózgu. Pomaga wymyślać historie.",
  hair:"Włosy grzeją głowę i chronią ją przed słońcem. Rosną z malutkich kieszonek w skórze, zwanych mieszkami włosowymi. Rosną około centymetra na miesiąc!",
  body_human:"Ludzie mają wiele pięknych kolorów skóry. Kolor skóry zależy od melaniny. Więcej melaniny to ciemniejsza skóra, która lepiej chroni przed słońcem.",
  body:"W prawdziwym życiu kolory pomagają zwierzętom się ukryć, popisać albo ostrzec innych. Jaskrawy kolor może mówić: nie jedz mnie! W naszej grze możesz wybrać dowolny kolor."});
-Object.assign(SLEEP_FACT,{human:'',dog:" Psy śpią około dwunastu godzin dziennie, a kiedy śnią, czasem ruszają łapkami!",bunny:" Króliczki czasem śpią z otwartymi oczami!",chick:" Niektóre ptaki śpią połową mózgu, a druga połowa pilnuje, czy nie ma niebezpieczeństwa!",bee:" Zmęczone pszczoły też śpią, czasem trzymając się kwiatka szczękami!",fish:" Ryby nie mają powiek, więc odpoczywają z otwartymi oczami."});
+Object.assign(SLEEP_FACT,{human:'',dog:" Psy śpią około dwunastu godzin dziennie, a kiedy śnią, czasem ruszają łapkami!",bunny:" Króliczki czasem śpią z otwartymi oczami!",chick:" Niektóre ptaki śpią połową mózgu, a druga połowa pilnuje, czy nie ma niebezpieczeństwa!",bee:" Zmęczone pszczoły też śpią, czasem trzymając się kwiatka szczękami!",fish:" Prawdziwe ryby nie mają powiek, więc odpoczywają z otwartymi oczami. Nasza rybka tylko udaje!"});
 Object.assign(NEED_LINE,{food:"Burczy mi w brzuszku! Dasz mi coś do jedzenia?",water:"Chce mi się pić!",potty:"Muszę do toalety!",clean:"Jestem trochę brudny!",energy:"Jestem śpiący... ziew!",fun:"Nudzi mi się! Pobawmy się!"});
 Object.assign(FOOD,{
  human:[['🍎','jabłko',2,"Chrup! Jabłka mają witaminy i błonnik, które pomagają brzuszkowi."],['🥦','brokuł',2,"Brokuł daje siłę! Zielone warzywa są pełne witamin."],['🍝','makaron',2,"Makaron daje dużo energii do zabawy."],['🥛','mleko',2,"Mleko ma wapń, który wzmacnia kości. Pamiętasz kości, które budowaliśmy?"],['🍰','ciasto',1,"Mniam! Ciasto to przysmak, tylko od czasu do czasu. Za dużo cukru szkodzi zębom."]],
@@ -4467,16 +4510,16 @@ function A_(id){
  return A;
 }
 function tabsFor(){
-  const t=[['hat','🎩','Czapki'],['glasses','👓','Okulary'],['neck','🎀','Szyja'],['top','👗','Ubrania'],['shoes','👟','Buty'],['hand','🎈','W łapce'],['back','🦸','Skrzydła'],['hair','💇','Włosy'],['body','🎨','Kolor']];
-  return t.filter(([k])=>!(k==='hair'&&S.creature!=='human')&&!((k==='top'||k==='shoes')&&S.creature==='fish'));
+  const t=[['hat','🎩','Czapki'],['glasses','👓','Okulary'],['neck','🎀','Szyja'],['top','👚','Bluzeczki'],['bottom',BOTTOMS.skirt.e,'Spódniczki'],['shoes','👟','Buty'],['hand','🎈','W łapce'],['back','🦸','Skrzydła'],['hair','💇','Włosy'],['body','🎨','Kolor']];
+  return t.filter(([k])=>!(k==='hair'&&S.creature!=='human')&&!((k==='top'||k==='bottom'||k==='shoes')&&S.creature==='fish'));
 }
 function tabSay(){
-  const T={hat:`Czapki! Którą czapkę wybierzemy?`,glasses:`Okulary! Wybierz fajne okulary.`,neck:`Coś na szyję!`,top:`Ubrania! Sukienka, koszulka, a może strój superbohatera?`,shoes:`Buty! Które buty wybierzemy?`,hand:`Co ${S.name} będzie trzymać?`,back:`Peleryny i skrzydła! Kto chce latać?`,hair:`Włosy! Wybierz fryzurę, a potem kolor.`,body:S.creature==='human'?`Kolor skóry! Wybierz ten, który ci się podoba.`:`Kolory! Na jaki kolor pomalujemy?`};
+  const T={hat:`Czapki! Którą czapkę wybierzemy?`,glasses:`Okulary! Wybierz fajne okulary.`,neck:`Coś na szyję!`,top:`Bluzeczki! Bluzeczka, koszulka, a może strój superbohatera?`,bottom:`Spódniczki! Tutu, plisowana, a może bufiasta? Są też szorty!`,shoes:`Buty! Które buty wybierzemy?`,hand:`Co ${S.name} będzie trzymać?`,back:`Peleryny i skrzydła! Kto chce latać?`,hair:`Włosy! Wybierz fryzurę, a potem kolor.`,body:S.creature==='human'?`Kolor skóry! Wybierz ten, który ci się podoba.`:`Kolory! Na jaki kolor pomalujemy?`};
   say(T[tab]+(tab!=='body'&&tab!=='hair'?' Potem wybierz kolor i wzór!':''));
 }
 $('why').onclick=()=>{
   let t=tab==='body'?(S.creature==='human'?WHY.body_human:WHY.body):WHY[tab];
-  if(['top','shoes','hat'].includes(tab)&&S.creature!=='human')t+=" Prawdziwe zwierzęta nie potrzebują ubrań, bo futro, piórka, pancerz albo łuski już je chronią. Ale przebieranie to świetna zabawa!";
+  if(['top','bottom','shoes','hat'].includes(tab)&&S.creature!=='human')t+=" Prawdziwe zwierzęta nie potrzebują ubrań, bo futro, piórka, pancerz albo łuski już je chronią. Ale przebieranie to świetna zabawa!";
   say(t);
 };
 function nudgeNeed(){const l=lowest();if(!l)return;say(NEED_LINE[l]);}

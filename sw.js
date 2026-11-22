@@ -1,5 +1,5 @@
 /* PaKuBuddy service worker – always the newest version when online, full app offline */
-const VERSION='2026.11.22-4';
+const VERSION='2026.11.22-5';
 const CACHE='pakubuddy-'+VERSION;
 const FILES=['./','index.html','family.js','install.js','manifest.webmanifest','icon.svg','icon-192.png','icon-512.png','icon-maskable.png','apple-touch-icon.png','qr.svg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES.map(f=>new Request(f,{cache:'reload'})))).then(()=>self.skipWaiting()));});
