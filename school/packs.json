@@ -1,6 +1,6 @@
 {
- "v": 1,
- "updated": "2026-11-22",
+ "v": 2,
+ "updated": "2026-11-23",
  "subjects": [],
  "exhibits": [
   {
@@ -174,10 +174,464 @@
      "Ruchome czcionki można było układać od nowa dla każdej strony."
     ]
    }
+  },
+  {
+   "id": "thermometer",
+   "sub": "body",
+   "y": 1714,
+   "e": "🌡️",
+   "bg": "#FFE8EE",
+   "svg": "<g class=\"deco a-spinS\" stroke=\"none\"><circle cx=\"50\" cy=\"52\" r=\"16\" fill=\"#FFE066\"/><path d=\"M50 26 V32 M50 72 V78 M24 52 H30 M70 52 H76 M32 34 L36 38 M64 66 L68 70 M68 34 L64 38 M36 66 L32 70\" stroke=\"#FFC94D\" stroke-width=\"4\"/></g>\n<g class=\"deco\" stroke=\"none\"><circle cx=\"246\" cy=\"190\" r=\"5\" fill=\"#FFC9D6\"/><circle cx=\"262\" cy=\"170\" r=\"3.5\" fill=\"#FFC9D6\"/><circle cx=\"236\" cy=\"62\" r=\"4\" fill=\"#FFC9D6\"/></g>\n<g data-p=\"board\"><rect x=\"100\" y=\"12\" width=\"100\" height=\"220\" rx=\"24\" fill=\"#F4D9B5\"/><circle cx=\"150\" cy=\"22\" r=\"4\" fill=\"#C9A27A\"/></g>\n<g data-p=\"tube\"><rect x=\"136\" y=\"30\" width=\"28\" height=\"168\" rx=\"14\" fill=\"#F1F8FF\"/><path d=\"M143 42 V150\" stroke=\"#FFFFFF\" stroke-width=\"3\"/></g>\n<g data-p=\"liquid\" class=\"a-glow\"><rect x=\"144\" y=\"84\" width=\"12\" height=\"110\" rx=\"6\" fill=\"#FF8787\"/></g>\n<g data-p=\"bulb\"><circle cx=\"150\" cy=\"198\" r=\"22\" fill=\"#FF8787\"/><circle cx=\"142\" cy=\"190\" r=\"5\" fill=\"#FFD1D1\" stroke=\"none\"/></g>\n<g data-p=\"scale\"><path d=\"M170 44 H188 M170 58 H180 M170 72 H188 M170 86 H180 M170 100 H188 M170 114 H180 M170 128 H188 M170 142 H180 M170 156 H188 M170 170 H180\" stroke-width=\"2.5\"/><circle cx=\"118\" cy=\"50\" r=\"7\" fill=\"#FFA94D\"/><path d=\"M118 160 V180 M109 165 L127 175 M127 165 L109 175\" stroke=\"#4DABF7\" stroke-width=\"3\"/></g>",
+   "en": {
+    "n": "Thermometer",
+    "w": "1714 · the Netherlands",
+    "who": "Daniel Gabriel Fahrenheit",
+    "i": "A thermometer tells us how warm or cold something is. In 1714, Daniel Gabriel Fahrenheit, who was born in Gdańsk, made the first mercury thermometer that showed the same reading every time. Later, he even made his own temperature scale!",
+    "m": [
+     [
+      "🫙",
+      "glass",
+      "Glass is see-through, so you can watch the liquid go up and down."
+     ],
+     [
+      "🪩",
+      "mercury",
+      "Mercury is a shiny metal that is runny like water. It grows evenly when it warms up, so the readings are fair."
+     ],
+     [
+      "🧊",
+      "ice, water and salt",
+      "Fahrenheit used icy salty water to find a very cold point to start his scale."
+     ]
+    ],
+    "s": [
+     [
+      "First, a thin glass tube is made, with a little round bulb at the bottom.",
+      "tube bulb"
+     ],
+     [
+      "The bulb is filled with a liquid that grows when it gets warm.",
+      "liquid"
+     ],
+     [
+      "The tube is fixed onto a board, to keep it safe.",
+      "board"
+     ],
+     [
+      "Last, lines and numbers are marked along the side. Now you can read the temperature!",
+      "scale"
+     ]
+    ],
+    "p": {
+     "board": [
+      "Board",
+      "The board holds the delicate glass tube, so it does not snap."
+     ],
+     "tube": [
+      "Glass tube",
+      "The hole inside the tube is very, very thin. So even a tiny bit of growing makes the liquid climb a long way."
+     ],
+     "liquid": [
+      "Liquid",
+      "When it is warm, the liquid grows and climbs up. When it is cold, it shrinks and slides down. Fahrenheit used silvery mercury, but today we use safe coloured liquids or digital thermometers."
+     ],
+     "bulb": [
+      "Bulb",
+      "The round bulb holds most of the liquid. It is the part that feels the warmth, like a little tummy."
+     ],
+     "scale": [
+      "Scale",
+      "The lines and numbers tell you how warm it is. On Fahrenheit's scale, water freezes at 32 degrees. On the Celsius scale, which most of the world uses, it freezes at 0."
+     ]
+    },
+    "q": [
+     "What happens to the liquid in a thermometer when it gets warmer?",
+     "it grows and climbs up the tube",
+     "it turns into lemonade",
+     "it hides in the board",
+     "Warm liquid takes up a little more space, so it rises up the thin tube."
+    ]
+   },
+   "pl": {
+    "n": "Termometr",
+    "w": "1714 · Holandia",
+    "who": "Daniel Gabriel Fahrenheit",
+    "i": "Termometr mówi nam, jak ciepło albo jak zimno jest dookoła. W 1714 roku Daniel Gabriel Fahrenheit, który urodził się w Gdańsku, zrobił pierwszy termometr rtęciowy, który za każdym razem pokazywał to samo. Później wymyślił nawet własną skalę temperatury!",
+    "m": [
+     [
+      "🫙",
+      "szkło",
+      "Szkło jest przezroczyste, więc widać, jak płyn wędruje w górę i w dół."
+     ],
+     [
+      "🪩",
+      "rtęć",
+      "Rtęć to błyszczący metal, który płynie jak woda. Ogrzana rośnie równo, więc pomiary są dokładne."
+     ],
+     [
+      "🧊",
+      "lód, woda i sól",
+      "Fahrenheit użył lodowatej, słonej wody, żeby znaleźć bardzo zimny punkt na początek skali."
+     ]
+    ],
+    "s": [
+     [
+      "Najpierw robi się cienką szklaną rurkę z małą, okrągłą bańką na dole.",
+      "tube bulb"
+     ],
+     [
+      "Bańkę wypełnia się płynem, który rośnie, kiedy robi się ciepło.",
+      "liquid"
+     ],
+     [
+      "Rurkę przymocowuje się do deseczki, żeby była bezpieczna.",
+      "board"
+     ],
+     [
+      "Na koniec z boku rysuje się kreski i liczby. Teraz można odczytać temperaturę!",
+      "scale"
+     ]
+    ],
+    "p": {
+     "board": [
+      "Deseczka",
+      "Deseczka trzyma delikatną szklaną rurkę, żeby się nie złamała."
+     ],
+     "tube": [
+      "Szklana rurka",
+      "Dziurka w środku rurki jest bardzo, bardzo cienka. Dlatego gdy płyn choć trochę urośnie, wspina się wysoko."
+     ],
+     "liquid": [
+      "Płyn",
+      "Kiedy jest ciepło, płyn rośnie i wspina się w górę. Kiedy jest zimno, kurczy się i zjeżdża w dół. Fahrenheit używał srebrzystej rtęci, a dziś używamy bezpiecznych kolorowych płynów albo termometrów elektronicznych."
+     ],
+     "bulb": [
+      "Bańka",
+      "Okrągła bańka mieści większość płynu. To ona czuje ciepło, jak mały brzuszek."
+     ],
+     "scale": [
+      "Skala",
+      "Kreski i liczby mówią, jak jest ciepło. Na skali Fahrenheita woda zamarza przy 32 stopniach. Na skali Celsjusza, której używamy w Polsce, zamarza przy zerze."
+     ]
+    },
+    "q": [
+     "Co się dzieje z płynem w termometrze, kiedy robi się cieplej?",
+     "rośnie i wspina się w górę rurki",
+     "zamienia się w lemoniadę",
+     "chowa się w deseczce",
+     "Ciepły płyn zajmuje trochę więcej miejsca, więc wspina się w górę cienkiej rurki."
+    ]
+   }
+  },
+  {
+   "id": "butterfly",
+   "sub": "nature",
+   "y": 1679,
+   "e": "🦋",
+   "bg": "#E3F6E6",
+   "svg": "<g class=\"deco\" stroke=\"none\"><circle cx=\"262\" cy=\"196\" r=\"7\" fill=\"#FFF3BF\"/><circle cx=\"270\" cy=\"210\" r=\"4\" fill=\"#FFD8E4\"/><circle cx=\"34\" cy=\"120\" r=\"4\" fill=\"#FFD8E4\"/></g>\n<g data-p=\"leaf\"><path d=\"M24 196 Q110 118 262 170 Q150 238 24 196Z\" fill=\"#8CE99A\"/><path d=\"M40 194 Q140 168 248 172\" fill=\"none\" stroke=\"#51CF66\"/></g>\n<g data-p=\"eggs\"><circle cx=\"66\" cy=\"196\" r=\"6\" fill=\"#FFF3BF\"/><circle cx=\"80\" cy=\"190\" r=\"6\" fill=\"#FFF3BF\"/><circle cx=\"80\" cy=\"203\" r=\"6\" fill=\"#FFF3BF\"/></g>\n<g data-p=\"caterpillar\" class=\"a-wig\"><circle cx=\"128\" cy=\"172\" r=\"12\" fill=\"#A9E34B\"/><circle cx=\"148\" cy=\"166\" r=\"12\" fill=\"#C0EB75\"/><circle cx=\"168\" cy=\"170\" r=\"12\" fill=\"#A9E34B\"/><circle cx=\"188\" cy=\"164\" r=\"12\" fill=\"#C0EB75\"/><circle cx=\"210\" cy=\"158\" r=\"15\" fill=\"#A9E34B\"/><path d=\"M204 144 L198 132 M216 144 L222 132\" fill=\"none\" stroke-width=\"2.5\"/><circle cx=\"205\" cy=\"156\" r=\"2.5\" fill=\"#3A2E4F\" stroke=\"none\"/><circle cx=\"216\" cy=\"156\" r=\"2.5\" fill=\"#3A2E4F\" stroke=\"none\"/><path d=\"M206 164 Q211 168 216 164\" fill=\"none\" stroke-width=\"2\"/></g>\n<g data-p=\"chrysalis\"><path d=\"M0 34 Q60 26 128 42\" fill=\"none\" stroke=\"#8B5E3C\" stroke-width=\"7\"/><path d=\"M84 38 V50\" fill=\"none\" stroke-width=\"2\"/><path d=\"M84 50 Q102 68 94 98 Q84 112 74 98 Q66 68 84 50Z\" fill=\"#C3FAE8\"/><path d=\"M74 72 Q84 76 96 72 M73 86 Q84 90 95 86\" fill=\"none\" stroke=\"#63E6BE\" stroke-width=\"2.5\"/></g>\n<g data-p=\"butterfly\" class=\"a-bob\"><ellipse cx=\"206\" cy=\"58\" rx=\"24\" ry=\"20\" fill=\"#FFB3C6\"/><ellipse cx=\"246\" cy=\"58\" rx=\"24\" ry=\"20\" fill=\"#FFB3C6\"/><ellipse cx=\"210\" cy=\"88\" rx=\"16\" ry=\"13\" fill=\"#B197FC\"/><ellipse cx=\"242\" cy=\"88\" rx=\"16\" ry=\"13\" fill=\"#B197FC\"/><circle cx=\"204\" cy=\"56\" r=\"6\" fill=\"#FFF3BF\" stroke=\"none\"/><circle cx=\"248\" cy=\"56\" r=\"6\" fill=\"#FFF3BF\" stroke=\"none\"/><rect x=\"220\" y=\"44\" width=\"12\" height=\"56\" rx=\"6\" fill=\"#6C4F8C\"/><path d=\"M224 44 Q216 30 210 28 M228 44 Q236 30 242 28\" fill=\"none\" stroke-width=\"2.5\"/></g>",
+   "en": {
+    "n": "Butterfly life cycle",
+    "w": "1679 · Germany",
+    "who": "Maria Sibylla Merian",
+    "i": "Long ago, many people thought caterpillars simply popped out of mud! Maria Sibylla Merian kept caterpillars, watched them very carefully and painted every stage. In 1679 she published a book showing how a caterpillar turns into a butterfly.",
+    "m": [
+     [
+      "🍃",
+      "leaves",
+      "Each kind of caterpillar eats its own favourite plants. Merian always painted them together."
+     ],
+     [
+      "🧵",
+      "silk",
+      "The caterpillar spins a little silk pad to hang from while it changes."
+     ],
+     [
+      "☀️",
+      "warmth",
+      "Butterflies need the sun's warmth to get their wings going."
+     ]
+    ],
+    "s": [
+     [
+      "A butterfly lays tiny eggs on a leaf.",
+      "leaf eggs"
+     ],
+     [
+      "A hungry caterpillar hatches and munches leaves, growing bigger and bigger.",
+      "caterpillar"
+     ],
+     [
+      "When it is big enough, it hangs up and makes a hard case around itself, called a chrysalis.",
+      "chrysalis"
+     ],
+     [
+      "Inside, its body changes completely. Then a butterfly climbs out, dries its wings and flies away!",
+      "butterfly"
+     ]
+    ],
+    "p": {
+     "leaf": [
+      "Leaf",
+      "The leaf is the caterpillar's dinner plate and its home."
+     ],
+     "eggs": [
+      "Eggs",
+      "Butterfly eggs are as tiny as a pinhead. The mother lays them on the very plant her babies like to eat."
+     ],
+     "caterpillar": [
+      "Caterpillar",
+      "A caterpillar is an eating machine! It grows so fast that it changes its skin several times."
+     ],
+     "chrysalis": [
+      "Chrysalis",
+      "It looks still and sleepy, but inside, the caterpillar is being rebuilt into a butterfly."
+     ],
+     "butterfly": [
+      "Butterfly",
+      "Its wings are covered in tiny scales, like coloured dust. It sips sweet nectar from flowers with a long tongue that curls up like a spring."
+     ]
+    },
+    "q": [
+     "What comes out of a chrysalis?",
+     "a butterfly",
+     "a tiny elephant",
+     "an egg",
+     "Inside the chrysalis the caterpillar changes, and a butterfly climbs out."
+    ]
+   },
+   "pl": {
+    "n": "Życie motyla",
+    "w": "1679 · Niemcy",
+    "who": "Maria Sibylla Merian",
+    "i": "Dawno temu wielu ludzi myślało, że gąsienice biorą się po prostu z błota! Maria Sibylla Merian hodowała gąsienice, uważnie je obserwowała i malowała każdy etap. W 1679 roku wydała książkę, która pokazuje, jak gąsienica zmienia się w motyla.",
+    "m": [
+     [
+      "🍃",
+      "liście",
+      "Każdy rodzaj gąsienicy je swoje ulubione rośliny. Merian zawsze malowała je razem."
+     ],
+     [
+      "🧵",
+      "jedwab",
+      "Gąsienica przędzie małą jedwabną poduszeczkę, na której wisi, kiedy się przemienia."
+     ],
+     [
+      "☀️",
+      "ciepło",
+      "Motyle potrzebują ciepła słońca, żeby rozruszać skrzydła."
+     ]
+    ],
+    "s": [
+     [
+      "Motyl składa malutkie jajeczka na liściu.",
+      "leaf eggs"
+     ],
+     [
+      "Wykluwa się głodna gąsienica, chrupie liście i rośnie coraz większa.",
+      "caterpillar"
+     ],
+     [
+      "Kiedy jest już duża, zawiesza się i robi wokół siebie twardą osłonkę. To poczwarka.",
+      "chrysalis"
+     ],
+     [
+      "W środku całe jej ciało się zmienia. Potem wychodzi motyl, suszy skrzydła i odlatuje!",
+      "butterfly"
+     ]
+    ],
+    "p": {
+     "leaf": [
+      "Liść",
+      "Liść to dla gąsienicy i talerz, i dom."
+     ],
+     "eggs": [
+      "Jajeczka",
+      "Jajeczka motyla są malutkie jak łebek szpilki. Mama składa je na roślinie, którą lubią jeść jej dzieci."
+     ],
+     "caterpillar": [
+      "Gąsienica",
+      "Gąsienica to prawdziwa maszyna do jedzenia! Rośnie tak szybko, że kilka razy zmienia skórę."
+     ],
+     "chrysalis": [
+      "Poczwarka",
+      "Wygląda, jakby spała, ale w środku gąsienica przebudowuje się w motyla."
+     ],
+     "butterfly": [
+      "Motyl",
+      "Skrzydła pokrywają malutkie łuski, jak kolorowy pyłek. Motyl pije słodki nektar z kwiatów długim języczkiem, zwiniętym jak sprężynka."
+     ]
+    },
+    "q": [
+     "Co wychodzi z poczwarki?",
+     "motyl",
+     "malutki słoń",
+     "jajko",
+     "W poczwarce gąsienica się przemienia, a potem wychodzi z niej motyl."
+    ]
+   }
+  },
+  {
+   "id": "moonlander",
+   "sub": "space",
+   "y": 1969,
+   "e": "🌕",
+   "bg": "#262A63",
+   "svg": "<g class=\"deco a-tw\" stroke=\"none\"><circle cx=\"30\" cy=\"30\" r=\"3\" fill=\"#fff\"/><circle cx=\"90\" cy=\"20\" r=\"2\" fill=\"#fff\"/><circle cx=\"60\" cy=\"110\" r=\"2.5\" fill=\"#fff\"/><circle cx=\"270\" cy=\"120\" r=\"2\" fill=\"#fff\"/><circle cx=\"230\" cy=\"90\" r=\"2\" fill=\"#fff\"/></g>\n<g class=\"deco\"><circle cx=\"256\" cy=\"40\" r=\"16\" fill=\"#74C0FC\"/><path d=\"M246 34 Q252 28 258 34 Q256 42 248 42Z M260 44 Q266 42 268 48 Q262 52 258 50Z\" fill=\"#8CE99A\" stroke=\"none\"/></g>\n<g class=\"deco\" stroke=\"none\"><path d=\"M0 204 Q80 192 150 202 T300 198 V240 H0Z\" fill=\"#CED4DA\"/><ellipse cx=\"44\" cy=\"222\" rx=\"16\" ry=\"5\" fill=\"#ADB5BD\"/><ellipse cx=\"254\" cy=\"226\" rx=\"20\" ry=\"6\" fill=\"#ADB5BD\"/></g>\n<g data-p=\"legs\"><path d=\"M100 158 L62 202 M200 158 L238 202 M150 164 V204 M96 140 L70 196 M204 140 L230 196\" fill=\"none\" stroke-width=\"10\"/><path d=\"M100 158 L62 202 M200 158 L238 202 M150 164 V204 M96 140 L70 196 M204 140 L230 196\" fill=\"none\" stroke=\"#DEE2E6\" stroke-width=\"5\"/></g>\n<g data-p=\"ladder\"><path d=\"M141 168 V202 M159 168 V202\" fill=\"none\" stroke-width=\"7\"/><path d=\"M141 168 V202 M159 168 V202\" fill=\"none\" stroke=\"#F1F3F5\" stroke-width=\"3\"/><path d=\"M141 176 H159 M141 186 H159 M141 196 H159\" fill=\"none\" stroke-width=\"3\"/></g>\n<g data-p=\"feet\"><ellipse cx=\"60\" cy=\"204\" rx=\"16\" ry=\"6\" fill=\"#E9ECEF\"/><ellipse cx=\"240\" cy=\"204\" rx=\"16\" ry=\"6\" fill=\"#E9ECEF\"/><ellipse cx=\"150\" cy=\"207\" rx=\"17\" ry=\"6\" fill=\"#E9ECEF\"/><path d=\"M48 208 L40 218 M252 208 L260 218\" fill=\"none\" stroke-width=\"2.5\"/></g>\n<g data-p=\"descent\"><path d=\"M92 120 H208 L222 132 V154 L208 166 H92 L78 154 V132Z\" fill=\"#FFD43B\"/><path d=\"M96 132 Q110 140 124 130 M170 150 Q186 142 200 152 M130 156 Q144 150 156 158\" fill=\"none\" stroke=\"#F59F00\" stroke-width=\"2.5\"/></g>\n<g data-p=\"cabin\"><path d=\"M108 120 L104 90 L122 64 H178 L196 90 L192 120Z\" fill=\"#E9ECEF\"/><path d=\"M126 76 H142 L132 96Z\" fill=\"#9775FA\"/><path d=\"M174 76 H158 L168 96Z\" fill=\"#9775FA\"/><rect x=\"138\" y=\"98\" width=\"24\" height=\"20\" rx=\"4\" fill=\"#CED4DA\"/></g>\n<g data-p=\"antenna\" class=\"a-wig\"><path d=\"M178 66 L196 48\" fill=\"none\" stroke-width=\"4\"/><circle cx=\"200\" cy=\"42\" r=\"11\" fill=\"#F8F9FA\"/><circle cx=\"200\" cy=\"42\" r=\"3\" fill=\"#ADB5BD\" stroke=\"none\"/></g>",
+   "en": {
+    "n": "Moon lander Eagle",
+    "w": "1969 · the Moon",
+    "who": "NASA engineers, with Neil Armstrong and Buzz Aldrin",
+    "i": "On the 20th of July 1969, a spidery spacecraft called Eagle landed gently on the Moon. Neil Armstrong and Buzz Aldrin climbed out and became the first people ever to walk there!",
+    "m": [
+     [
+      "✨",
+      "golden foil",
+      "Many thin, shiny layers stop the lander getting too hot in the sunshine or too cold in the shade."
+     ],
+     [
+      "🔩",
+      "very thin metal",
+      "Some walls were only as thick as a few sheets of paper, to keep the lander light."
+     ],
+     [
+      "🍯",
+      "honeycomb metal",
+      "The legs had squashy metal inside, shaped like a honeycomb, to soften the landing bump."
+     ]
+    ],
+    "s": [
+     [
+      "First, the bottom stage is built and wrapped in golden foil, with four folding legs.",
+      "descent legs"
+     ],
+     [
+      "Round footpads go on the ends of the legs, and a ladder on the front one.",
+      "feet ladder"
+     ],
+     [
+      "The cabin for two astronauts sits on top, with triangle windows.",
+      "cabin"
+     ],
+     [
+      "Last comes the antenna, to talk to Earth. Ready to land!",
+      "antenna"
+     ]
+    ],
+    "p": {
+     "descent": [
+      "Bottom stage",
+      "It has the big engine that slowed the lander down for a soft landing. It stayed behind on the Moon and is still there today!"
+     ],
+     "legs": [
+      "Legs",
+      "Four springy legs folded out like a spider's before landing. They held the lander steady on the bumpy ground."
+     ],
+     "feet": [
+      "Footpads",
+      "Big round feet stop the lander sinking into the Moon dust. Long thin feelers underneath touched the ground first and switched on a light that said: contact!"
+     ],
+     "ladder": [
+      "Ladder",
+      "Neil Armstrong climbed down this ladder and took the very first step on the Moon. A little sign on this leg says they came in peace."
+     ],
+     "cabin": [
+      "Cabin",
+      "The astronauts stood inside, because there were no seats! To go home, the cabin took off on its own, using the bottom stage as a launch pad."
+     ],
+     "antenna": [
+      "Antenna",
+      "The dish sent voices and pictures all the way back to Earth, about 384 thousand kilometres away."
+     ]
+    },
+    "q": [
+     "Why does the Moon lander have big round feet?",
+     "so it does not sink into the Moon dust",
+     "so it can dance",
+     "to kick a football",
+     "Wide feet spread out the weight, so the lander stands firmly on the soft dust."
+    ]
+   },
+   "pl": {
+    "n": "Lądownik księżycowy Eagle",
+    "w": "1969 · Księżyc",
+    "who": "inżynierowie NASA oraz Neil Armstrong i Buzz Aldrin",
+    "i": "20 lipca 1969 roku statek kosmiczny podobny do pająka, o imieniu Eagle, czyli Orzeł, delikatnie wylądował na Księżycu. Neil Armstrong i Buzz Aldrin wyszli na zewnątrz i jako pierwsi ludzie w historii chodzili po Księżycu!",
+    "m": [
+     [
+      "✨",
+      "złota folia",
+      "Wiele cienkich, błyszczących warstw chroni lądownik przed upałem w słońcu i mrozem w cieniu."
+     ],
+     [
+      "🔩",
+      "bardzo cienki metal",
+      "Niektóre ściany były grube jak kilka kartek papieru, żeby lądownik był lekki."
+     ],
+     [
+      "🍯",
+      "metalowy plaster miodu",
+      "W nogach był miękki metal ułożony jak plaster miodu, który łagodził uderzenie przy lądowaniu."
+     ]
+    ],
+    "s": [
+     [
+      "Najpierw buduje się dolną część, owija ją złotą folią i dodaje cztery składane nogi.",
+      "descent legs"
+     ],
+     [
+      "Na końcach nóg montuje się okrągłe stopy, a na przedniej nodze drabinkę.",
+      "feet ladder"
+     ],
+     [
+      "Na górze siada kabina dla dwóch astronautów, z trójkątnymi okienkami.",
+      "cabin"
+     ],
+     [
+      "Na koniec antena do rozmów z Ziemią. Gotowe do lądowania!",
+      "antenna"
+     ]
+    ],
+    "p": {
+     "descent": [
+      "Dolna część",
+      "Jest w niej duży silnik, który hamował lądownik, żeby wylądował miękko. Została na Księżycu i stoi tam do dziś!"
+     ],
+     "legs": [
+      "Nogi",
+      "Cztery sprężyste nogi rozkładały się przed lądowaniem jak u pająka. Trzymały lądownik stabilnie na nierównym gruncie."
+     ],
+     "feet": [
+      "Stopy",
+      "Duże okrągłe stopy nie pozwalają zapaść się w księżycowy pył. Długie cienkie czujniki pod spodem dotykały gruntu pierwsze i zapalały lampkę z napisem: kontakt!"
+     ],
+     "ladder": [
+      "Drabinka",
+      "Po tej drabince Neil Armstrong zszedł i postawił pierwszy krok na Księżycu. Mała tabliczka na tej nodze mówi, że przybyli w pokoju."
+     ],
+     "cabin": [
+      "Kabina",
+      "Astronauci stali w środku, bo nie było foteli! Żeby wrócić, kabina odleciała sama, a dolna część posłużyła jej za wyrzutnię."
+     ],
+     "antenna": [
+      "Antena",
+      "Talerz anteny wysyłał głosy i obrazy aż na Ziemię, odległą o około 384 tysiące kilometrów."
+     ]
+    },
+    "q": [
+     "Po co lądownik ma duże okrągłe stopy?",
+     "żeby nie zapaść się w księżycowy pył",
+     "żeby mógł tańczyć",
+     "żeby kopać piłkę",
+     "Szerokie stopy rozkładają ciężar, więc lądownik stoi pewnie na miękkim pyle."
+    ]
+   }
   }
  ],
  "figs": {},
  "newIds": [
-  "press"
+  "thermometer",
+  "butterfly",
+  "moonlander"
  ]
 }

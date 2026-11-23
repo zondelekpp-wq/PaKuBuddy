@@ -68,9 +68,9 @@ Figure ids that exist in the app (for `figs`): imhotep, hatshepsut, ahmes, hippo
 
 ## Ideas (tick when used)
 
-- body: [ ] thermometer, [ ] X-ray machine, [ ] plaster cast, [ ] vaccine (Jenner's idea), [ ] wheelchair
-- nature: [ ] seed and sprout, [ ] butterfly life cycle, [ ] bird's nest, [ ] magnifying glass, [ ] herbarium
-- space: [ ] astrolabe, [ ] space suit, [ ] International Space Station, [ ] Hubble telescope, [ ] Moon lander
+- body: [x] thermometer, [ ] X-ray machine, [ ] plaster cast, [ ] vaccine (Jenner's idea), [ ] wheelchair
+- nature: [ ] seed and sprout, [x] butterfly life cycle, [ ] bird's nest, [ ] magnifying glass, [ ] herbarium
+- space: [ ] astrolabe, [ ] space suit, [ ] International Space Station, [ ] Hubble telescope, [x] Moon lander
 - physics: [x] printing press, [ ] steam engine, [ ] bicycle, [ ] windmill, [ ] lever and pulley, [ ] hot-air balloon
 - chem: [ ] soap, [ ] candle, [ ] periodic table card, [ ] paper making, [ ] crystal growing
 - math: [ ] ruler and compass (geometry), [ ] hourglass, [ ] scales and weights, [ ] Ishango bone, [ ] tangram
@@ -81,3 +81,4 @@ Figure ids that exist in the app (for `figs`): imhotep, hatshepsut, ahmes, hippo
 ## Log
 
 - 2026-11-22: pack v1 – printing press (physics).
+- 2026-11-23: pack v2 – thermometer (body), butterfly life cycle (nature), Moon lander Eagle (space).
