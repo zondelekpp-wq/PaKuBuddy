@@ -89,6 +89,20 @@ button{font-family:inherit;color:inherit;border:none;cursor:pointer}
 .pop{transform-box:fill-box;transform-origin:center;animation:pop .7s cubic-bezier(.3,1.6,.5,1)}
 .spark{position:absolute;pointer-events:none;font-size:30px;animation:spark 1.3s ease-out forwards}
 .confirm{position:absolute;inset:0;background:rgba(74,59,102,.35);display:none;align-items:center;justify-content:center;z-index:9}
+/* bottom picture bar: where do you want to go? */
+.navbar{position:fixed;left:0;right:0;bottom:0;z-index:8;display:none;justify-content:center;gap:6px;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 -4px 18px rgba(150,120,190,.2);border-radius:26px 26px 0 0}
+body.hasNav .navbar{display:flex}
+body.hasNav .screen{bottom:calc(var(--navH,84px)) !important}
+body.hasNav #soon,body.hasNav .navback,body.hasNav .tmBtn,body.hasNav #hDress,body.hasNav #hWork,body.hasNav #toWork{display:none !important}
+.navbar button{flex:1;max-width:140px;display:flex;flex-direction:column;align-items:center;gap:1px;border-radius:20px;padding:6px 2px 5px;font-size:14px;font-weight:600;color:#7A6A98;background:none;position:relative;transition:background .3s,color .3s}
+.navbar .ni{font-size:32px;line-height:1.1;transition:transform .35s cubic-bezier(.2,.9,.3,1.4);filter:drop-shadow(0 3px 0 rgba(0,0,0,.06))}
+.navbar button.on{background:#FFE3EF;color:#E35D96;box-shadow:0 0 0 3px #FFC2DA}
+.navbar button.on .ni{animation:navBob 1.8s ease-in-out infinite}
+.navbar button:active .ni{transform:scale(.85)}
+.navbar button.lock{opacity:.42;filter:grayscale(.7)}
+.navbar button.lock::after{content:'🔒';position:absolute;top:2px;right:8px;font-size:14px}
+@keyframes navBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-4px) rotate(4deg)}}
+@media (max-width:700px){.navbar{gap:2px;padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));border-radius:20px 20px 0 0}.navbar .ni{font-size:26px}.navbar button{font-size:11px;padding:5px 1px 4px;border-radius:16px}}
 .confirm.on{display:flex}
 .confirm > div{background:#fff;border-radius:30px;padding:26px;text-align:center;font-size:22px;display:flex;flex-direction:column;gap:16px}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
@@ -651,7 +665,7 @@ button:active{transform:scale(.93)}
 </section>
 
 <section class="screen" id="dress">
-  <div class="top"><button class="mini" id="backD" aria-label="Back to body">⬅</button><div class="logo">Dress-up <span>time</span></div><div class="sp"></div>
+  <div class="top"><button class="mini navback" id="backD" aria-label="Back to body">⬅</button><div class="logo">Dress-up <span>time</span></div><div class="sp"></div>
     <button class="mini" data-act="slow" aria-label="Slower voice">🐢</button><button class="mini" data-act="mute" aria-label="Sound">🔊</button></div>
   <div class="build">
     <div class="avpanel" id="avp2"><div class="avname" id="avName2"></div><div id="av2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:44px 10px 10px"></div></div>
@@ -667,14 +681,14 @@ button:active{transform:scale(.93)}
 </section>
 
 <section class="screen" id="jobs">
-  <div class="top"><button class="mini" id="backJ" aria-label="Back">⬅</button><div class="logo">Choose a <span>job</span></div><div class="sp"></div>
+  <div class="top"><button class="mini navback" id="backJ" aria-label="Back">⬅</button><div class="logo">Choose a <span>job</span></div><div class="sp"></div>
     <button class="mini" data-act="slow" aria-label="Slower voice">🐢</button><button class="mini" data-act="mute" aria-label="Sound">🔊</button></div>
   <div class="jobgrid" id="jobGrid"></div>
   <div class="bottom"><div class="bubble" data-cap></div><button class="bigbtn hidden" id="pickJ">This job! 💼</button></div>
 </section>
 
 <section class="screen" id="work">
-  <div class="top"><button class="mini" id="backW" aria-label="Back">⬅</button><div class="logo" id="workTitle"></div><div class="sp"></div>
+  <div class="top"><button class="mini navback" id="backW" aria-label="Back">⬅</button><div class="logo" id="workTitle"></div><div class="sp"></div>
     <div class="stars" id="stars">⭐ 0</div><button class="mini" id="changeJob" aria-label="Change job">💼</button>
     <button class="mini" data-act="slow" aria-label="Slower voice">🐢</button><button class="mini" data-act="mute" aria-label="Sound">🔊</button></div>
   <div class="build">
@@ -691,7 +705,7 @@ button:active{transform:scale(.93)}
 </section>
 
 <section class="screen" id="home">
-  <div class="top"><button class="mini" id="backH" aria-label="Back">⬅</button><div class="logo" id="homeTitle"></div><div class="sp"></div>
+  <div class="top"><button class="mini navback" id="backH" aria-label="Back">⬅</button><div class="logo" id="homeTitle"></div><div class="sp"></div>
     <button class="mini tmBtn" aria-label="School">🏫</button><button class="mini" id="hDress" aria-label="Dress up">👚</button><button class="mini" id="hWork" aria-label="Work">💼</button>
     <button class="mini" data-act="slow" aria-label="Slower voice">🐢</button><button class="mini" data-act="mute" aria-label="Sound">🔊</button></div>
   <div class="build">
@@ -711,7 +725,7 @@ button:active{transform:scale(.93)}
 </section>
 
 <section class="screen" id="time">
-  <div class="top"><button class="mini" id="backT" aria-label="Back">⬅</button><div class="logo">🕰️ Time <span>Machine</span></div><div class="sp"></div>
+  <div class="top"><button class="mini navback" id="backT" aria-label="Back">⬅</button><div class="logo">🕰️ Time <span>Machine</span></div><div class="sp"></div>
     <div class="stars" id="tcount"></div><button class="mini" data-act="slow" aria-label="Slower voice">🐢</button><button class="mini" data-act="mute" aria-label="Sound">🔊</button></div>
   <div class="tline" id="tline"></div>
   <div class="eraPanel" id="eraPanel"><div id="eraDeco"></div><div class="eraHead" id="eraHead"></div><div class="figs" id="figs"></div></div>
@@ -719,13 +733,13 @@ button:active{transform:scale(.93)}
 </section>
 
 <section class="screen" id="school">
-  <div class="top"><button class="mini" id="backSch" aria-label="Back">⬅</button><div class="logo">🏫 <span id="schT">School</span></div><div class="sp"></div>
+  <div class="top"><button class="mini navback" id="backSch" aria-label="Back">⬅</button><div class="logo">🏫 <span id="schT">School</span></div><div class="sp"></div>
     <button class="mini" data-act="slow" aria-label="Slower voice">🐢</button><button class="mini" data-act="mute" aria-label="Sound">🔊</button></div>
   <div class="rooms" id="rooms"></div>
   <div class="bottom"><div class="bubble" data-cap></div></div>
 </section>
 <section class="screen" id="subject">
-  <div class="top"><button class="mini" id="backSub" aria-label="Back">⬅</button><div class="logo">🏫 <span id="schT2">School</span></div><div class="sp"></div>
+  <div class="top"><button class="mini navback" id="backSub" aria-label="Back">⬅</button><div class="logo">🏫 <span id="schT2">School</span></div><div class="sp"></div>
     <button class="mini" data-act="slow" aria-label="Slower voice">🐢</button><button class="mini" data-act="mute" aria-label="Sound">🔊</button></div>
   <div class="subjHead" id="subjHead"></div>
   <div class="stl" id="stl"></div>
@@ -771,6 +785,8 @@ button:active{transform:scale(.93)}
   <div class="exSide"><div><div class="exName" id="exName"></div><div class="exWhen" id="exWhen"></div></div>
    <div class="exTabs" id="exTabs"><button data-t="look"><span>🔎</span><i id="tbLook">Up close</i></button><button data-t="made"><span>🧱</span><i id="tbMade">Made of</i></button><button data-t="how"><span>🛠️</span><i id="tbHow">How it was made</i></button><button data-t="quiz"><span>❓</span><i id="tbQuiz">Quiz</i></button></div>
    <div class="exBody" id="exBody"></div></div></div></div>
+<nav class="navbar" id="navbar" aria-label="Places">
+  <button data-n="body"><span class="ni">🫀</span><span class="nl">Body</span></button><button data-n="dress"><span class="ni">👚</span><span class="nl">Clothes</span></button><button data-n="home"><span class="ni">🏠</span><span class="nl">Home</span></button><button data-n="work"><span class="ni">💼</span><span class="nl">Work</span></button><button data-n="school"><span class="ni">🏫</span><span class="nl">School</span></button></nav>
 <div class="warp" id="warp"><div class="clock">🕰️</div><div class="wtxt"></div></div>
 <div class="confirm" id="quiz"><div class="qbox" id="qbox"></div></div>
 <div class="confirm" id="trophies"><div class="setbox" id="tbox"></div></div>
@@ -1133,7 +1149,7 @@ function say(text,then,el){
 }
 /* ---------- screens ---------- */
 const $=id=>document.getElementById(id);
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));if(typeof enterFx==='function')enterFx(id);}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));if(typeof enterFx==='function')enterFx(id);try{updNav(id);}catch(e){}}
 document.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>{
   if(b.dataset.act==='mute'){muted=!muted;if(muted)try{speechSynthesis.cancel()}catch(e){};talking(false);
     try{toast(muted?TR('🔇 Sound off. You can read everything on the screen.','🔇 Dźwięk wyłączony. Wszystko możesz przeczytać na ekranie.'):TR('🔊 Sound on!','🔊 Dźwięk włączony!'));}catch(e){}
@@ -3336,6 +3352,25 @@ setTimeout(checkPack,3000);window.addEventListener('online',checkPack);
 BADGES.push(['scholar','🏫','Scholar','Uczony',()=>Object.keys(SCH().done).length>=5],['professor','🎓','Professor','Profesor',()=>allSubj().some(s=>s.id!=='history'&&subjLvl(s.id)>=SLVL.length-1)]);
 
 $('schT').textContent=$('schT2').textContent=TR('School','Szkoła');$('tbLook').textContent=TR('Up close','Z bliska');$('tbMade').textContent=TR('Made of','Z czego?');$('tbHow').textContent=TR('How it was made','Jak powstało?');$('tbQuiz').textContent='Quiz';
+/* ---------- bottom picture bar ---------- */
+const NAV_OF={build:'body',dress:'dress',home:'home',jobs:'work',work:'work',school:'school',subject:'school',time:'school'};
+const NAV_SAY={body:['Body','Ciało'],dress:['Clothes','Ubrania'],home:['Home','Domek'],work:['Work','Praca'],school:['School','Szkoła']};
+document.querySelectorAll('#navbar button').forEach(b=>{b.querySelector('.nl').textContent=TR(...NAV_SAY[b.dataset.n]);b.setAttribute('aria-label',TR(...NAV_SAY[b.dataset.n]));});
+function updNav(id){
+  const on=!!(S&&S.creature&&S.name&&NAV_OF[id]);document.body.classList.toggle('hasNav',on);if(!on)return;
+  const ready=!nextSys();
+  document.querySelectorAll('#navbar button').forEach(b=>{b.classList.toggle('on',b.dataset.n===NAV_OF[id]);b.classList.toggle('lock',!ready&&b.dataset.n!=='body');});
+  const nb=$('navbar');document.documentElement.style.setProperty('--navH',(nb.offsetHeight||84)+'px');
+}
+$('navbar').onclick=e=>{const b=e.target.closest('button');if(!b)return;const n=b.dataset.n;
+  try{b.querySelector('.ni').animate([{transform:'scale(1)'},{transform:'scale(1.35) rotate(-10deg)'},{transform:'scale(1)'}],{duration:450,easing:SPRING});}catch(x){}
+  if(b.classList.contains('on')){say(TR(`We are already here: ${NAV_SAY[n][0].toLowerCase()}!`,`Już tu jesteśmy: ${NAV_SAY[n][1].toLowerCase()}!`));return;}
+  if(b.classList.contains('lock')){say(TR(`First, let's finish building ${S.name}! Then we can go everywhere.`,`Najpierw dokończmy budowanie! Potem pójdziemy wszędzie.`));return;}
+  try{stopSong();}catch(x){}try{tok++;speechSynthesis.cancel();}catch(x){}
+  ['exh','meet','quiz'].forEach(o=>{const el=$(o);if(el)el.classList.remove('on');});
+  if(n==='body')openBuild(true);else if(n==='dress')openDress();else if(n==='home')openHome(false);else if(n==='work')goWork();else if(n==='school'){fromSchool=false;openSchool();}
+};
+window.addEventListener('resize',()=>{const s=document.querySelector('.screen.on');if(s)updNav(s.id);});
 /* ===================== PaKu family integration ===================== */
 const APP_URL='https://zondelekpp-wq.github.io/PaKuBuddy/',COFFEE='https://buymeacoffee.com/Hieronim';
 const MORE={
@@ -3731,7 +3766,7 @@ function say(text,then,el){
 }
 /* ---------- screens ---------- */
 const $=id=>document.getElementById(id);
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));if(typeof enterFx==='function')enterFx(id);}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id));if(typeof enterFx==='function')enterFx(id);try{updNav(id);}catch(e){}}
 document.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>{
   if(b.dataset.act==='mute'){muted=!muted;if(muted)try{speechSynthesis.cancel()}catch(e){};talking(false);
     try{toast(muted?TR('🔇 Sound off. You can read everything on the screen.','🔇 Dźwięk wyłączony. Wszystko możesz przeczytać na ekranie.'):TR('🔊 Sound on!','🔊 Dźwięk włączony!'));}catch(e){}
@@ -5934,6 +5969,25 @@ setTimeout(checkPack,3000);window.addEventListener('online',checkPack);
 BADGES.push(['scholar','🏫','Scholar','Uczony',()=>Object.keys(SCH().done).length>=5],['professor','🎓','Professor','Profesor',()=>allSubj().some(s=>s.id!=='history'&&subjLvl(s.id)>=SLVL.length-1)]);
 
 $('schT').textContent=$('schT2').textContent=TR('School','Szkoła');$('tbLook').textContent=TR('Up close','Z bliska');$('tbMade').textContent=TR('Made of','Z czego?');$('tbHow').textContent=TR('How it was made','Jak powstało?');$('tbQuiz').textContent='Quiz';
+/* ---------- bottom picture bar ---------- */
+const NAV_OF={build:'body',dress:'dress',home:'home',jobs:'work',work:'work',school:'school',subject:'school',time:'school'};
+const NAV_SAY={body:['Body','Ciało'],dress:['Clothes','Ubrania'],home:['Home','Domek'],work:['Work','Praca'],school:['School','Szkoła']};
+document.querySelectorAll('#navbar button').forEach(b=>{b.querySelector('.nl').textContent=TR(...NAV_SAY[b.dataset.n]);b.setAttribute('aria-label',TR(...NAV_SAY[b.dataset.n]));});
+function updNav(id){
+  const on=!!(S&&S.creature&&S.name&&NAV_OF[id]);document.body.classList.toggle('hasNav',on);if(!on)return;
+  const ready=!nextSys();
+  document.querySelectorAll('#navbar button').forEach(b=>{b.classList.toggle('on',b.dataset.n===NAV_OF[id]);b.classList.toggle('lock',!ready&&b.dataset.n!=='body');});
+  const nb=$('navbar');document.documentElement.style.setProperty('--navH',(nb.offsetHeight||84)+'px');
+}
+$('navbar').onclick=e=>{const b=e.target.closest('button');if(!b)return;const n=b.dataset.n;
+  try{b.querySelector('.ni').animate([{transform:'scale(1)'},{transform:'scale(1.35) rotate(-10deg)'},{transform:'scale(1)'}],{duration:450,easing:SPRING});}catch(x){}
+  if(b.classList.contains('on')){say(TR(`We are already here: ${NAV_SAY[n][0].toLowerCase()}!`,`Już tu jesteśmy: ${NAV_SAY[n][1].toLowerCase()}!`));return;}
+  if(b.classList.contains('lock')){say(TR(`First, let's finish building ${S.name}! Then we can go everywhere.`,`Najpierw dokończmy budowanie! Potem pójdziemy wszędzie.`));return;}
+  try{stopSong();}catch(x){}try{tok++;speechSynthesis.cancel();}catch(x){}
+  ['exh','meet','quiz'].forEach(o=>{const el=$(o);if(el)el.classList.remove('on');});
+  if(n==='body')openBuild(true);else if(n==='dress')openDress();else if(n==='home')openHome(false);else if(n==='work')goWork();else if(n==='school'){fromSchool=false;openSchool();}
+};
+window.addEventListener('resize',()=>{const s=document.querySelector('.screen.on');if(s)updNav(s.id);});
 /* ===================== PaKu family integration ===================== */
 const APP_URL='https://zondelekpp-wq.github.io/PaKuBuddy/',COFFEE='https://buymeacoffee.com/Hieronim';
 const MORE={
