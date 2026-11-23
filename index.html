@@ -631,6 +631,62 @@ button:active{transform:scale(.93)}
  .exText{font-size:16px}.mat .me{font-size:28px}
 }
 
+/* ---------- games ---------- */
+.gameov{position:fixed;inset:0;top:var(--barH,0px);z-index:30;display:none;flex-direction:column;background:linear-gradient(#FFF4FA,#F3ECFF);padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px))}
+.gameov.on{display:flex}
+.gtop{display:flex;align-items:center;gap:10px;min-height:48px}
+.gtitle{font-size:22px;font-weight:700;color:#E35D96;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gscore{background:#fff;border-radius:16px;padding:6px 14px;font-weight:700;font-size:18px;color:#7048E8;box-shadow:0 4px 0 #E6DAFB;white-space:nowrap}
+.gclose{width:48px;height:48px;border-radius:16px;background:#fff;font-size:22px;box-shadow:0 4px 0 #EBD9F3;flex:none}
+.gstage{flex:1;position:relative;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 6px 0 rgba(150,120,190,.18);min-height:0;touch-action:none;user-select:none;-webkit-user-select:none}
+.gstage canvas,.gstage > svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.gfoot{display:flex;flex-direction:column;gap:8px;padding-top:10px}
+.gsay{background:#fff;border-radius:22px;padding:10px 16px;font-size:19px;line-height:1.4;box-shadow:0 5px 0 #F3D5E6;height:clamp(84px,15vh,124px);overflow:auto;flex:none}
+.gsay span.now{background:#FFF1A8;border-radius:8px;box-shadow:0 0 0 3px #FFF1A8}
+.gbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.gbtns button{background:#fff;border-radius:20px;padding:10px 18px;font-size:18px;font-weight:600;box-shadow:0 5px 0 #E6DAFB}
+.gbtns button.main{background:linear-gradient(#FF9EC4,#FF7AAE);color:#fff;box-shadow:0 5px 0 #E35D96}
+.gbtns button:active{transform:translateY(3px);box-shadow:0 2px 0 #E6DAFB}
+.gpad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(2,56px);gap:6px;justify-content:center}
+.gpad button{border-radius:18px;background:#fff;font-size:28px;box-shadow:0 5px 0 #E6DAFB}
+.gpad button:active{transform:translateY(3px)}
+.gpad .u{grid-column:2;grid-row:1}.gpad .l{grid-column:1;grid-row:2}.gpad .d{grid-column:2;grid-row:2}.gpad .r{grid-column:3;grid-row:2}
+.gpick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.gpick button{border-radius:24px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:600;font-size:16px;box-shadow:0 5px 0 rgba(150,120,190,.22)}
+.gpick button span{font-size:40px;animation:roomBob 3s ease-in-out infinite}
+.gpick button:nth-child(2) span{animation-delay:-.8s}.gpick button:nth-child(3) span{animation-delay:-1.6s}.gpick button:nth-child(4) span{animation-delay:-2.4s}
+.gpick small{font-weight:400;color:#7A6A98;font-size:12px}
+.gend{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.75);z-index:3}
+.gend > div{background:#fff;border-radius:30px;padding:20px 26px;text-align:center;box-shadow:0 8px 0 #F3D5E6;max-width:90%}
+.gend b{display:block;font-size:44px;color:#E35D96}
+.gend .gstars{font-size:34px;letter-spacing:4px;margin:4px 0}
+/* memory */
+.mem{position:absolute;inset:0;display:grid;gap:10px;padding:12px;perspective:800px}
+.mcard{position:relative;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.2,.9,.3,1.2);cursor:pointer;border-radius:20px}
+.mcard.up,.mcard.ok{transform:rotateY(180deg)}
+.mcard .f,.mcard .b{position:absolute;inset:0;border-radius:20px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 5px 0 rgba(150,120,190,.25)}
+.mcard .b{background:linear-gradient(135deg,#B197FC,#FF9EC4);font-size:30px;color:#fff}
+.mcard .f{background:#fff;transform:rotateY(180deg);font-size:clamp(44px,11vmin,84px)}
+.mcard.ok .f{box-shadow:0 0 0 4px #FFD43B,0 5px 0 rgba(150,120,190,.25);animation:memGlow 1s ease-in-out 2}
+@keyframes memGlow{0%,100%{box-shadow:0 0 0 4px #FFD43B,0 5px 0 rgba(150,120,190,.25)}50%{box-shadow:0 0 0 9px rgba(255,212,59,.55),0 5px 0 rgba(150,120,190,.25)}}
+/* teeth */
+.brush{position:absolute;left:0;top:0;width:110px;height:110px;pointer-events:none;z-index:2;transform:translate(-30px,-80px);transition:opacity .3s}
+.brush svg{width:100%;height:100%;overflow:visible}
+.tooth .pl{transition:opacity .25s}
+.tooth.clean .sh{animation:exTw 1.6s ease-in-out infinite}
+.germ{transform-box:fill-box;transform-origin:center;animation:exWig .8s ease-in-out infinite}
+.gprog{display:flex;align-items:center;gap:8px;font-weight:700;color:#7048E8}
+.gprog .bar{flex:1;height:14px;border-radius:7px;background:#F1E9FF;overflow:hidden}
+.gprog .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#63E6BE,#74C0FC);border-radius:7px;transition:width .4s}
+@media (max-width:700px){
+ .gameov{padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+ .gtitle{font-size:18px}.gscore{font-size:15px;padding:5px 10px}.gclose{width:42px;height:42px}
+ .gsay{font-size:16px;padding:8px 12px;height:clamp(76px,14vh,104px)}
+ .gbtns button{font-size:16px;padding:9px 14px}
+ .gpad{grid-template-columns:repeat(3,56px);grid-template-rows:repeat(2,48px)}
+ .brush{width:90px;height:90px}
+}
+
 </style>
 </head>
 <body>
@@ -785,6 +841,11 @@ button:active{transform:scale(.93)}
   <div class="exSide"><div><div class="exName" id="exName"></div><div class="exWhen" id="exWhen"></div></div>
    <div class="exTabs" id="exTabs"><button data-t="look"><span>🔎</span><i id="tbLook">Up close</i></button><button data-t="made"><span>🧱</span><i id="tbMade">Made of</i></button><button data-t="how"><span>🛠️</span><i id="tbHow">How it was made</i></button><button data-t="quiz"><span>❓</span><i id="tbQuiz">Quiz</i></button></div>
    <div class="exBody" id="exBody"></div></div></div></div>
+<div class="gameov" id="gameov"><div class="gtop"><div class="gtitle" id="gTitle"></div><div class="gscore" id="gScore"></div><button class="gclose" id="gClose" aria-label="Close">✖</button></div>
+  <div class="gstage" id="gStage"></div>
+  <div class="gfoot"><div class="gprog" id="gProg"><span id="gProgT"></span><div class="bar"><i id="gProgB"></i></div></div>
+   <div class="gpad" id="gPad"><button class="u" aria-label="Up">⬆️</button><button class="l" aria-label="Left">⬅️</button><button class="d" aria-label="Down">⬇️</button><button class="r" aria-label="Right">➡️</button></div>
+   <div class="gsay" id="gSay"></div><div class="gbtns" id="gBtns"></div></div></div>
 <nav class="navbar" id="navbar" aria-label="Places">
   <button data-n="body"><span class="ni">🫀</span><span class="nl">Body</span></button><button data-n="dress"><span class="ni">👚</span><span class="nl">Clothes</span></button><button data-n="home"><span class="ni">🏠</span><span class="nl">Home</span></button><button data-n="work"><span class="ni">💼</span><span class="nl">Work</span></button><button data-n="school"><span class="ni">🏫</span><span class="nl">School</span></button></nav>
 <div class="warp" id="warp"><div class="clock">🕰️</div><div class="wtxt"></div></div>
@@ -2013,8 +2074,10 @@ function fx(e,n=1){const p=$('avp4');for(let i=0;i<n;i++){const s=document.creat
 function bump(k,v){S.needs[k]=Math.max(15,Math.min(100,S.needs[k]+v));}
 function afterAct(){save();drawHome();drawAv4();}
 function nudgeNeed(){const l=lowest();if(l)say(NEED_LINE[l]);}
-function doAct(k){
+function doAct(k,quick){
   if(night&&k!=='sleep')return;
+  if(k==='teeth'&&(S.creature==='human'||S.creature==='dog')){openTeeth();return;}
+  if(k==='play'&&!quick){openGames();return;}
   const A=A_(),a=A[k];closeSub();
   if(k==='eat'){openFood();return;}
   if(k==='story'){openStories();return;}
@@ -3352,6 +3415,284 @@ setTimeout(checkPack,3000);window.addEventListener('online',checkPack);
 BADGES.push(['scholar','🏫','Scholar','Uczony',()=>Object.keys(SCH().done).length>=5],['professor','🎓','Professor','Profesor',()=>allSubj().some(s=>s.id!=='history'&&subjLvl(s.id)>=SLVL.length-1)]);
 
 $('schT').textContent=$('schT2').textContent=TR('School','Szkoła');$('tbLook').textContent=TR('Up close','Z bliska');$('tbMade').textContent=TR('Made of','Z czego?');$('tbHow').textContent=TR('How it was made','Jak powstało?');$('tbQuiz').textContent='Quiz';
+/* ===================== Games: toothbrushing + mini games ===================== */
+const GM={raf:0,timers:[],cleanup:null,kind:null};
+function gStop(){cancelAnimationFrame(GM.raf);GM.raf=0;GM.timers.forEach(t=>{clearTimeout(t);clearInterval(t);});GM.timers=[];if(GM.cleanup){try{GM.cleanup();}catch(e){}}GM.cleanup=null;}
+function gT(fn,ms){const t=setTimeout(fn,ms);GM.timers.push(t);return t;}
+function gOpen(title){
+  gStop();closeSub();$('gameov').classList.add('on');$('gTitle').innerHTML=title;
+  $('gScore').style.display='none';$('gStage').innerHTML='';$('gBtns').innerHTML='';$('gPad').style.display='none';$('gProg').style.display='none';$('gSay').innerHTML='';
+  try{$('gameov').animate([{opacity:0,transform:'scale(.96)'},{opacity:1,transform:'none'}],{duration:350,easing:SPRING});}catch(e){}
+}
+function gClose(){gStop();$('gameov').classList.remove('on');tok++;try{speechSynthesis.cancel();}catch(e){}talking(false);if($('home').classList.contains('on')){drawHome();drawAv4();}}
+function gSay(t,then){say(t,then,$('gSay'));}
+function gScore(t){const s=$('gScore');s.style.display='block';s.innerHTML=t;}
+function gButtons(list){$('gBtns').innerHTML='';list.forEach(([label,fn,main])=>{const b=document.createElement('button');b.innerHTML=label;if(main)b.className='main';b.onclick=fn;$('gBtns').appendChild(b);});}
+function gCanvas(){
+  const st=$('gStage'),cv=document.createElement('canvas');st.appendChild(cv);
+  const g={cv,ctx:cv.getContext('2d'),W:0,H:0,s:1};
+  const fit=()=>{const r=st.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);g.W=r.width;g.H=r.height;g.s=Math.min(g.W,g.H)/500;cv.width=Math.round(g.W*d);cv.height=Math.round(g.H*d);g.ctx.setTransform(d,0,0,d,0,0);};
+  fit();const ro=()=>fit();window.addEventListener('resize',ro);const prev=GM.cleanup;GM.cleanup=()=>{window.removeEventListener('resize',ro);if(prev)prev();};
+  return g;
+}
+function gPoint(e){const r=$('gStage').getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};}
+function ding(f=880){try{if(!ensureAC())return;pianoNote(f,AC.currentTime+0.01,0.5,0.45);}catch(e){}}
+function gEnd(kind,score,stars,msg){
+  gStop();S.games=S.games||{};const best=S.games[kind]||0;const isBest=score>best;if(isBest)S.games[kind]=score;
+  bump('fun',kind==='teeth'?10:35);if(kind!=='teeth'){bump('energy',-8);bump('food',-4);}
+  careDone();gain(5+stars*3);stat('games');save();
+  if(kind==='teeth'){confetti($('gStage'),60);gButtons([[`🔁 ${TR('Brush again','Myj jeszcze raz')}`,openTeeth,true],[`🏠 ${TR('Home','Domek')}`,gClose]]);gSay(msg);return;}
+  const d=document.createElement('div');d.className='gend';
+  d.innerHTML=`<div><div class="gstars">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div><b>${score}</b>${isBest&&best?`<div>🏆 ${TR('New record!','Nowy rekord!')}</div>`:best?`<div>${TR('Record','Rekord')}: ${Math.max(best,score)}</div>`:''}</div>`;
+  $('gStage').appendChild(d);try{d.firstChild.animate([{transform:'scale(.4)',opacity:0},{transform:'scale(1.08)',opacity:1,offset:.7},{transform:'none'}],{duration:650,easing:SPRING});}catch(e){}
+  if(stars>=2)confetti($('gStage'),60);
+  gButtons([[`🔁 ${TR('Play again','Jeszcze raz')}`,()=>GAMES[kind].start(),true],[`🎮 ${TR('Other games','Inne gry')}`,()=>{gClose();openGames();}],[`🏠 ${TR('Home','Domek')}`,gClose]]);
+  gSay(msg+' '+TR('Playing makes your brain and muscles stronger, and it makes you happy too!','Zabawa wzmacnia mózg i mięśnie, i do tego daje dużo radości!'));
+}
+$('gClose').onclick=gClose;
+/* ---------- picker ---------- */
+function openGames(){
+  const sub=openSub();
+  const tiles=[['snake','🐍',TR('Snake','Wąż'),TR('eat the apples','zjadaj jabłka')],['ball','🏀',TR('Basketball','Koszykówka'),TR('throw into the hoop','rzucaj do kosza')],['catch','🧺',TR('Catch it!','Łap!'),TR('catch the food, not germs','łap jedzenie, nie zarazki')],['memory','🃏',TR('Memory','Memory'),TR('find the pairs','znajdź pary')]];
+  sub.innerHTML=`<div class="subhead">${TR('What shall we play?','W co się bawimy?')}<button class="x" id="xSub">✖</button></div><div class="gpick">`+tiles.map(t=>`<button data-g="${t[0]}" style="background:${{snake:'#DDF5E4',ball:'#FFE9DC',catch:'#FFF6D6',memory:'#EFE6FF'}[t[0]]}"><span>${t[1]}</span>${t[2]}<small>${t[3]}</small></button>`).join('')+
+    `</div><div class="gbtns" style="margin-top:8px"><button id="quickPlay">${A_().play.e} ${TR('Quick play','Szybka zabawa')}</button></div>`;
+  $('xSub').onclick=closeSub;stag(sub.querySelectorAll('.gpick button'),70);
+  sub.querySelectorAll('.gpick button').forEach(b=>b.onclick=()=>GAMES[b.dataset.g].start());
+  $('quickPlay').onclick=()=>doAct('play',true);
+  say(TR(`What shall we play, ${S.name}? Snake, basketball, catching, or memory?`,`W co się bawimy? Wąż, koszykówka, łapanie czy memory?`));
+}
+/* ---------- 1. toothbrushing ---------- */
+function openTeeth(){
+  const dog=S.creature==='dog';gOpen(`🪥 ${TR('Brush the teeth','Mycie ząbków')}`);
+  const st=$('gStage');st.style.background=dog?'#FFF1E0':'#FFE9F1';
+  const N=8,teeth=[];
+  const arcY=(x,top)=>top?74+Math.pow((x-200)/140,2)*36:226-Math.pow((x-200)/140,2)*36;
+  let svg=`<svg viewBox="${innerWidth<700?'26 14 348 272':'0 0 400 300'}" preserveAspectRatio="xMidYMid meet"><defs><radialGradient id="mouthG" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#9C3D5A"/><stop offset="1" stop-color="#5E1F35"/></radialGradient></defs>`;
+  if(dog)svg+=`<ellipse cx="200" cy="18" rx="44" ry="26" fill="#3A2E4F"/><ellipse cx="190" cy="10" rx="12" ry="6" fill="#6B5A8A"/>`;
+  svg+=`<ellipse cx="200" cy="150" rx="186" ry="138" fill="${dog?'#B07A4F':'#FF8FAB'}"/><ellipse cx="200" cy="150" rx="168" ry="120" fill="url(#mouthG)"/>`;
+  svg+=`<g id="tongue"><ellipse cx="200" cy="200" rx="96" ry="44" fill="#F48FB1"/><path d="M200 168 V220" stroke="#E36B98" stroke-width="3" stroke-linecap="round"/>${dog?'':`<g class="pl"><circle cx="170" cy="196" r="9" fill="#E9E1A0" opacity=".9"/><circle cx="228" cy="204" r="8" fill="#E9E1A0" opacity=".9"/><g class="germ"><circle cx="198" cy="188" r="11" fill="#9BE36A"/><circle cx="194" cy="186" r="2" fill="#3A2E4F"/><circle cx="202" cy="186" r="2" fill="#3A2E4F"/></g></g>`}</g>`;
+  [true,false].forEach(top=>{for(let i=0;i<N;i++){
+    const x=68+i*(264/(N-1)),y=arcY(x,top),w=i===0||i===N-1?34:i===1||i===N-2?32:30,h=top?46:42,canine=dog&&(i===1||i===N-2);
+    const y0=top?y-6:y-h+6,id=teeth.length;
+    const shape=canine?(top?`M${x-w/2} ${y0} H${x+w/2} V${y0+h*0.55} L${x} ${y0+h+14} L${x-w/2} ${y0+h*0.55}Z`:`M${x-w/2} ${y0+h} H${x+w/2} V${y0+h*0.45} L${x} ${y0-14} L${x-w/2} ${y0+h*0.45}Z`)
+      :`M${x-w/2+8} ${y0} H${x+w/2-8} Q${x+w/2} ${y0} ${x+w/2} ${y0+8} V${y0+h-10} Q${x+w/2} ${y0+h} ${x+w/2-10} ${y0+h} H${x-w/2+10} Q${x-w/2} ${y0+h} ${x-w/2} ${y0+h-10} V${y0+8} Q${x-w/2} ${y0} ${x-w/2+8} ${y0}Z`;
+    const gx=x+(i%2?4:-4),gy=y0+h/2;
+    svg+=`<g class="tooth" data-i="${id}"><path d="${shape}" fill="#FFFFFF" stroke="#E7DCEB" stroke-width="2.5"/>
+      <g class="pl"><circle cx="${x-6}" cy="${y0+h*0.3}" r="7" fill="#E9E1A0" opacity=".95"/><circle cx="${x+7}" cy="${y0+h*0.68}" r="6" fill="#DCCF7E" opacity=".95"/><circle cx="${x-4}" cy="${y0+h*0.8}" r="4" fill="#E9E1A0"/>
+      ${i%2===0?`<g class="germ" style="animation-delay:-${(i*.17).toFixed(2)}s"><circle cx="${gx}" cy="${gy}" r="8.5" fill="${['#9BE36A','#74C0FC','#FFA8A8','#C0A6FF'][i%4]}"/><circle cx="${gx-3}" cy="${gy-1.5}" r="1.7" fill="#3A2E4F"/><circle cx="${gx+3}" cy="${gy-1.5}" r="1.7" fill="#3A2E4F"/><path d="M${gx-3} ${gy+3} Q${gx} ${gy+1} ${gx+3} ${gy+3}" stroke="#3A2E4F" stroke-width="1.3" fill="none"/></g>`:''}</g>
+      <path class="sh" d="M${x-w/4} ${y0+8} q2 6 0 12" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0"/></g>`;
+    teeth.push({x,y:y0+h/2,w,h,box:[x-w/2-6,y0-8,w+12,h+16],p:0,clean:false});
+  }});
+  svg+=`<g id="foam"></g></svg>`;
+  st.innerHTML=svg+`<div class="brush" id="brush"><svg viewBox="0 0 100 100"><g transform="rotate(-35 50 50)"><rect x="44" y="34" width="12" height="62" rx="6" fill="${dog?'#74C0FC':'#FF8FB8'}" stroke="#3A2E4F" stroke-width="3"/><rect x="40" y="6" width="20" height="32" rx="7" fill="${dog?'#74C0FC':'#FF8FB8'}" stroke="#3A2E4F" stroke-width="3"/><g fill="#fff" stroke="#9BD9FF" stroke-width="1.5"><rect x="42" y="0" width="5" height="16" rx="2"/><rect x="48" y="0" width="5" height="16" rx="2"/><rect x="54" y="0" width="5" height="16" rx="2"/></g><path d="M40 -4 Q50 -14 60 -4" fill="#E7F8FF" stroke="#5FD3B4" stroke-width="3"/></g></svg></div>`;
+  const sv=st.querySelector('svg'),brush=$('brush'),foam=$('foam'),total=teeth.length;
+  let cleanN=0,phase='teeth',tongueP=0,last=null,lastFoam=0,said={};
+  $('gProg').style.display='flex';
+  const prog=()=>{$('gProgT').textContent=`🦷 ${cleanN}/${total}`;$('gProgB').style.width=(100*cleanN/total)+'%';};prog();
+  const toSvg=(cx,cy)=>{const pt=sv.createSVGPoint();pt.x=cx;pt.y=cy;return pt.matrixTransform(sv.getScreenCTM().inverse());};
+  const facts=dog?{
+    start:TR("Brushing time for doggy! Every tooth has plaque on it, a sticky layer full of germs. Rub the toothbrush back and forth over each tooth with your finger, until it sparkles!","Czas umyć pieskowi ząbki! Na każdym ząbku jest płytka nazębna, lepka warstwa pełna zarazków. Pocieraj szczoteczką palcem tam i z powrotem po każdym ząbku, aż zabłyśnie!"),
+    4:TR("Dogs get plaque too. If we don't brush it away, it turns into hard tartar, and their gums can get sore.","Psy też mają płytkę. Jeśli jej nie wyszczotkujemy, zamienia się w twardy kamień, a dziąsła mogą boleć."),
+    8:TR("Dog toothpaste tastes like chicken! Never use people toothpaste for a dog, because it can make them ill.","Psia pasta smakuje jak kurczak! Nigdy nie myj psu zębów ludzką pastą, bo może mu zaszkodzić."),
+    12:TR("A grown-up dog has 42 teeth! Don't forget the big pointy ones, called canines.","Dorosły pies ma aż 42 zęby! Nie zapomnij o dużych, spiczastych kłach.")}
+   :{start:TR("Time to brush! Every tooth is covered in plaque, a sticky layer full of germs. Rub the toothbrush back and forth over each tooth with your finger, until it sparkles!","Czas umyć ząbki! Każdy ząbek pokrywa płytka nazębna, lepka warstwa pełna zarazków. Pocieraj szczoteczką palcem tam i z powrotem po każdym ząbku, aż zabłyśnie!"),
+    4:TR("Why do we brush? The germs in plaque eat the sugar from our food and make acid. Acid slowly makes little holes in teeth, called cavities, and they can really hurt!","Dlaczego myjemy zęby? Zarazki z płytki jedzą cukier z jedzenia i robią kwas. Kwas powoli robi w zębach dziurki, czyli próchnicę, a to może bardzo boleć!"),
+    8:TR("Toothpaste has fluoride in it. Fluoride makes enamel stronger. Enamel is the hard, shiny shield on the outside of each tooth.","W paście jest fluor. Fluor wzmacnia szkliwo, czyli twardą, błyszczącą tarczę na każdym ząbku."),
+    12:TR("Don't forget the teeth at the back! Bits of food love to hide there. Children have 20 milk teeth, and they keep the space for the grown-up teeth.","Nie zapomnij o ząbkach z tyłu! Tam najchętniej chowają się resztki jedzenia. Dzieci mają 20 mlecznych ząbków, które trzymają miejsce dla stałych zębów.")};
+  const finishTeeth=()=>{
+    if(dog){phase='done';brush.style.opacity=0;doneAll();return;}
+    phase='tongue';
+    gSay(TR("All the teeth are clean! Now gently brush the tongue. Germs live there too, and they make breath smelly.","Wszystkie ząbki czyste! Teraz delikatnie umyj język. Tam też mieszkają zarazki, które psują oddech."));
+    try{$('tongue').animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:800,iterations:2});}catch(e){}
+  };
+  const spit=()=>{
+    phase='done';brush.style.opacity=0;
+    foam.querySelectorAll('circle').forEach((c,i)=>{try{c.animate([{opacity:1},{opacity:0,transform:'translateY(40px)'}],{duration:600,delay:i*8,fill:'forwards'});}catch(e){}});
+    gT(doneAll,700);
+  };
+  const doneAll=()=>{
+    sv.querySelectorAll('.tooth .sh').forEach(p=>p.setAttribute('opacity','1'));
+    confetti($('gStage'),70);ding(1046);gT(()=>ding(1318),180);
+    S.needs.clean=Math.min(100,S.needs.clean+20);stat('teeth');
+    lastAct={why:dog?TR("Dogs get plaque and tartar too. Brushing with dog toothpaste keeps their teeth and gums healthy, and their breath fresher.","Psy też mają płytkę i kamień. Mycie psią pastą dba o ich zęby i dziąsła, i sprawia, że oddech jest świeższy.")
+      :TR("We brush twice a day, in the morning and before bed, for two minutes. Brushing sweeps away plaque, so germs can't make acid and holes in our teeth.","Myjemy zęby dwa razy dziennie, rano i przed snem, po dwie minuty. Szczotkowanie usuwa płytkę, więc zarazki nie mogą zrobić kwasu i dziurek w zębach.")};
+    gEnd('teeth',total,3,dog?TR("Sparkly clean doggy teeth! Dog toothpaste is safe to swallow, so no spitting needed. Woof!","Psie ząbki lśnią! Psią pastę można połknąć, więc nie trzeba pluć. Hau!")
+      :TR("Sparkly clean! We don't rinse with water after brushing, so the fluoride stays on the teeth and keeps protecting them. Brush twice a day, for two minutes, morning and evening!","Lśniąco czyste! Po myciu nie płuczemy buzi wodą, wtedy fluor zostaje na ząbkach i dalej je chroni. Myj zęby dwa razy dziennie, po dwie minuty, rano i wieczorem!"));
+  };
+  const addFoam=(x,y)=>{const n=performance.now();if(n-lastFoam<60)return;lastFoam=n;
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',x+(Math.random()*16-8));c.setAttribute('cy',y+(Math.random()*16-8));c.setAttribute('r',3+Math.random()*5);c.setAttribute('fill','#fff');c.setAttribute('opacity','.9');c.setAttribute('stroke','#D8F3FF');foam.appendChild(c);
+    if(foam.childNodes.length>90)foam.firstChild.remove();};
+  const scrub=(p,dist)=>{
+    if(phase==='teeth'){
+      const t=teeth.find(t=>!t.clean&&p.x>=t.box[0]&&p.x<=t.box[0]+t.box[2]&&p.y>=t.box[1]&&p.y<=t.box[1]+t.box[3]);
+      if(!t)return;t.p+=dist;addFoam(p.x,p.y);
+      const g=sv.querySelector(`.tooth[data-i="${teeth.indexOf(t)}"]`),k=Math.min(1,t.p/170);g.querySelector('.pl').style.opacity=(1-k).toFixed(2);
+      if(t.p>=170){t.clean=true;g.classList.add('clean');g.querySelector('.sh').setAttribute('opacity','1');cleanN++;prog();ding(660+cleanN*30);
+        const r=g.getBoundingClientRect();sparkAt(r.left+r.width/2,r.top);
+        try{g.animate([{transform:'scale(1)'},{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:400,easing:SPRING});g.style.transformBox='fill-box';g.style.transformOrigin='center';}catch(e){}
+        if(cleanN===1&&!said[1]){said[1]=1;gSay(TR('Yes! Look, the germs are running away! Keep going.','Tak! Zobacz, zarazki uciekają! Myj dalej.'));}
+        [4,8,12].forEach(n=>{if(cleanN===n&&!said[n]){said[n]=1;gSay(facts[n]);}});
+        if(cleanN===total)gT(finishTeeth,600);}
+    } else if(phase==='tongue'){
+      if(p.x<104||p.x>296||p.y<156||p.y>244)return;tongueP+=dist;addFoam(p.x,p.y);
+      $('tongue').querySelector('.pl').style.opacity=(1-Math.min(1,tongueP/220)).toFixed(2);
+      if(tongueP>=220){phase='spit';ding(990);gSay(TR('Lovely fresh tongue! Now spit out the toothpaste. Tap the button!','Pięknie czysty język! Teraz wypluj pastę. Dotknij przycisku!'));gButtons([[`💦 ${TR('Spit it out','Wypluj pastę')}`,spit,true]]);}
+    }
+  };
+  const move=e=>{const r=$('gStage').getBoundingClientRect();brush.style.left=(e.clientX-r.left)+'px';brush.style.top=(e.clientY-r.top)+'px';
+    if(phase==='done'||phase==='spit')return;const p=toSvg(e.clientX,e.clientY);
+    if(last&&(e.buttons||e.pointerType==='touch'||e.pressure>0)){scrub(p,Math.hypot(p.x-last.x,p.y-last.y));}last=p;};
+  st.onpointerdown=e=>{try{st.setPointerCapture(e.pointerId);}catch(x){}last=toSvg(e.clientX,e.clientY);move(e);};
+  st.onpointermove=move;st.onpointerup=()=>{last=null;};
+  brush.style.left='60%';brush.style.top='55%';
+  gButtons([[`❓ ${TR('Why?','Dlaczego?')}`,()=>gSay(facts[4])]]);
+  gSay(facts.start);
+}
+/* ---------- 2. snake ---------- */
+function snakeGame(){
+  gOpen(`🐍 ${TR('Snake','Wąż')}`);const g=gCanvas(),ctx=g.ctx;$('gPad').style.display='grid';
+  let cell,cols,rows,ox,oy,sn,dir,nd,food,score=0,run=false,step=260,acc=0,lastT=0,blink=0;
+  const lay=()=>{cell=Math.floor(Math.min(g.W,g.H)/11);cols=Math.max(8,Math.floor(g.W/cell));rows=Math.max(8,Math.floor(g.H/cell));ox=(g.W-cols*cell)/2;oy=(g.H-rows*cell)/2;};
+  const place=()=>{do{food={x:Math.floor(Math.random()*cols),y:Math.floor(Math.random()*rows),e:rnd(['🍎','🍓','🍌','🍐','🥕','🍇'])};}while(sn.some(p=>p.x===food.x&&p.y===food.y));};
+  const reset=()=>{lay();const cx=Math.floor(cols/2),cy=Math.floor(rows/2);sn=[{x:cx,y:cy},{x:cx-1,y:cy},{x:cx-2,y:cy}];dir={x:1,y:0};nd=dir;score=0;step=260;place();gScore(`🍎 0`);};
+  const turn=(x,y)=>{if(x===-dir.x&&y===-dir.y)return;nd={x,y};if(!run)go();};
+  const tick=()=>{dir=nd;const h={x:(sn[0].x+dir.x+cols)%cols,y:(sn[0].y+dir.y+rows)%rows};
+    if(sn.some((p,i)=>i<sn.length-1&&p.x===h.x&&p.y===h.y)){run=false;ding(220);
+      return gT(()=>gEnd('snake',score,score>=15?3:score>=8?2:score>=3?1:0,TR(`Oops! The snake bit its own tail. It ate ${score} treats!`,`Ups! Wąż ugryzł się w ogon. Zjadł ${score} smakołyków!`)),400);}
+    sn.unshift(h);if(h.x===food.x&&h.y===food.y){score++;gScore(`🍎 ${score}`);ding(700+score*20);step=Math.max(130,step-8);place();if(score%5===0)gSay(rnd([TR('Yum! The snake is growing!','Mniam! Wąż rośnie!'),TR('Great steering!','Świetnie sterujesz!'),TR('Wow, so long!','Ale długi!')]));}else sn.pop();};
+  const draw=t=>{
+    const dt=lastT?t-lastT:0;lastT=t;if(run){acc+=dt;while(acc>=step&&run){acc-=step;tick();}}
+    ctx.clearRect(0,0,g.W,g.H);
+    for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){ctx.fillStyle=(x+y)%2?'#E9FBEF':'#DDF5E4';ctx.fillRect(ox+x*cell,oy+y*cell,cell,cell);}
+    ctx.font=`${cell*0.8}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(food.e,ox+food.x*cell+cell/2,oy+food.y*cell+cell/2+Math.sin(t/250)*cell*0.06);
+    for(let i=sn.length-1;i>=0;i--){const p=sn[i],cx=ox+p.x*cell+cell/2,cy=oy+p.y*cell+cell/2,k=i/Math.max(1,sn.length-1);
+      ctx.fillStyle=`hsl(${155-k*60},65%,${62+k*8}%)`;ctx.beginPath();ctx.arc(cx,cy,cell*(i===0?0.52:0.44-k*0.08),0,7);ctx.fill();ctx.strokeStyle='rgba(58,46,79,.35)';ctx.lineWidth=2;ctx.stroke();}
+    const h=sn[0],hx=ox+h.x*cell+cell/2,hy=oy+h.y*cell+cell/2,ex=dir.y*cell*0.18,ey=dir.x*cell*0.18,fx=dir.x*cell*0.14,fy=dir.y*cell*0.14;blink=(t%3200)<140;
+    [[1],[-1]].forEach(([s])=>{ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(hx+fx+ex*s,hy+fy-ey*s,cell*0.13,0,7);ctx.fill();ctx.fillStyle='#3A2E4F';ctx.beginPath();if(blink)ctx.fillRect(hx+fx+ex*s-cell*0.1,hy+fy-ey*s,cell*0.2,2);else ctx.arc(hx+fx*1.4+ex*s,hy+fy*1.4-ey*s,cell*0.07,0,7);ctx.fill();});
+    if(Math.sin(t/180)>0.3){ctx.strokeStyle='#FF6B8B';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(hx+dir.x*cell*0.5,hy+dir.y*cell*0.5);ctx.lineTo(hx+dir.x*cell*0.78,hy+dir.y*cell*0.78);ctx.stroke();}
+    GM.raf=requestAnimationFrame(draw);
+  };
+  const go=()=>{if(run)return;run=true;acc=0;$('gBtns').innerHTML='';gSay(TR('Go, go! Swipe or use the arrows to steer.','Jedziemy! Przesuwaj palcem albo dotykaj strzałek, żeby sterować.'));};
+  let sw=null;$('gStage').onpointerdown=e=>{sw=gPoint(e);};$('gStage').onpointerup=e=>{if(!sw)return;const p=gPoint(e),dx=p.x-sw.x,dy=p.y-sw.y;sw=null;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;if(Math.abs(dx)>Math.abs(dy))turn(Math.sign(dx),0);else turn(0,Math.sign(dy));};
+  $('gPad').querySelector('.u').onclick=()=>turn(0,-1);$('gPad').querySelector('.d').onclick=()=>turn(0,1);$('gPad').querySelector('.l').onclick=()=>turn(-1,0);$('gPad').querySelector('.r').onclick=()=>turn(1,0);
+  const key=e=>{const m={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key];if(m){e.preventDefault();turn(...m);}};document.addEventListener('keydown',key);
+  const prev=GM.cleanup;GM.cleanup=()=>{document.removeEventListener('keydown',key);if(prev)prev();};
+  reset();GM.raf=requestAnimationFrame(draw);
+  gButtons([[`▶ ${TR('Start','Start')}`,go,true]]);
+  gSay(TR('The snake is hungry! Steer it to the fruit. Swipe your finger, or tap the arrows. Careful: don\'t bite your own tail!','Wąż jest głodny! Prowadź go do owoców. Przesuwaj palcem albo dotykaj strzałek. Uwaga: nie ugryź własnego ogona!'));
+}
+/* ---------- 3. basketball ---------- */
+function ballGame(){
+  gOpen(`🏀 ${TR('Basketball','Koszykówka')}`);const g=gCanvas(),ctx=g.ctx;
+  let balls=10,score=0,ball,hoop,drag=null,lastT=0,flash=0,net=0,state='aim';
+  const R=()=>28*g.s,G=()=>1500*g.s;
+  const home=()=>({x:g.W*0.2,y:g.H*0.78});
+  const newBall=()=>{const h=home();ball={x:h.x,y:h.y,vx:0,vy:0,fly:false,t:0,scored:false,spin:0};state='aim';};
+  const setHoop=()=>{hoop={x:g.W*0.74,y:g.H*(0.3+Math.random()*0.18),w:Math.max(80,112*g.s),dir:score>=3?1:0};};
+  const hud=()=>gScore(`🏀 ${score} · ${TR('balls','piłki')}: ${balls}`);
+  const launch=(dx,dy)=>{const L=Math.min(Math.hypot(dx,dy),190*g.s);if(L<12*g.s){return;}
+    const k=Math.sqrt(2*G()*g.H*0.8)/(190*g.s);const n=Math.hypot(dx,dy);ball.vx=-dx/n*L*k;ball.vy=-dy/n*L*k;ball.fly=true;state='fly';balls--;hud();};
+  const step=dt=>{
+    if(hoop.dir){hoop.y+=hoop.dir*40*g.s*dt;if(hoop.y<g.H*0.22||hoop.y>g.H*0.5)hoop.dir*=-1;}
+    if(!ball.fly)return;ball.t+=dt;const r=R();ball.vy+=G()*dt;ball.x+=ball.vx*dt;ball.y+=ball.vy*dt;ball.spin+=ball.vx*dt/r;
+    const rl={x:hoop.x-hoop.w/2,y:hoop.y},rr={x:hoop.x+hoop.w/2,y:hoop.y};
+    [rl,rr].forEach(p=>{const dx=ball.x-p.x,dy=ball.y-p.y,d=Math.hypot(dx,dy),m=r+5*g.s;if(d<m&&d>0){const nx=dx/d,ny=dy/d,vn=ball.vx*nx+ball.vy*ny;if(vn<0){ball.vx-=1.7*vn*nx;ball.vy-=1.7*vn*ny;}ball.x=p.x+nx*m;ball.y=p.y+ny*m;}});
+    const bx=rr.x+12*g.s;if(ball.x+r>bx&&ball.x-r<bx+10*g.s&&ball.y>hoop.y-110*g.s&&ball.y<hoop.y+10*g.s&&ball.vx>0){ball.vx=-Math.abs(ball.vx)*0.6;ball.x=bx-r;}
+    if(!ball.scored&&ball.vy>0&&ball.y>hoop.y&&ball.y-ball.vy*dt<=hoop.y&&ball.x>rl.x+r*0.3&&ball.x<rr.x-r*0.3){ball.scored=true;score++;hud();net=1;flash=1;ding(880);gT(()=>ding(1175),140);confetti($('gStage'),30);
+      gSay(rnd([TR('Swish! What a shot!','Kosz! Ale rzut!'),TR('In it goes!','Wpadła!'),TR('Basket! Brilliant!','Kosz! Super!')]));if(score===3)gSay(TR('Now the hoop starts moving! Watch carefully.','Teraz kosz zaczyna się ruszać! Patrz uważnie.'));}
+    if(ball.y+r>g.H){ball.y=g.H-r;ball.vy*=-0.55;ball.vx*=0.8;}
+    if(ball.x<r){ball.x=r;ball.vx*=-0.6;}
+    if(ball.t>3.2||ball.x>g.W+r*3){if(!ball.scored&&score===0&&balls===9)gSay(TR('Nearly! Pull back further for a stronger throw.','Prawie! Odciągnij dalej, żeby rzucić mocniej.'));
+      if(balls<=0){state='end';gT(()=>gEnd('ball',score,score>=8?3:score>=5?2:score>=2?1:0,TR(`You scored ${score} baskets out of 10!`,`Celne rzuty: ${score} na 10!`)),300);ball.fly=false;}
+      else{if(score>=3&&!hoop.dir)hoop.dir=1;newBall();}}
+  };
+  const draw=t=>{const dt=lastT?Math.min(0.033,(t-lastT)/1000):0;lastT=t;step(dt);const r=R();
+    const sky=ctx.createLinearGradient(0,0,0,g.H);sky.addColorStop(0,'#E3F4FF');sky.addColorStop(1,'#FFF1E6');ctx.fillStyle=sky;ctx.fillRect(0,0,g.W,g.H);
+    ctx.fillStyle='#F4C27A';ctx.fillRect(0,g.H-14*g.s,g.W,14*g.s);
+    const rl=hoop.x-hoop.w/2,rr=hoop.x+hoop.w/2,bx=rr+12*g.s;
+    ctx.fillStyle='#fff';ctx.strokeStyle='#3A2E4F';ctx.lineWidth=3;ctx.beginPath();ctx.roundRect?ctx.roundRect(bx,hoop.y-110*g.s,10*g.s,130*g.s,4):ctx.rect(bx,hoop.y-110*g.s,10*g.s,130*g.s);ctx.fill();ctx.stroke();
+    ctx.strokeStyle='#ADB5BD';ctx.lineWidth=6*g.s;ctx.beginPath();ctx.moveTo(bx+5*g.s,hoop.y+20*g.s);ctx.lineTo(bx+5*g.s,g.H);ctx.stroke();
+    if(state==='aim'&&drag){const dx=drag.x-ball.x,dy=drag.y-ball.y,L=Math.min(Math.hypot(dx,dy),190*g.s),n=Math.hypot(dx,dy)||1,k=Math.sqrt(2*G()*g.H*0.8)/(190*g.s);
+      let px=ball.x,py=ball.y,vx=-dx/n*L*k,vy=-dy/n*L*k;ctx.fillStyle='rgba(255,122,174,.85)';
+      for(let i=0;i<16;i++){for(let j=0;j<4;j++){vy+=G()*0.012;px+=vx*0.012;py+=vy*0.012;}ctx.beginPath();ctx.arc(px,py,Math.max(2,5*g.s-i*0.2*g.s),0,7);ctx.fill();}
+      ctx.strokeStyle='rgba(58,46,79,.35)';ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(ball.x,ball.y);ctx.lineTo(drag.x,drag.y);ctx.stroke();ctx.setLineDash([]);}
+    const behind=ball.y>hoop.y;
+    const drawBall=()=>{ctx.save();ctx.translate(ball.x,ball.y);ctx.rotate(ball.spin);ctx.fillStyle='#FF922B';ctx.strokeStyle='#3A2E4F';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,r,0,7);ctx.fill();ctx.stroke();
+      ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-r,0);ctx.lineTo(r,0);ctx.moveTo(0,-r);ctx.lineTo(0,r);ctx.stroke();ctx.beginPath();ctx.arc(-r*1.25,0,r*0.95,-0.9,0.9);ctx.stroke();ctx.beginPath();ctx.arc(r*1.25,0,r*0.95,Math.PI-0.9,Math.PI+0.9);ctx.stroke();ctx.restore();};
+    if(!behind)drawBall();
+    net=Math.max(0,net-0.02);ctx.strokeStyle='#fff';ctx.lineWidth=2.5;const nh=50*g.s;
+    for(let i=0;i<=6;i++){const x0=rl+(rr-rl)*i/6,x1=rl+10*g.s+(rr-rl-20*g.s)*i/6+Math.sin(t/60)*net*6;ctx.beginPath();ctx.moveTo(x0,hoop.y);ctx.lineTo(x1,hoop.y+nh);ctx.stroke();}
+    for(let j=1;j<=3;j++){const y=hoop.y+nh*j/3,sh=10*g.s*j/3;ctx.beginPath();ctx.moveTo(rl+sh,y);ctx.lineTo(rr-sh,y);ctx.stroke();}
+    if(behind)drawBall();
+    ctx.strokeStyle='#FF6B6B';ctx.lineWidth=7*g.s;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(rl,hoop.y);ctx.lineTo(rr+12*g.s,hoop.y);ctx.stroke();ctx.lineCap='butt';
+    if(flash>0){flash-=0.02;ctx.fillStyle=`rgba(255,217,90,${flash*0.35})`;ctx.fillRect(0,0,g.W,g.H);}
+    GM.raf=requestAnimationFrame(draw);
+  };
+  const st=$('gStage');
+  st.onpointerdown=e=>{if(state!=='aim')return;const p=gPoint(e);if(Math.hypot(p.x-ball.x,p.y-ball.y)<R()*3.2){drag=p;try{st.setPointerCapture(e.pointerId);}catch(x){}}};
+  st.onpointermove=e=>{if(drag)drag=gPoint(e);};
+  st.onpointerup=e=>{if(!drag)return;const p=gPoint(e);drag=null;launch(p.x-ball.x,p.y-ball.y);};
+  const start=()=>{setHoop();newBall();hud();};start();
+  const prev=GM.cleanup;GM.cleanup=()=>{if(prev)prev();};
+  GM.raf=requestAnimationFrame(draw);
+  gSay(TR('Pull the ball back with your finger, like a slingshot, and let go! The pink dots show where it will fly. You have 10 balls.','Odciągnij piłkę palcem do tyłu, jak procę, i puść! Różowe kropki pokazują, gdzie poleci. Masz 10 piłek.'));
+}
+/* ---------- 4. catch ---------- */
+function catchGame(){
+  gOpen(`🧺 ${TR('Catch it!','Łap!')}`);const g=gCanvas(),ctx=g.ctx;
+  const GOOD={human:['🍎','🍌','🍓','🥕','🥦','🍇','🍐'],dog:['🦴','🥕','🍖','🎾','🥩'],bunny:['🥕','🥬','🌿','🍎','🌾'],chick:['🌽','🐛','🌻','🍓','🌾'],bee:['🌸','🌼','🌺','🌻','💐'],fish:['🦐','🌿','🫧','⭐','🪱']}[S.creature]||['🍎','🍌','🍓'];
+  const BAD=S.creature==='dog'?['🦠','🍫']:['🦠'];
+  const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(render(S.creature,S.built,OPT({})).replace(/<svg /,'<svg width="300" height="340" '));
+  let px=g.W/2,tx=g.W/2,items=[],score=0,hearts=3,time=40,run=false,lastT=0,spawn=0,pop=[],said={};
+  const hud=()=>gScore(`${'❤️'.repeat(hearts)}${'🤍'.repeat(3-hearts)} · ⭐ ${score} · ⏱ ${Math.ceil(time)}`);
+  const st=$('gStage');const mv=e=>{tx=gPoint(e).x;};st.onpointerdown=e=>{mv(e);try{st.setPointerCapture(e.pointerId);}catch(x){}};st.onpointermove=mv;
+  const end=()=>{run=false;gT(()=>gEnd('catch',score,score>=30?3:score>=18?2:score>=8?1:0,TR(`You caught ${score} good things!`,`Złapane smakołyki: ${score}!`)),300);};
+  const draw=t=>{const dt=lastT?Math.min(0.033,(t-lastT)/1000):0;lastT=t;const s=g.s,size=50*s,bw=Math.max(90,130*s),by=g.H-bw*0.95;
+    if(run){const pt=Math.ceil(time);time-=dt;if(Math.ceil(time)!==pt)hud();if(time<=0){time=0;hud();end();}
+      spawn-=dt;if(spawn<=0){const bad=Math.random()<0.22;items.push({x:30*s+Math.random()*(g.W-60*s),y:-size,e:bad?rnd(BAD):rnd(GOOD),bad,v:(150+(40-time)*6+Math.random()*60)*s,rot:Math.random()*6});spawn=Math.max(0.42,0.95-(40-time)*0.013);}
+      px+=(tx-px)*Math.min(1,dt*12);
+      items.forEach(it=>{it.y+=it.v*dt;it.rot+=dt;if(!it.done&&it.y>by-size*0.2&&it.y<by+size*0.6&&Math.abs(it.x-px)<bw*0.55){it.done=true;
+        if(it.bad){hearts--;ding(200);pop.push({x:it.x,y:it.y,e:'💥',t:0});if(it.e==='🍫'&&!said.choc){said.choc=1;gSay(TR('Oh no! Chocolate is poisonous for dogs. Never give a dog chocolate!','O nie! Czekolada jest trująca dla psów. Nigdy nie dawaj psu czekolady!'));}else if(!said.germ){said.germ=1;gSay(TR('Yuck, a germ! Germs can make us poorly. That\'s why we wash our hands before eating.','Fuj, zarazek! Zarazki mogą wywołać chorobę. Dlatego myjemy ręce przed jedzeniem.'));}
+          if(hearts<=0){hud();end();}}
+        else{score++;ding(620+(score%8)*60);pop.push({x:it.x,y:it.y,e:'+1',t:0});if(score===10&&!said.ten){said.ten=1;gSay(TR('Ten already! You are a super catcher!','Już dziesięć! Super łapiesz!'));}}
+        hud();}});
+      items=items.filter(it=>!it.done&&it.y<g.H+size);}
+    const bg=ctx.createLinearGradient(0,0,0,g.H);bg.addColorStop(0,'#FFF8E1');bg.addColorStop(1,'#E3F9EC');ctx.fillStyle=bg;ctx.fillRect(0,0,g.W,g.H);
+    ctx.fillStyle='#B2F2BB';ctx.fillRect(0,g.H-18*s,g.W,18*s);
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`${size}px serif`;
+    items.forEach(it=>{ctx.save();ctx.translate(it.x,it.y);ctx.rotate(Math.sin(it.rot)*0.3);ctx.fillText(it.e,0,0);ctx.restore();});
+    const ah=bw*1.6;if(img.complete&&img.naturalWidth)ctx.drawImage(img,px-ah*0.44,g.H-ah*1.02,ah*0.88,ah);
+    ctx.font=`${bw*0.75}px serif`;ctx.fillText('🧺',px,by+bw*0.22);
+    pop.forEach(p=>{p.t+=dt;ctx.globalAlpha=Math.max(0,1-p.t*1.5);ctx.font=`bold ${28*s+10}px sans-serif`;ctx.fillStyle='#7048E8';ctx.fillText(p.e,p.x,p.y-p.t*60);ctx.globalAlpha=1;});pop=pop.filter(p=>p.t<0.7);
+    GM.raf=requestAnimationFrame(draw);
+  };
+  hud();GM.raf=requestAnimationFrame(draw);
+  const goodTxt=GOOD.slice(0,3).join(' '),badTxt=BAD.join(' ');
+  gButtons([[`▶ ${TR('Start','Start')}`,()=>{run=true;$('gBtns').innerHTML='';gSay(TR('Go! Move your finger left and right.','Start! Przesuwaj palec w lewo i w prawo.'));},true]]);
+  gSay(TR(`Move ${S.name} with your finger and catch the good things in the basket. Watch out for germs`+(S.creature==='dog'?' and chocolate':'')+'!',`Przesuwaj palcem w lewo i w prawo i łap do koszyka dobre rzeczy. Uważaj na zarazki`+(S.creature==='dog'?' i czekoladę':'')+'!'));
+}
+/* ---------- 5. memory ---------- */
+function memoryGame(){
+  gOpen(`🃏 ${TR('Memory','Memory')}`);
+  const ALL=[['🐶','a dog','piesek'],['🐱','a cat','kotek'],['🐰','a bunny','króliczek'],['🐥','a chick','kurczaczek'],['🐝','a bee','pszczółka'],['🐠','a fish','rybka'],['🦊','a fox','lisek'],['🐼','a panda','panda'],['🦄','a unicorn','jednorożec'],['🐸','a frog','żabka'],['🦋','a butterfly','motylek'],['🐢','a turtle','żółwik']];
+  const pick=shuffle(ALL).slice(0,6),cards=shuffle(pick.concat(pick));
+  const st=$('gStage'),r=st.getBoundingClientRect(),land=r.width>r.height;
+  const box=document.createElement('div');box.className='mem';box.style.gridTemplateColumns=`repeat(${land?4:3},1fr)`;box.style.gridTemplateRows=`repeat(${land?3:4},1fr)`;st.appendChild(box);
+  box.innerHTML=cards.map((c,i)=>`<div class="mcard" data-i="${i}"><div class="b">✨</div><div class="f">${c[0]}</div></div>`).join('');
+  stag(box.querySelectorAll('.mcard'),50);
+  let open=[],moves=0,found=0,lock=false;gScore(`👆 0`);
+  box.querySelectorAll('.mcard').forEach(el=>el.onclick=()=>{
+    if(lock||el.classList.contains('up')||el.classList.contains('ok'))return;
+    el.classList.add('up');ding(560+open.length*120);open.push(el);
+    if(open.length===2){moves++;gScore(`👆 ${moves}`);const [a,b]=open,ca=cards[+a.dataset.i],cb=cards[+b.dataset.i];
+      if(ca[0]===cb[0]){open=[];found++;gT(()=>{a.classList.add('ok');b.classList.add('ok');ding(990);gSay(TR(`A pair! ${ca[1].replace(/^a /,'A ')}!`,`Para! ${ca[2][0].toUpperCase()+ca[2].slice(1)}!`));
+        if(found===6)gT(()=>gEnd('memory',moves,moves<=10?3:moves<=15?2:1,TR(`All pairs found in ${moves} moves!`,`Wszystkie pary znalezione w ${moves} ruchach!`)),800);},350);}
+      else{lock=true;gT(()=>{a.classList.remove('up');b.classList.remove('up');open=[];lock=false;},900);}}
+  });
+  gSay(TR('Tap two cards to turn them over. Can you find all the pairs of animals? Try to remember where each one is!','Dotknij dwóch kart, żeby je odwrócić. Znajdziesz wszystkie pary zwierzątek? Spróbuj zapamiętać, gdzie co jest!'));
+}
+const GAMES={teeth:{start:openTeeth},snake:{start:snakeGame},ball:{start:ballGame},catch:{start:catchGame},memory:{start:memoryGame}};
+
 /* ---------- bottom picture bar ---------- */
 const NAV_OF={build:'body',dress:'dress',home:'home',jobs:'work',work:'work',school:'school',subject:'school',time:'school'};
 const NAV_SAY={body:['Body','Ciało'],dress:['Clothes','Ubrania'],home:['Home','Domek'],work:['Work','Praca'],school:['School','Szkoła']};
@@ -4630,8 +4971,10 @@ function fx(e,n=1){const p=$('avp4');for(let i=0;i<n;i++){const s=document.creat
 function bump(k,v){S.needs[k]=Math.max(15,Math.min(100,S.needs[k]+v));}
 function afterAct(){save();drawHome();drawAv4();}
 function nudgeNeed(){const l=lowest();if(l)say(NEED_LINE[l]);}
-function doAct(k){
+function doAct(k,quick){
   if(night&&k!=='sleep')return;
+  if(k==='teeth'&&(S.creature==='human'||S.creature==='dog')){openTeeth();return;}
+  if(k==='play'&&!quick){openGames();return;}
   const A=A_(),a=A[k];closeSub();
   if(k==='eat'){openFood();return;}
   if(k==='story'){openStories();return;}
@@ -5969,6 +6312,284 @@ setTimeout(checkPack,3000);window.addEventListener('online',checkPack);
 BADGES.push(['scholar','🏫','Scholar','Uczony',()=>Object.keys(SCH().done).length>=5],['professor','🎓','Professor','Profesor',()=>allSubj().some(s=>s.id!=='history'&&subjLvl(s.id)>=SLVL.length-1)]);
 
 $('schT').textContent=$('schT2').textContent=TR('School','Szkoła');$('tbLook').textContent=TR('Up close','Z bliska');$('tbMade').textContent=TR('Made of','Z czego?');$('tbHow').textContent=TR('How it was made','Jak powstało?');$('tbQuiz').textContent='Quiz';
+/* ===================== Games: toothbrushing + mini games ===================== */
+const GM={raf:0,timers:[],cleanup:null,kind:null};
+function gStop(){cancelAnimationFrame(GM.raf);GM.raf=0;GM.timers.forEach(t=>{clearTimeout(t);clearInterval(t);});GM.timers=[];if(GM.cleanup){try{GM.cleanup();}catch(e){}}GM.cleanup=null;}
+function gT(fn,ms){const t=setTimeout(fn,ms);GM.timers.push(t);return t;}
+function gOpen(title){
+  gStop();closeSub();$('gameov').classList.add('on');$('gTitle').innerHTML=title;
+  $('gScore').style.display='none';$('gStage').innerHTML='';$('gBtns').innerHTML='';$('gPad').style.display='none';$('gProg').style.display='none';$('gSay').innerHTML='';
+  try{$('gameov').animate([{opacity:0,transform:'scale(.96)'},{opacity:1,transform:'none'}],{duration:350,easing:SPRING});}catch(e){}
+}
+function gClose(){gStop();$('gameov').classList.remove('on');tok++;try{speechSynthesis.cancel();}catch(e){}talking(false);if($('home').classList.contains('on')){drawHome();drawAv4();}}
+function gSay(t,then){say(t,then,$('gSay'));}
+function gScore(t){const s=$('gScore');s.style.display='block';s.innerHTML=t;}
+function gButtons(list){$('gBtns').innerHTML='';list.forEach(([label,fn,main])=>{const b=document.createElement('button');b.innerHTML=label;if(main)b.className='main';b.onclick=fn;$('gBtns').appendChild(b);});}
+function gCanvas(){
+  const st=$('gStage'),cv=document.createElement('canvas');st.appendChild(cv);
+  const g={cv,ctx:cv.getContext('2d'),W:0,H:0,s:1};
+  const fit=()=>{const r=st.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);g.W=r.width;g.H=r.height;g.s=Math.min(g.W,g.H)/500;cv.width=Math.round(g.W*d);cv.height=Math.round(g.H*d);g.ctx.setTransform(d,0,0,d,0,0);};
+  fit();const ro=()=>fit();window.addEventListener('resize',ro);const prev=GM.cleanup;GM.cleanup=()=>{window.removeEventListener('resize',ro);if(prev)prev();};
+  return g;
+}
+function gPoint(e){const r=$('gStage').getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};}
+function ding(f=880){try{if(!ensureAC())return;pianoNote(f,AC.currentTime+0.01,0.5,0.45);}catch(e){}}
+function gEnd(kind,score,stars,msg){
+  gStop();S.games=S.games||{};const best=S.games[kind]||0;const isBest=score>best;if(isBest)S.games[kind]=score;
+  bump('fun',kind==='teeth'?10:35);if(kind!=='teeth'){bump('energy',-8);bump('food',-4);}
+  careDone();gain(5+stars*3);stat('games');save();
+  if(kind==='teeth'){confetti($('gStage'),60);gButtons([[`🔁 ${TR('Brush again','Myj jeszcze raz')}`,openTeeth,true],[`🏠 ${TR('Home','Domek')}`,gClose]]);gSay(msg);return;}
+  const d=document.createElement('div');d.className='gend';
+  d.innerHTML=`<div><div class="gstars">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div><b>${score}</b>${isBest&&best?`<div>🏆 ${TR('New record!','Nowy rekord!')}</div>`:best?`<div>${TR('Record','Rekord')}: ${Math.max(best,score)}</div>`:''}</div>`;
+  $('gStage').appendChild(d);try{d.firstChild.animate([{transform:'scale(.4)',opacity:0},{transform:'scale(1.08)',opacity:1,offset:.7},{transform:'none'}],{duration:650,easing:SPRING});}catch(e){}
+  if(stars>=2)confetti($('gStage'),60);
+  gButtons([[`🔁 ${TR('Play again','Jeszcze raz')}`,()=>GAMES[kind].start(),true],[`🎮 ${TR('Other games','Inne gry')}`,()=>{gClose();openGames();}],[`🏠 ${TR('Home','Domek')}`,gClose]]);
+  gSay(msg+' '+TR('Playing makes your brain and muscles stronger, and it makes you happy too!','Zabawa wzmacnia mózg i mięśnie, i do tego daje dużo radości!'));
+}
+$('gClose').onclick=gClose;
+/* ---------- picker ---------- */
+function openGames(){
+  const sub=openSub();
+  const tiles=[['snake','🐍',TR('Snake','Wąż'),TR('eat the apples','zjadaj jabłka')],['ball','🏀',TR('Basketball','Koszykówka'),TR('throw into the hoop','rzucaj do kosza')],['catch','🧺',TR('Catch it!','Łap!'),TR('catch the food, not germs','łap jedzenie, nie zarazki')],['memory','🃏',TR('Memory','Memory'),TR('find the pairs','znajdź pary')]];
+  sub.innerHTML=`<div class="subhead">${TR('What shall we play?','W co się bawimy?')}<button class="x" id="xSub">✖</button></div><div class="gpick">`+tiles.map(t=>`<button data-g="${t[0]}" style="background:${{snake:'#DDF5E4',ball:'#FFE9DC',catch:'#FFF6D6',memory:'#EFE6FF'}[t[0]]}"><span>${t[1]}</span>${t[2]}<small>${t[3]}</small></button>`).join('')+
+    `</div><div class="gbtns" style="margin-top:8px"><button id="quickPlay">${A_().play.e} ${TR('Quick play','Szybka zabawa')}</button></div>`;
+  $('xSub').onclick=closeSub;stag(sub.querySelectorAll('.gpick button'),70);
+  sub.querySelectorAll('.gpick button').forEach(b=>b.onclick=()=>GAMES[b.dataset.g].start());
+  $('quickPlay').onclick=()=>doAct('play',true);
+  say(TR(`What shall we play, ${S.name}? Snake, basketball, catching, or memory?`,`W co się bawimy? Wąż, koszykówka, łapanie czy memory?`));
+}
+/* ---------- 1. toothbrushing ---------- */
+function openTeeth(){
+  const dog=S.creature==='dog';gOpen(`🪥 ${TR('Brush the teeth','Mycie ząbków')}`);
+  const st=$('gStage');st.style.background=dog?'#FFF1E0':'#FFE9F1';
+  const N=8,teeth=[];
+  const arcY=(x,top)=>top?74+Math.pow((x-200)/140,2)*36:226-Math.pow((x-200)/140,2)*36;
+  let svg=`<svg viewBox="${innerWidth<700?'26 14 348 272':'0 0 400 300'}" preserveAspectRatio="xMidYMid meet"><defs><radialGradient id="mouthG" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#9C3D5A"/><stop offset="1" stop-color="#5E1F35"/></radialGradient></defs>`;
+  if(dog)svg+=`<ellipse cx="200" cy="18" rx="44" ry="26" fill="#3A2E4F"/><ellipse cx="190" cy="10" rx="12" ry="6" fill="#6B5A8A"/>`;
+  svg+=`<ellipse cx="200" cy="150" rx="186" ry="138" fill="${dog?'#B07A4F':'#FF8FAB'}"/><ellipse cx="200" cy="150" rx="168" ry="120" fill="url(#mouthG)"/>`;
+  svg+=`<g id="tongue"><ellipse cx="200" cy="200" rx="96" ry="44" fill="#F48FB1"/><path d="M200 168 V220" stroke="#E36B98" stroke-width="3" stroke-linecap="round"/>${dog?'':`<g class="pl"><circle cx="170" cy="196" r="9" fill="#E9E1A0" opacity=".9"/><circle cx="228" cy="204" r="8" fill="#E9E1A0" opacity=".9"/><g class="germ"><circle cx="198" cy="188" r="11" fill="#9BE36A"/><circle cx="194" cy="186" r="2" fill="#3A2E4F"/><circle cx="202" cy="186" r="2" fill="#3A2E4F"/></g></g>`}</g>`;
+  [true,false].forEach(top=>{for(let i=0;i<N;i++){
+    const x=68+i*(264/(N-1)),y=arcY(x,top),w=i===0||i===N-1?34:i===1||i===N-2?32:30,h=top?46:42,canine=dog&&(i===1||i===N-2);
+    const y0=top?y-6:y-h+6,id=teeth.length;
+    const shape=canine?(top?`M${x-w/2} ${y0} H${x+w/2} V${y0+h*0.55} L${x} ${y0+h+14} L${x-w/2} ${y0+h*0.55}Z`:`M${x-w/2} ${y0+h} H${x+w/2} V${y0+h*0.45} L${x} ${y0-14} L${x-w/2} ${y0+h*0.45}Z`)
+      :`M${x-w/2+8} ${y0} H${x+w/2-8} Q${x+w/2} ${y0} ${x+w/2} ${y0+8} V${y0+h-10} Q${x+w/2} ${y0+h} ${x+w/2-10} ${y0+h} H${x-w/2+10} Q${x-w/2} ${y0+h} ${x-w/2} ${y0+h-10} V${y0+8} Q${x-w/2} ${y0} ${x-w/2+8} ${y0}Z`;
+    const gx=x+(i%2?4:-4),gy=y0+h/2;
+    svg+=`<g class="tooth" data-i="${id}"><path d="${shape}" fill="#FFFFFF" stroke="#E7DCEB" stroke-width="2.5"/>
+      <g class="pl"><circle cx="${x-6}" cy="${y0+h*0.3}" r="7" fill="#E9E1A0" opacity=".95"/><circle cx="${x+7}" cy="${y0+h*0.68}" r="6" fill="#DCCF7E" opacity=".95"/><circle cx="${x-4}" cy="${y0+h*0.8}" r="4" fill="#E9E1A0"/>
+      ${i%2===0?`<g class="germ" style="animation-delay:-${(i*.17).toFixed(2)}s"><circle cx="${gx}" cy="${gy}" r="8.5" fill="${['#9BE36A','#74C0FC','#FFA8A8','#C0A6FF'][i%4]}"/><circle cx="${gx-3}" cy="${gy-1.5}" r="1.7" fill="#3A2E4F"/><circle cx="${gx+3}" cy="${gy-1.5}" r="1.7" fill="#3A2E4F"/><path d="M${gx-3} ${gy+3} Q${gx} ${gy+1} ${gx+3} ${gy+3}" stroke="#3A2E4F" stroke-width="1.3" fill="none"/></g>`:''}</g>
+      <path class="sh" d="M${x-w/4} ${y0+8} q2 6 0 12" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity="0"/></g>`;
+    teeth.push({x,y:y0+h/2,w,h,box:[x-w/2-6,y0-8,w+12,h+16],p:0,clean:false});
+  }});
+  svg+=`<g id="foam"></g></svg>`;
+  st.innerHTML=svg+`<div class="brush" id="brush"><svg viewBox="0 0 100 100"><g transform="rotate(-35 50 50)"><rect x="44" y="34" width="12" height="62" rx="6" fill="${dog?'#74C0FC':'#FF8FB8'}" stroke="#3A2E4F" stroke-width="3"/><rect x="40" y="6" width="20" height="32" rx="7" fill="${dog?'#74C0FC':'#FF8FB8'}" stroke="#3A2E4F" stroke-width="3"/><g fill="#fff" stroke="#9BD9FF" stroke-width="1.5"><rect x="42" y="0" width="5" height="16" rx="2"/><rect x="48" y="0" width="5" height="16" rx="2"/><rect x="54" y="0" width="5" height="16" rx="2"/></g><path d="M40 -4 Q50 -14 60 -4" fill="#E7F8FF" stroke="#5FD3B4" stroke-width="3"/></g></svg></div>`;
+  const sv=st.querySelector('svg'),brush=$('brush'),foam=$('foam'),total=teeth.length;
+  let cleanN=0,phase='teeth',tongueP=0,last=null,lastFoam=0,said={};
+  $('gProg').style.display='flex';
+  const prog=()=>{$('gProgT').textContent=`🦷 ${cleanN}/${total}`;$('gProgB').style.width=(100*cleanN/total)+'%';};prog();
+  const toSvg=(cx,cy)=>{const pt=sv.createSVGPoint();pt.x=cx;pt.y=cy;return pt.matrixTransform(sv.getScreenCTM().inverse());};
+  const facts=dog?{
+    start:TR("Brushing time for doggy! Every tooth has plaque on it, a sticky layer full of germs. Rub the toothbrush back and forth over each tooth with your finger, until it sparkles!","Czas umyć pieskowi ząbki! Na każdym ząbku jest płytka nazębna, lepka warstwa pełna zarazków. Pocieraj szczoteczką palcem tam i z powrotem po każdym ząbku, aż zabłyśnie!"),
+    4:TR("Dogs get plaque too. If we don't brush it away, it turns into hard tartar, and their gums can get sore.","Psy też mają płytkę. Jeśli jej nie wyszczotkujemy, zamienia się w twardy kamień, a dziąsła mogą boleć."),
+    8:TR("Dog toothpaste tastes like chicken! Never use people toothpaste for a dog, because it can make them ill.","Psia pasta smakuje jak kurczak! Nigdy nie myj psu zębów ludzką pastą, bo może mu zaszkodzić."),
+    12:TR("A grown-up dog has 42 teeth! Don't forget the big pointy ones, called canines.","Dorosły pies ma aż 42 zęby! Nie zapomnij o dużych, spiczastych kłach.")}
+   :{start:TR("Time to brush! Every tooth is covered in plaque, a sticky layer full of germs. Rub the toothbrush back and forth over each tooth with your finger, until it sparkles!","Czas umyć ząbki! Każdy ząbek pokrywa płytka nazębna, lepka warstwa pełna zarazków. Pocieraj szczoteczką palcem tam i z powrotem po każdym ząbku, aż zabłyśnie!"),
+    4:TR("Why do we brush? The germs in plaque eat the sugar from our food and make acid. Acid slowly makes little holes in teeth, called cavities, and they can really hurt!","Dlaczego myjemy zęby? Zarazki z płytki jedzą cukier z jedzenia i robią kwas. Kwas powoli robi w zębach dziurki, czyli próchnicę, a to może bardzo boleć!"),
+    8:TR("Toothpaste has fluoride in it. Fluoride makes enamel stronger. Enamel is the hard, shiny shield on the outside of each tooth.","W paście jest fluor. Fluor wzmacnia szkliwo, czyli twardą, błyszczącą tarczę na każdym ząbku."),
+    12:TR("Don't forget the teeth at the back! Bits of food love to hide there. Children have 20 milk teeth, and they keep the space for the grown-up teeth.","Nie zapomnij o ząbkach z tyłu! Tam najchętniej chowają się resztki jedzenia. Dzieci mają 20 mlecznych ząbków, które trzymają miejsce dla stałych zębów.")};
+  const finishTeeth=()=>{
+    if(dog){phase='done';brush.style.opacity=0;doneAll();return;}
+    phase='tongue';
+    gSay(TR("All the teeth are clean! Now gently brush the tongue. Germs live there too, and they make breath smelly.","Wszystkie ząbki czyste! Teraz delikatnie umyj język. Tam też mieszkają zarazki, które psują oddech."));
+    try{$('tongue').animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:800,iterations:2});}catch(e){}
+  };
+  const spit=()=>{
+    phase='done';brush.style.opacity=0;
+    foam.querySelectorAll('circle').forEach((c,i)=>{try{c.animate([{opacity:1},{opacity:0,transform:'translateY(40px)'}],{duration:600,delay:i*8,fill:'forwards'});}catch(e){}});
+    gT(doneAll,700);
+  };
+  const doneAll=()=>{
+    sv.querySelectorAll('.tooth .sh').forEach(p=>p.setAttribute('opacity','1'));
+    confetti($('gStage'),70);ding(1046);gT(()=>ding(1318),180);
+    S.needs.clean=Math.min(100,S.needs.clean+20);stat('teeth');
+    lastAct={why:dog?TR("Dogs get plaque and tartar too. Brushing with dog toothpaste keeps their teeth and gums healthy, and their breath fresher.","Psy też mają płytkę i kamień. Mycie psią pastą dba o ich zęby i dziąsła, i sprawia, że oddech jest świeższy.")
+      :TR("We brush twice a day, in the morning and before bed, for two minutes. Brushing sweeps away plaque, so germs can't make acid and holes in our teeth.","Myjemy zęby dwa razy dziennie, rano i przed snem, po dwie minuty. Szczotkowanie usuwa płytkę, więc zarazki nie mogą zrobić kwasu i dziurek w zębach.")};
+    gEnd('teeth',total,3,dog?TR("Sparkly clean doggy teeth! Dog toothpaste is safe to swallow, so no spitting needed. Woof!","Psie ząbki lśnią! Psią pastę można połknąć, więc nie trzeba pluć. Hau!")
+      :TR("Sparkly clean! We don't rinse with water after brushing, so the fluoride stays on the teeth and keeps protecting them. Brush twice a day, for two minutes, morning and evening!","Lśniąco czyste! Po myciu nie płuczemy buzi wodą, wtedy fluor zostaje na ząbkach i dalej je chroni. Myj zęby dwa razy dziennie, po dwie minuty, rano i wieczorem!"));
+  };
+  const addFoam=(x,y)=>{const n=performance.now();if(n-lastFoam<60)return;lastFoam=n;
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',x+(Math.random()*16-8));c.setAttribute('cy',y+(Math.random()*16-8));c.setAttribute('r',3+Math.random()*5);c.setAttribute('fill','#fff');c.setAttribute('opacity','.9');c.setAttribute('stroke','#D8F3FF');foam.appendChild(c);
+    if(foam.childNodes.length>90)foam.firstChild.remove();};
+  const scrub=(p,dist)=>{
+    if(phase==='teeth'){
+      const t=teeth.find(t=>!t.clean&&p.x>=t.box[0]&&p.x<=t.box[0]+t.box[2]&&p.y>=t.box[1]&&p.y<=t.box[1]+t.box[3]);
+      if(!t)return;t.p+=dist;addFoam(p.x,p.y);
+      const g=sv.querySelector(`.tooth[data-i="${teeth.indexOf(t)}"]`),k=Math.min(1,t.p/170);g.querySelector('.pl').style.opacity=(1-k).toFixed(2);
+      if(t.p>=170){t.clean=true;g.classList.add('clean');g.querySelector('.sh').setAttribute('opacity','1');cleanN++;prog();ding(660+cleanN*30);
+        const r=g.getBoundingClientRect();sparkAt(r.left+r.width/2,r.top);
+        try{g.animate([{transform:'scale(1)'},{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:400,easing:SPRING});g.style.transformBox='fill-box';g.style.transformOrigin='center';}catch(e){}
+        if(cleanN===1&&!said[1]){said[1]=1;gSay(TR('Yes! Look, the germs are running away! Keep going.','Tak! Zobacz, zarazki uciekają! Myj dalej.'));}
+        [4,8,12].forEach(n=>{if(cleanN===n&&!said[n]){said[n]=1;gSay(facts[n]);}});
+        if(cleanN===total)gT(finishTeeth,600);}
+    } else if(phase==='tongue'){
+      if(p.x<104||p.x>296||p.y<156||p.y>244)return;tongueP+=dist;addFoam(p.x,p.y);
+      $('tongue').querySelector('.pl').style.opacity=(1-Math.min(1,tongueP/220)).toFixed(2);
+      if(tongueP>=220){phase='spit';ding(990);gSay(TR('Lovely fresh tongue! Now spit out the toothpaste. Tap the button!','Pięknie czysty język! Teraz wypluj pastę. Dotknij przycisku!'));gButtons([[`💦 ${TR('Spit it out','Wypluj pastę')}`,spit,true]]);}
+    }
+  };
+  const move=e=>{const r=$('gStage').getBoundingClientRect();brush.style.left=(e.clientX-r.left)+'px';brush.style.top=(e.clientY-r.top)+'px';
+    if(phase==='done'||phase==='spit')return;const p=toSvg(e.clientX,e.clientY);
+    if(last&&(e.buttons||e.pointerType==='touch'||e.pressure>0)){scrub(p,Math.hypot(p.x-last.x,p.y-last.y));}last=p;};
+  st.onpointerdown=e=>{try{st.setPointerCapture(e.pointerId);}catch(x){}last=toSvg(e.clientX,e.clientY);move(e);};
+  st.onpointermove=move;st.onpointerup=()=>{last=null;};
+  brush.style.left='60%';brush.style.top='55%';
+  gButtons([[`❓ ${TR('Why?','Dlaczego?')}`,()=>gSay(facts[4])]]);
+  gSay(facts.start);
+}
+/* ---------- 2. snake ---------- */
+function snakeGame(){
+  gOpen(`🐍 ${TR('Snake','Wąż')}`);const g=gCanvas(),ctx=g.ctx;$('gPad').style.display='grid';
+  let cell,cols,rows,ox,oy,sn,dir,nd,food,score=0,run=false,step=260,acc=0,lastT=0,blink=0;
+  const lay=()=>{cell=Math.floor(Math.min(g.W,g.H)/11);cols=Math.max(8,Math.floor(g.W/cell));rows=Math.max(8,Math.floor(g.H/cell));ox=(g.W-cols*cell)/2;oy=(g.H-rows*cell)/2;};
+  const place=()=>{do{food={x:Math.floor(Math.random()*cols),y:Math.floor(Math.random()*rows),e:rnd(['🍎','🍓','🍌','🍐','🥕','🍇'])};}while(sn.some(p=>p.x===food.x&&p.y===food.y));};
+  const reset=()=>{lay();const cx=Math.floor(cols/2),cy=Math.floor(rows/2);sn=[{x:cx,y:cy},{x:cx-1,y:cy},{x:cx-2,y:cy}];dir={x:1,y:0};nd=dir;score=0;step=260;place();gScore(`🍎 0`);};
+  const turn=(x,y)=>{if(x===-dir.x&&y===-dir.y)return;nd={x,y};if(!run)go();};
+  const tick=()=>{dir=nd;const h={x:(sn[0].x+dir.x+cols)%cols,y:(sn[0].y+dir.y+rows)%rows};
+    if(sn.some((p,i)=>i<sn.length-1&&p.x===h.x&&p.y===h.y)){run=false;ding(220);
+      return gT(()=>gEnd('snake',score,score>=15?3:score>=8?2:score>=3?1:0,TR(`Oops! The snake bit its own tail. It ate ${score} treats!`,`Ups! Wąż ugryzł się w ogon. Zjadł ${score} smakołyków!`)),400);}
+    sn.unshift(h);if(h.x===food.x&&h.y===food.y){score++;gScore(`🍎 ${score}`);ding(700+score*20);step=Math.max(130,step-8);place();if(score%5===0)gSay(rnd([TR('Yum! The snake is growing!','Mniam! Wąż rośnie!'),TR('Great steering!','Świetnie sterujesz!'),TR('Wow, so long!','Ale długi!')]));}else sn.pop();};
+  const draw=t=>{
+    const dt=lastT?t-lastT:0;lastT=t;if(run){acc+=dt;while(acc>=step&&run){acc-=step;tick();}}
+    ctx.clearRect(0,0,g.W,g.H);
+    for(let y=0;y<rows;y++)for(let x=0;x<cols;x++){ctx.fillStyle=(x+y)%2?'#E9FBEF':'#DDF5E4';ctx.fillRect(ox+x*cell,oy+y*cell,cell,cell);}
+    ctx.font=`${cell*0.8}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(food.e,ox+food.x*cell+cell/2,oy+food.y*cell+cell/2+Math.sin(t/250)*cell*0.06);
+    for(let i=sn.length-1;i>=0;i--){const p=sn[i],cx=ox+p.x*cell+cell/2,cy=oy+p.y*cell+cell/2,k=i/Math.max(1,sn.length-1);
+      ctx.fillStyle=`hsl(${155-k*60},65%,${62+k*8}%)`;ctx.beginPath();ctx.arc(cx,cy,cell*(i===0?0.52:0.44-k*0.08),0,7);ctx.fill();ctx.strokeStyle='rgba(58,46,79,.35)';ctx.lineWidth=2;ctx.stroke();}
+    const h=sn[0],hx=ox+h.x*cell+cell/2,hy=oy+h.y*cell+cell/2,ex=dir.y*cell*0.18,ey=dir.x*cell*0.18,fx=dir.x*cell*0.14,fy=dir.y*cell*0.14;blink=(t%3200)<140;
+    [[1],[-1]].forEach(([s])=>{ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(hx+fx+ex*s,hy+fy-ey*s,cell*0.13,0,7);ctx.fill();ctx.fillStyle='#3A2E4F';ctx.beginPath();if(blink)ctx.fillRect(hx+fx+ex*s-cell*0.1,hy+fy-ey*s,cell*0.2,2);else ctx.arc(hx+fx*1.4+ex*s,hy+fy*1.4-ey*s,cell*0.07,0,7);ctx.fill();});
+    if(Math.sin(t/180)>0.3){ctx.strokeStyle='#FF6B8B';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(hx+dir.x*cell*0.5,hy+dir.y*cell*0.5);ctx.lineTo(hx+dir.x*cell*0.78,hy+dir.y*cell*0.78);ctx.stroke();}
+    GM.raf=requestAnimationFrame(draw);
+  };
+  const go=()=>{if(run)return;run=true;acc=0;$('gBtns').innerHTML='';gSay(TR('Go, go! Swipe or use the arrows to steer.','Jedziemy! Przesuwaj palcem albo dotykaj strzałek, żeby sterować.'));};
+  let sw=null;$('gStage').onpointerdown=e=>{sw=gPoint(e);};$('gStage').onpointerup=e=>{if(!sw)return;const p=gPoint(e),dx=p.x-sw.x,dy=p.y-sw.y;sw=null;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;if(Math.abs(dx)>Math.abs(dy))turn(Math.sign(dx),0);else turn(0,Math.sign(dy));};
+  $('gPad').querySelector('.u').onclick=()=>turn(0,-1);$('gPad').querySelector('.d').onclick=()=>turn(0,1);$('gPad').querySelector('.l').onclick=()=>turn(-1,0);$('gPad').querySelector('.r').onclick=()=>turn(1,0);
+  const key=e=>{const m={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]}[e.key];if(m){e.preventDefault();turn(...m);}};document.addEventListener('keydown',key);
+  const prev=GM.cleanup;GM.cleanup=()=>{document.removeEventListener('keydown',key);if(prev)prev();};
+  reset();GM.raf=requestAnimationFrame(draw);
+  gButtons([[`▶ ${TR('Start','Start')}`,go,true]]);
+  gSay(TR('The snake is hungry! Steer it to the fruit. Swipe your finger, or tap the arrows. Careful: don\'t bite your own tail!','Wąż jest głodny! Prowadź go do owoców. Przesuwaj palcem albo dotykaj strzałek. Uwaga: nie ugryź własnego ogona!'));
+}
+/* ---------- 3. basketball ---------- */
+function ballGame(){
+  gOpen(`🏀 ${TR('Basketball','Koszykówka')}`);const g=gCanvas(),ctx=g.ctx;
+  let balls=10,score=0,ball,hoop,drag=null,lastT=0,flash=0,net=0,state='aim';
+  const R=()=>28*g.s,G=()=>1500*g.s;
+  const home=()=>({x:g.W*0.2,y:g.H*0.78});
+  const newBall=()=>{const h=home();ball={x:h.x,y:h.y,vx:0,vy:0,fly:false,t:0,scored:false,spin:0};state='aim';};
+  const setHoop=()=>{hoop={x:g.W*0.74,y:g.H*(0.3+Math.random()*0.18),w:Math.max(80,112*g.s),dir:score>=3?1:0};};
+  const hud=()=>gScore(`🏀 ${score} · ${TR('balls','piłki')}: ${balls}`);
+  const launch=(dx,dy)=>{const L=Math.min(Math.hypot(dx,dy),190*g.s);if(L<12*g.s){return;}
+    const k=Math.sqrt(2*G()*g.H*0.8)/(190*g.s);const n=Math.hypot(dx,dy);ball.vx=-dx/n*L*k;ball.vy=-dy/n*L*k;ball.fly=true;state='fly';balls--;hud();};
+  const step=dt=>{
+    if(hoop.dir){hoop.y+=hoop.dir*40*g.s*dt;if(hoop.y<g.H*0.22||hoop.y>g.H*0.5)hoop.dir*=-1;}
+    if(!ball.fly)return;ball.t+=dt;const r=R();ball.vy+=G()*dt;ball.x+=ball.vx*dt;ball.y+=ball.vy*dt;ball.spin+=ball.vx*dt/r;
+    const rl={x:hoop.x-hoop.w/2,y:hoop.y},rr={x:hoop.x+hoop.w/2,y:hoop.y};
+    [rl,rr].forEach(p=>{const dx=ball.x-p.x,dy=ball.y-p.y,d=Math.hypot(dx,dy),m=r+5*g.s;if(d<m&&d>0){const nx=dx/d,ny=dy/d,vn=ball.vx*nx+ball.vy*ny;if(vn<0){ball.vx-=1.7*vn*nx;ball.vy-=1.7*vn*ny;}ball.x=p.x+nx*m;ball.y=p.y+ny*m;}});
+    const bx=rr.x+12*g.s;if(ball.x+r>bx&&ball.x-r<bx+10*g.s&&ball.y>hoop.y-110*g.s&&ball.y<hoop.y+10*g.s&&ball.vx>0){ball.vx=-Math.abs(ball.vx)*0.6;ball.x=bx-r;}
+    if(!ball.scored&&ball.vy>0&&ball.y>hoop.y&&ball.y-ball.vy*dt<=hoop.y&&ball.x>rl.x+r*0.3&&ball.x<rr.x-r*0.3){ball.scored=true;score++;hud();net=1;flash=1;ding(880);gT(()=>ding(1175),140);confetti($('gStage'),30);
+      gSay(rnd([TR('Swish! What a shot!','Kosz! Ale rzut!'),TR('In it goes!','Wpadła!'),TR('Basket! Brilliant!','Kosz! Super!')]));if(score===3)gSay(TR('Now the hoop starts moving! Watch carefully.','Teraz kosz zaczyna się ruszać! Patrz uważnie.'));}
+    if(ball.y+r>g.H){ball.y=g.H-r;ball.vy*=-0.55;ball.vx*=0.8;}
+    if(ball.x<r){ball.x=r;ball.vx*=-0.6;}
+    if(ball.t>3.2||ball.x>g.W+r*3){if(!ball.scored&&score===0&&balls===9)gSay(TR('Nearly! Pull back further for a stronger throw.','Prawie! Odciągnij dalej, żeby rzucić mocniej.'));
+      if(balls<=0){state='end';gT(()=>gEnd('ball',score,score>=8?3:score>=5?2:score>=2?1:0,TR(`You scored ${score} baskets out of 10!`,`Celne rzuty: ${score} na 10!`)),300);ball.fly=false;}
+      else{if(score>=3&&!hoop.dir)hoop.dir=1;newBall();}}
+  };
+  const draw=t=>{const dt=lastT?Math.min(0.033,(t-lastT)/1000):0;lastT=t;step(dt);const r=R();
+    const sky=ctx.createLinearGradient(0,0,0,g.H);sky.addColorStop(0,'#E3F4FF');sky.addColorStop(1,'#FFF1E6');ctx.fillStyle=sky;ctx.fillRect(0,0,g.W,g.H);
+    ctx.fillStyle='#F4C27A';ctx.fillRect(0,g.H-14*g.s,g.W,14*g.s);
+    const rl=hoop.x-hoop.w/2,rr=hoop.x+hoop.w/2,bx=rr+12*g.s;
+    ctx.fillStyle='#fff';ctx.strokeStyle='#3A2E4F';ctx.lineWidth=3;ctx.beginPath();ctx.roundRect?ctx.roundRect(bx,hoop.y-110*g.s,10*g.s,130*g.s,4):ctx.rect(bx,hoop.y-110*g.s,10*g.s,130*g.s);ctx.fill();ctx.stroke();
+    ctx.strokeStyle='#ADB5BD';ctx.lineWidth=6*g.s;ctx.beginPath();ctx.moveTo(bx+5*g.s,hoop.y+20*g.s);ctx.lineTo(bx+5*g.s,g.H);ctx.stroke();
+    if(state==='aim'&&drag){const dx=drag.x-ball.x,dy=drag.y-ball.y,L=Math.min(Math.hypot(dx,dy),190*g.s),n=Math.hypot(dx,dy)||1,k=Math.sqrt(2*G()*g.H*0.8)/(190*g.s);
+      let px=ball.x,py=ball.y,vx=-dx/n*L*k,vy=-dy/n*L*k;ctx.fillStyle='rgba(255,122,174,.85)';
+      for(let i=0;i<16;i++){for(let j=0;j<4;j++){vy+=G()*0.012;px+=vx*0.012;py+=vy*0.012;}ctx.beginPath();ctx.arc(px,py,Math.max(2,5*g.s-i*0.2*g.s),0,7);ctx.fill();}
+      ctx.strokeStyle='rgba(58,46,79,.35)';ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(ball.x,ball.y);ctx.lineTo(drag.x,drag.y);ctx.stroke();ctx.setLineDash([]);}
+    const behind=ball.y>hoop.y;
+    const drawBall=()=>{ctx.save();ctx.translate(ball.x,ball.y);ctx.rotate(ball.spin);ctx.fillStyle='#FF922B';ctx.strokeStyle='#3A2E4F';ctx.lineWidth=3;ctx.beginPath();ctx.arc(0,0,r,0,7);ctx.fill();ctx.stroke();
+      ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-r,0);ctx.lineTo(r,0);ctx.moveTo(0,-r);ctx.lineTo(0,r);ctx.stroke();ctx.beginPath();ctx.arc(-r*1.25,0,r*0.95,-0.9,0.9);ctx.stroke();ctx.beginPath();ctx.arc(r*1.25,0,r*0.95,Math.PI-0.9,Math.PI+0.9);ctx.stroke();ctx.restore();};
+    if(!behind)drawBall();
+    net=Math.max(0,net-0.02);ctx.strokeStyle='#fff';ctx.lineWidth=2.5;const nh=50*g.s;
+    for(let i=0;i<=6;i++){const x0=rl+(rr-rl)*i/6,x1=rl+10*g.s+(rr-rl-20*g.s)*i/6+Math.sin(t/60)*net*6;ctx.beginPath();ctx.moveTo(x0,hoop.y);ctx.lineTo(x1,hoop.y+nh);ctx.stroke();}
+    for(let j=1;j<=3;j++){const y=hoop.y+nh*j/3,sh=10*g.s*j/3;ctx.beginPath();ctx.moveTo(rl+sh,y);ctx.lineTo(rr-sh,y);ctx.stroke();}
+    if(behind)drawBall();
+    ctx.strokeStyle='#FF6B6B';ctx.lineWidth=7*g.s;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(rl,hoop.y);ctx.lineTo(rr+12*g.s,hoop.y);ctx.stroke();ctx.lineCap='butt';
+    if(flash>0){flash-=0.02;ctx.fillStyle=`rgba(255,217,90,${flash*0.35})`;ctx.fillRect(0,0,g.W,g.H);}
+    GM.raf=requestAnimationFrame(draw);
+  };
+  const st=$('gStage');
+  st.onpointerdown=e=>{if(state!=='aim')return;const p=gPoint(e);if(Math.hypot(p.x-ball.x,p.y-ball.y)<R()*3.2){drag=p;try{st.setPointerCapture(e.pointerId);}catch(x){}}};
+  st.onpointermove=e=>{if(drag)drag=gPoint(e);};
+  st.onpointerup=e=>{if(!drag)return;const p=gPoint(e);drag=null;launch(p.x-ball.x,p.y-ball.y);};
+  const start=()=>{setHoop();newBall();hud();};start();
+  const prev=GM.cleanup;GM.cleanup=()=>{if(prev)prev();};
+  GM.raf=requestAnimationFrame(draw);
+  gSay(TR('Pull the ball back with your finger, like a slingshot, and let go! The pink dots show where it will fly. You have 10 balls.','Odciągnij piłkę palcem do tyłu, jak procę, i puść! Różowe kropki pokazują, gdzie poleci. Masz 10 piłek.'));
+}
+/* ---------- 4. catch ---------- */
+function catchGame(){
+  gOpen(`🧺 ${TR('Catch it!','Łap!')}`);const g=gCanvas(),ctx=g.ctx;
+  const GOOD={human:['🍎','🍌','🍓','🥕','🥦','🍇','🍐'],dog:['🦴','🥕','🍖','🎾','🥩'],bunny:['🥕','🥬','🌿','🍎','🌾'],chick:['🌽','🐛','🌻','🍓','🌾'],bee:['🌸','🌼','🌺','🌻','💐'],fish:['🦐','🌿','🫧','⭐','🪱']}[S.creature]||['🍎','🍌','🍓'];
+  const BAD=S.creature==='dog'?['🦠','🍫']:['🦠'];
+  const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(render(S.creature,S.built,OPT({})).replace(/<svg /,'<svg width="300" height="340" '));
+  let px=g.W/2,tx=g.W/2,items=[],score=0,hearts=3,time=40,run=false,lastT=0,spawn=0,pop=[],said={};
+  const hud=()=>gScore(`${'❤️'.repeat(hearts)}${'🤍'.repeat(3-hearts)} · ⭐ ${score} · ⏱ ${Math.ceil(time)}`);
+  const st=$('gStage');const mv=e=>{tx=gPoint(e).x;};st.onpointerdown=e=>{mv(e);try{st.setPointerCapture(e.pointerId);}catch(x){}};st.onpointermove=mv;
+  const end=()=>{run=false;gT(()=>gEnd('catch',score,score>=30?3:score>=18?2:score>=8?1:0,TR(`You caught ${score} good things!`,`Złapane smakołyki: ${score}!`)),300);};
+  const draw=t=>{const dt=lastT?Math.min(0.033,(t-lastT)/1000):0;lastT=t;const s=g.s,size=50*s,bw=Math.max(90,130*s),by=g.H-bw*0.95;
+    if(run){const pt=Math.ceil(time);time-=dt;if(Math.ceil(time)!==pt)hud();if(time<=0){time=0;hud();end();}
+      spawn-=dt;if(spawn<=0){const bad=Math.random()<0.22;items.push({x:30*s+Math.random()*(g.W-60*s),y:-size,e:bad?rnd(BAD):rnd(GOOD),bad,v:(150+(40-time)*6+Math.random()*60)*s,rot:Math.random()*6});spawn=Math.max(0.42,0.95-(40-time)*0.013);}
+      px+=(tx-px)*Math.min(1,dt*12);
+      items.forEach(it=>{it.y+=it.v*dt;it.rot+=dt;if(!it.done&&it.y>by-size*0.2&&it.y<by+size*0.6&&Math.abs(it.x-px)<bw*0.55){it.done=true;
+        if(it.bad){hearts--;ding(200);pop.push({x:it.x,y:it.y,e:'💥',t:0});if(it.e==='🍫'&&!said.choc){said.choc=1;gSay(TR('Oh no! Chocolate is poisonous for dogs. Never give a dog chocolate!','O nie! Czekolada jest trująca dla psów. Nigdy nie dawaj psu czekolady!'));}else if(!said.germ){said.germ=1;gSay(TR('Yuck, a germ! Germs can make us poorly. That\'s why we wash our hands before eating.','Fuj, zarazek! Zarazki mogą wywołać chorobę. Dlatego myjemy ręce przed jedzeniem.'));}
+          if(hearts<=0){hud();end();}}
+        else{score++;ding(620+(score%8)*60);pop.push({x:it.x,y:it.y,e:'+1',t:0});if(score===10&&!said.ten){said.ten=1;gSay(TR('Ten already! You are a super catcher!','Już dziesięć! Super łapiesz!'));}}
+        hud();}});
+      items=items.filter(it=>!it.done&&it.y<g.H+size);}
+    const bg=ctx.createLinearGradient(0,0,0,g.H);bg.addColorStop(0,'#FFF8E1');bg.addColorStop(1,'#E3F9EC');ctx.fillStyle=bg;ctx.fillRect(0,0,g.W,g.H);
+    ctx.fillStyle='#B2F2BB';ctx.fillRect(0,g.H-18*s,g.W,18*s);
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`${size}px serif`;
+    items.forEach(it=>{ctx.save();ctx.translate(it.x,it.y);ctx.rotate(Math.sin(it.rot)*0.3);ctx.fillText(it.e,0,0);ctx.restore();});
+    const ah=bw*1.6;if(img.complete&&img.naturalWidth)ctx.drawImage(img,px-ah*0.44,g.H-ah*1.02,ah*0.88,ah);
+    ctx.font=`${bw*0.75}px serif`;ctx.fillText('🧺',px,by+bw*0.22);
+    pop.forEach(p=>{p.t+=dt;ctx.globalAlpha=Math.max(0,1-p.t*1.5);ctx.font=`bold ${28*s+10}px sans-serif`;ctx.fillStyle='#7048E8';ctx.fillText(p.e,p.x,p.y-p.t*60);ctx.globalAlpha=1;});pop=pop.filter(p=>p.t<0.7);
+    GM.raf=requestAnimationFrame(draw);
+  };
+  hud();GM.raf=requestAnimationFrame(draw);
+  const goodTxt=GOOD.slice(0,3).join(' '),badTxt=BAD.join(' ');
+  gButtons([[`▶ ${TR('Start','Start')}`,()=>{run=true;$('gBtns').innerHTML='';gSay(TR('Go! Move your finger left and right.','Start! Przesuwaj palec w lewo i w prawo.'));},true]]);
+  gSay(TR(`Move ${S.name} with your finger and catch the good things in the basket. Watch out for germs`+(S.creature==='dog'?' and chocolate':'')+'!',`Przesuwaj palcem w lewo i w prawo i łap do koszyka dobre rzeczy. Uważaj na zarazki`+(S.creature==='dog'?' i czekoladę':'')+'!'));
+}
+/* ---------- 5. memory ---------- */
+function memoryGame(){
+  gOpen(`🃏 ${TR('Memory','Memory')}`);
+  const ALL=[['🐶','a dog','piesek'],['🐱','a cat','kotek'],['🐰','a bunny','króliczek'],['🐥','a chick','kurczaczek'],['🐝','a bee','pszczółka'],['🐠','a fish','rybka'],['🦊','a fox','lisek'],['🐼','a panda','panda'],['🦄','a unicorn','jednorożec'],['🐸','a frog','żabka'],['🦋','a butterfly','motylek'],['🐢','a turtle','żółwik']];
+  const pick=shuffle(ALL).slice(0,6),cards=shuffle(pick.concat(pick));
+  const st=$('gStage'),r=st.getBoundingClientRect(),land=r.width>r.height;
+  const box=document.createElement('div');box.className='mem';box.style.gridTemplateColumns=`repeat(${land?4:3},1fr)`;box.style.gridTemplateRows=`repeat(${land?3:4},1fr)`;st.appendChild(box);
+  box.innerHTML=cards.map((c,i)=>`<div class="mcard" data-i="${i}"><div class="b">✨</div><div class="f">${c[0]}</div></div>`).join('');
+  stag(box.querySelectorAll('.mcard'),50);
+  let open=[],moves=0,found=0,lock=false;gScore(`👆 0`);
+  box.querySelectorAll('.mcard').forEach(el=>el.onclick=()=>{
+    if(lock||el.classList.contains('up')||el.classList.contains('ok'))return;
+    el.classList.add('up');ding(560+open.length*120);open.push(el);
+    if(open.length===2){moves++;gScore(`👆 ${moves}`);const [a,b]=open,ca=cards[+a.dataset.i],cb=cards[+b.dataset.i];
+      if(ca[0]===cb[0]){open=[];found++;gT(()=>{a.classList.add('ok');b.classList.add('ok');ding(990);gSay(TR(`A pair! ${ca[1].replace(/^a /,'A ')}!`,`Para! ${ca[2][0].toUpperCase()+ca[2].slice(1)}!`));
+        if(found===6)gT(()=>gEnd('memory',moves,moves<=10?3:moves<=15?2:1,TR(`All pairs found in ${moves} moves!`,`Wszystkie pary znalezione w ${moves} ruchach!`)),800);},350);}
+      else{lock=true;gT(()=>{a.classList.remove('up');b.classList.remove('up');open=[];lock=false;},900);}}
+  });
+  gSay(TR('Tap two cards to turn them over. Can you find all the pairs of animals? Try to remember where each one is!','Dotknij dwóch kart, żeby je odwrócić. Znajdziesz wszystkie pary zwierzątek? Spróbuj zapamiętać, gdzie co jest!'));
+}
+const GAMES={teeth:{start:openTeeth},snake:{start:snakeGame},ball:{start:ballGame},catch:{start:catchGame},memory:{start:memoryGame}};
+
 /* ---------- bottom picture bar ---------- */
 const NAV_OF={build:'body',dress:'dress',home:'home',jobs:'work',work:'work',school:'school',subject:'school',time:'school'};
 const NAV_SAY={body:['Body','Ciało'],dress:['Clothes','Ubrania'],home:['Home','Domek'],work:['Work','Praca'],school:['School','Szkoła']};
