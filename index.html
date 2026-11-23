@@ -759,6 +759,7 @@ button:active{transform:scale(.93)}
   <div class="setl">Voice (best first)</div><div id="voiceList" class="vlist"></div>
   <div class="setl">Speaking speed</div><input type="range" id="rateR" min="0.8" max="1.15" step="0.05">
   <div class="note" id="voiceTip"></div>
+  <button class="bigbtn lil" id="sndTest">🔊 Sound test</button><div class="note" id="sndInfo"></div>
   <div class="setl">PaKuBuddy</div>
   <div class="morebtns"><button data-more="about">💜 About</button><button data-more="family">🏡 PaKu family</button><button data-more="share">🔗 Share</button><button data-more="terms">📄 Terms and privacy</button><button data-more="coffee">☕ Buy me a coffee</button></div>
   <div class="morebox" id="moreBox"></div>
@@ -1075,6 +1076,17 @@ function pickVoice(){const vs=voiceList();let saved=null;try{saved=localStorage.
   voice=(saved&&vs.find(v=>v.voiceURI===saved))||vs[0]||null;const st=document.getElementById('settings');if(st&&st.classList.contains('on'))drawVoices();}
 let rate=1;try{rate=+localStorage.getItem('buddyRate')||1;}catch(e){}
 if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+let speechUnlocked=false,voiceBroken=false,lastSpeechErr='';
+function unlockSpeech(){
+  if(speechUnlocked||!('speechSynthesis' in window))return;speechUnlocked=true;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(' ');u.volume=0;u.lang=VOICE_LANG==='en'?'en-GB':'pl-PL';speechSynthesis.speak(u);speechSynthesis.resume();}catch(e){}
+  try{if(typeof ensureAC==='function'&&AC&&AC.state==='suspended')AC.resume();}catch(e){}
+  /* if the guide already tried to talk before the first touch, say it again now */
+  setTimeout(()=>{try{if(!muted&&pendingSay){const t=pendingSay;pendingSay=null;say(t);}}catch(e){}},250);
+}
+let pendingSay=null;
+['pointerdown','touchend','keydown','click'].forEach(ev=>document.addEventListener(ev,unlockSpeech,{capture:true,passive:true}));
+setInterval(()=>{try{if('speechSynthesis' in window&&speechSynthesis.paused)speechSynthesis.resume();}catch(e){}},4000);
 function caption(parts,i,el){
   if(el){el.innerHTML=parts.map((p,j)=>`<span class="${j===i?'now':''}">${p}</span>`).join(' ');const n=el.querySelector('.now');if(n)n.scrollIntoView({block:'nearest'});return;}
   const sc=document.querySelector('.screen.on [data-cap]');if(!sc)return;
@@ -1088,29 +1100,36 @@ function say(text,then,el){
   caption(parts,-1,el);
   const finish=()=>{if(my!==tok)return;tok++;const t2=tok;talking(false);caption(parts,-1,el);if(then)setTimeout(()=>{if(t2===tok)then()},450);};
   if(muted||!('speechSynthesis' in window)){talking(false);if(then)setTimeout(()=>{if(my===tok)then()},1200);return;}
-  try{speechSynthesis.cancel();}catch(e){}
+  if(!speechUnlocked)pendingSay=text;
+  const busy=(()=>{try{return speechSynthesis.speaking||speechSynthesis.pending}catch(e){return false}})();
+  try{if(busy)speechSynthesis.cancel();speechSynthesis.resume();}catch(e){}
   /* group sentences into smooth chunks: fewer breaks, more natural flow */
   const groups=[];let cur=[],len=0;
   parts.forEach((p,i)=>{if(cur.length&&len+p.length>220){groups.push(cur);cur=[];len=0;}cur.push(i);len+=p.length+1;});
   if(cur.length)groups.push(cur);
   let left=groups.length;talking(true);
-  setTimeout(()=>{
+  const go=()=>{
     if(my!==tok)return;
     groups.forEach(g=>{
       const txt=g.map(i=>parts[i]).join(' ');
       const u=new SpeechSynthesisUtterance(txt);
-      u.lang=VOICE_LANG==='en'?'en-GB':'pl-PL';if(voice){u.voice=voice;u.lang=voice.lang;}
+      u.lang=VOICE_LANG==='en'?'en-GB':'pl-PL';if(voice&&!voiceBroken){u.voice=voice;u.lang=voice.lang;}
       u.rate=(slow?0.82:0.97)*rate;u.pitch=1.0;u.volume=1;
       const starts=[];let pos=0;g.forEach(i=>{starts.push(pos);pos+=parts[i].length+1;});
       u.onstart=()=>{if(my===tok)caption(parts,g[0],el);};
       u.onboundary=e=>{if(my!==tok||e.charIndex==null)return;let k=0;for(let j=0;j<starts.length;j++)if(e.charIndex>=starts[j])k=j;caption(parts,g[k],el);};
       const fin=()=>{if(my!==tok)return;if(--left<=0)finish();};
-      u.onend=fin;u.onerror=fin;
+      u.onend=fin;u.onerror=e=>{lastSpeechErr=(e&&e.error)||'error';
+        if(voice&&!voiceBroken&&/voice-unavailable|language-unavailable|synthesis-failed|synthesis-unavailable/.test(lastSpeechErr)){voiceBroken=true;if(my===tok){tok++;setTimeout(()=>say(text,then,el),60);}return;}
+        if(lastSpeechErr==='not-allowed'){speechUnlocked=false;pendingSay=text;}
+        fin();};
       speechSynthesis.speak(u);
     });
     /* watchdog: if the device never starts speaking, keep the app moving */
     setTimeout(()=>{if(my===tok&&!speechSynthesis.speaking&&!speechSynthesis.pending)finish();},2500);
-  },70);
+  };
+  /* speak straight away while the tap is still fresh (phones only allow sound right after a touch) */
+  if(busy)setTimeout(go,70);else go();
 }
 /* ---------- screens ---------- */
 const $=id=>document.getElementById(id);
@@ -2112,8 +2131,22 @@ function drawVoices(){
     say(VOICE_LANG==='en'?"Hello! This is how I sound. Shall we build a new friend together?":"Cześć! Tak brzmi mój głos. Zbudujemy razem nowego przyjaciela?");});
   $('voiceTip').textContent=VOICE_TIP[VOICE_LANG];$('rateR').value=rate;
 }
-document.querySelectorAll('.gear').forEach(b=>b.onclick=()=>{$('settings').classList.add('on');drawVoices();});
+document.querySelectorAll('.gear').forEach(b=>b.onclick=()=>{$('settings').classList.add('on');drawVoices();$('sndTest').textContent=TR('🔊 Sound test','🔊 Test dźwięku');$('sndInfo').textContent='';});
 $('setClose').onclick=()=>$('settings').classList.remove('on');
+function sndDiag(){
+  const has='speechSynthesis' in window,all=has?speechSynthesis.getVoices():[],mine=voiceList(),ios=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)&&'ontouchend' in document,andr=/Android/.test(navigator.userAgent);
+  let t='';
+  if(!has)t=TR('This browser cannot speak. Please open PaKuBuddy in Chrome (Android) or Safari (iPhone/iPad).','Ta przeglądarka nie umie mówić. Otwórz PaKuBuddy w Chrome (Android) albo w Safari (iPhone/iPad).');
+  else{t=TR(`Voices on this device: ${all.length}. Voices for this language: ${mine.length}.`,`Głosy na tym urządzeniu: ${all.length}. Głosy w tym języku: ${mine.length}.`)+(voice?' '+TR('Chosen: ','Wybrany: ')+voice.name+'.':'')+(lastSpeechErr?' '+TR('Last problem: ','Ostatni problem: ')+lastSpeechErr+'.':'');
+    if(!mine.length)t+=' '+(ios?TR('Add a voice: Settings → Accessibility → Spoken Content → Voices → English (UK) → Serena or Kate (Premium), download.','Dodaj głos: Ustawienia → Dostępność → Treść mówiona → Głosy → Polski → Zosia (Rozszerzona), pobierz.')
+      :andr?TR('Add a voice: Settings → Accessibility → Text-to-speech → Google speech services → Install voice data → English (UK).','Dodaj głos: Ustawienia → Ułatwienia dostępu → Zamiana tekstu na mowę → Usługi mowy Google → Zainstaluj dane głosowe → Polski.')
+      :TR('Please install an English (UK) voice in your system settings.','Zainstaluj polski głos w ustawieniach systemu.'));
+    t+=' '+(ios?TR('Also check that the side silent switch is off and the volume is up.','Sprawdź też, czy przełącznik wyciszenia z boku iPhone’a jest wyłączony i czy głośność jest podkręcona.'):TR('Also check that the media volume is turned up.','Sprawdź też, czy głośność multimediów jest podkręcona.'));}
+  $('sndInfo').textContent=t;
+}
+$('sndTest').onclick=()=>{muted=false;document.querySelectorAll('[data-act="mute"]').forEach(x=>{x.textContent='🔊'});speechUnlocked=false;unlockSpeech();voiceBroken=false;pendingSay=null;lastSpeechErr='';
+  setTimeout(()=>{say(TR("Hello! Can you hear me? This is my voice.","Cześć! Słyszysz mnie? Tak brzmi mój głos."),null,$('sndInfo'));setTimeout(sndDiag,2600);},120);
+  try{ensureAC();const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=660;g.gain.setValueAtTime(0.0001,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.25,AC.currentTime+0.02);g.gain.exponentialRampToValueAtTime(0.0001,AC.currentTime+0.4);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+0.45);}catch(e){}};
 $('rateR').oninput=e=>{rate=+e.target.value;try{localStorage.setItem('buddyRate',rate)}catch(x){}};
 $('rateR').onchange=()=>say(VOICE_LANG==='en'?"Is this speed nice?":"Czy takie tempo jest dobre?");
 
@@ -3641,6 +3674,17 @@ function pickVoice(){const vs=voiceList();let saved=null;try{saved=localStorage.
   voice=(saved&&vs.find(v=>v.voiceURI===saved))||vs[0]||null;const st=document.getElementById('settings');if(st&&st.classList.contains('on'))drawVoices();}
 let rate=1;try{rate=+localStorage.getItem('buddyRate')||1;}catch(e){}
 if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+let speechUnlocked=false,voiceBroken=false,lastSpeechErr='';
+function unlockSpeech(){
+  if(speechUnlocked||!('speechSynthesis' in window))return;speechUnlocked=true;
+  try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(' ');u.volume=0;u.lang=VOICE_LANG==='en'?'en-GB':'pl-PL';speechSynthesis.speak(u);speechSynthesis.resume();}catch(e){}
+  try{if(typeof ensureAC==='function'&&AC&&AC.state==='suspended')AC.resume();}catch(e){}
+  /* if the guide already tried to talk before the first touch, say it again now */
+  setTimeout(()=>{try{if(!muted&&pendingSay){const t=pendingSay;pendingSay=null;say(t);}}catch(e){}},250);
+}
+let pendingSay=null;
+['pointerdown','touchend','keydown','click'].forEach(ev=>document.addEventListener(ev,unlockSpeech,{capture:true,passive:true}));
+setInterval(()=>{try{if('speechSynthesis' in window&&speechSynthesis.paused)speechSynthesis.resume();}catch(e){}},4000);
 function caption(parts,i,el){
   if(el){el.innerHTML=parts.map((p,j)=>`<span class="${j===i?'now':''}">${p}</span>`).join(' ');const n=el.querySelector('.now');if(n)n.scrollIntoView({block:'nearest'});return;}
   const sc=document.querySelector('.screen.on [data-cap]');if(!sc)return;
@@ -3654,29 +3698,36 @@ function say(text,then,el){
   caption(parts,-1,el);
   const finish=()=>{if(my!==tok)return;tok++;const t2=tok;talking(false);caption(parts,-1,el);if(then)setTimeout(()=>{if(t2===tok)then()},450);};
   if(muted||!('speechSynthesis' in window)){talking(false);if(then)setTimeout(()=>{if(my===tok)then()},1200);return;}
-  try{speechSynthesis.cancel();}catch(e){}
+  if(!speechUnlocked)pendingSay=text;
+  const busy=(()=>{try{return speechSynthesis.speaking||speechSynthesis.pending}catch(e){return false}})();
+  try{if(busy)speechSynthesis.cancel();speechSynthesis.resume();}catch(e){}
   /* group sentences into smooth chunks: fewer breaks, more natural flow */
   const groups=[];let cur=[],len=0;
   parts.forEach((p,i)=>{if(cur.length&&len+p.length>220){groups.push(cur);cur=[];len=0;}cur.push(i);len+=p.length+1;});
   if(cur.length)groups.push(cur);
   let left=groups.length;talking(true);
-  setTimeout(()=>{
+  const go=()=>{
     if(my!==tok)return;
     groups.forEach(g=>{
       const txt=g.map(i=>parts[i]).join(' ');
       const u=new SpeechSynthesisUtterance(txt);
-      u.lang=VOICE_LANG==='en'?'en-GB':'pl-PL';if(voice){u.voice=voice;u.lang=voice.lang;}
+      u.lang=VOICE_LANG==='en'?'en-GB':'pl-PL';if(voice&&!voiceBroken){u.voice=voice;u.lang=voice.lang;}
       u.rate=(slow?0.82:0.97)*rate;u.pitch=1.0;u.volume=1;
       const starts=[];let pos=0;g.forEach(i=>{starts.push(pos);pos+=parts[i].length+1;});
       u.onstart=()=>{if(my===tok)caption(parts,g[0],el);};
       u.onboundary=e=>{if(my!==tok||e.charIndex==null)return;let k=0;for(let j=0;j<starts.length;j++)if(e.charIndex>=starts[j])k=j;caption(parts,g[k],el);};
       const fin=()=>{if(my!==tok)return;if(--left<=0)finish();};
-      u.onend=fin;u.onerror=fin;
+      u.onend=fin;u.onerror=e=>{lastSpeechErr=(e&&e.error)||'error';
+        if(voice&&!voiceBroken&&/voice-unavailable|language-unavailable|synthesis-failed|synthesis-unavailable/.test(lastSpeechErr)){voiceBroken=true;if(my===tok){tok++;setTimeout(()=>say(text,then,el),60);}return;}
+        if(lastSpeechErr==='not-allowed'){speechUnlocked=false;pendingSay=text;}
+        fin();};
       speechSynthesis.speak(u);
     });
     /* watchdog: if the device never starts speaking, keep the app moving */
     setTimeout(()=>{if(my===tok&&!speechSynthesis.speaking&&!speechSynthesis.pending)finish();},2500);
-  },70);
+  };
+  /* speak straight away while the tap is still fresh (phones only allow sound right after a touch) */
+  if(busy)setTimeout(go,70);else go();
 }
 /* ---------- screens ---------- */
 const $=id=>document.getElementById(id);
@@ -4678,8 +4729,22 @@ function drawVoices(){
     say(VOICE_LANG==='en'?"Hello! This is how I sound. Shall we build a new friend together?":"Cześć! Tak brzmi mój głos. Zbudujemy razem nowego przyjaciela?");});
   $('voiceTip').textContent=VOICE_TIP[VOICE_LANG];$('rateR').value=rate;
 }
-document.querySelectorAll('.gear').forEach(b=>b.onclick=()=>{$('settings').classList.add('on');drawVoices();});
+document.querySelectorAll('.gear').forEach(b=>b.onclick=()=>{$('settings').classList.add('on');drawVoices();$('sndTest').textContent=TR('🔊 Sound test','🔊 Test dźwięku');$('sndInfo').textContent='';});
 $('setClose').onclick=()=>$('settings').classList.remove('on');
+function sndDiag(){
+  const has='speechSynthesis' in window,all=has?speechSynthesis.getVoices():[],mine=voiceList(),ios=/iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent)&&'ontouchend' in document,andr=/Android/.test(navigator.userAgent);
+  let t='';
+  if(!has)t=TR('This browser cannot speak. Please open PaKuBuddy in Chrome (Android) or Safari (iPhone/iPad).','Ta przeglądarka nie umie mówić. Otwórz PaKuBuddy w Chrome (Android) albo w Safari (iPhone/iPad).');
+  else{t=TR(`Voices on this device: ${all.length}. Voices for this language: ${mine.length}.`,`Głosy na tym urządzeniu: ${all.length}. Głosy w tym języku: ${mine.length}.`)+(voice?' '+TR('Chosen: ','Wybrany: ')+voice.name+'.':'')+(lastSpeechErr?' '+TR('Last problem: ','Ostatni problem: ')+lastSpeechErr+'.':'');
+    if(!mine.length)t+=' '+(ios?TR('Add a voice: Settings → Accessibility → Spoken Content → Voices → English (UK) → Serena or Kate (Premium), download.','Dodaj głos: Ustawienia → Dostępność → Treść mówiona → Głosy → Polski → Zosia (Rozszerzona), pobierz.')
+      :andr?TR('Add a voice: Settings → Accessibility → Text-to-speech → Google speech services → Install voice data → English (UK).','Dodaj głos: Ustawienia → Ułatwienia dostępu → Zamiana tekstu na mowę → Usługi mowy Google → Zainstaluj dane głosowe → Polski.')
+      :TR('Please install an English (UK) voice in your system settings.','Zainstaluj polski głos w ustawieniach systemu.'));
+    t+=' '+(ios?TR('Also check that the side silent switch is off and the volume is up.','Sprawdź też, czy przełącznik wyciszenia z boku iPhone’a jest wyłączony i czy głośność jest podkręcona.'):TR('Also check that the media volume is turned up.','Sprawdź też, czy głośność multimediów jest podkręcona.'));}
+  $('sndInfo').textContent=t;
+}
+$('sndTest').onclick=()=>{muted=false;document.querySelectorAll('[data-act="mute"]').forEach(x=>{x.textContent='🔊'});speechUnlocked=false;unlockSpeech();voiceBroken=false;pendingSay=null;lastSpeechErr='';
+  setTimeout(()=>{say(TR("Hello! Can you hear me? This is my voice.","Cześć! Słyszysz mnie? Tak brzmi mój głos."),null,$('sndInfo'));setTimeout(sndDiag,2600);},120);
+  try{ensureAC();const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=660;g.gain.setValueAtTime(0.0001,AC.currentTime);g.gain.exponentialRampToValueAtTime(0.25,AC.currentTime+0.02);g.gain.exponentialRampToValueAtTime(0.0001,AC.currentTime+0.4);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+0.45);}catch(e){}};
 $('rateR').oninput=e=>{rate=+e.target.value;try{localStorage.setItem('buddyRate',rate)}catch(x){}};
 $('rateR').onchange=()=>say(VOICE_LANG==='en'?"Is this speed nice?":"Czy takie tempo jest dobre?");
 
