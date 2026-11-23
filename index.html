@@ -193,6 +193,13 @@ body.hasNav #soon,body.hasNav .navback,body.hasNav .tmBtn,body.hasNav #hDress,bo
 .side.reading .bubble{display:none}
 #scene4{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:40px}
 #scene4 span{position:absolute;font-size:44px;opacity:.55}
+#scene4 .tap{pointer-events:auto;cursor:pointer;opacity:1;width:62px;height:62px;margin:-6px 0 0 -6px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 0 0 3px rgba(255,255,255,.7),0 4px 10px rgba(150,120,190,.18);animation:decoBob 3.2s ease-in-out infinite;transition:transform .2s}
+#scene4 .tap::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:3px solid rgba(255,212,59,.9);opacity:0;animation:decoHint 6s ease-out infinite;animation-delay:inherit}
+#scene4 .tap:active{transform:scale(.88)}
+@keyframes decoBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-5px) rotate(4deg)}}
+@keyframes decoHint{0%,80%{opacity:0;transform:scale(.9)}88%{opacity:1;transform:scale(1.05)}100%{opacity:0;transform:scale(1.25)}}
+.avpanel.night #scene4 .tap{opacity:.45}
+@media (max-width:700px){#scene4 .tap{width:48px;height:48px;font-size:30px}}
 .avpanel{transition:background .8s}
 .avpanel.night{background:#2E2A5A !important}
 .avpanel.night #scene4 span{opacity:.15}
@@ -2187,7 +2194,8 @@ function openMusic(){
 function openHome(fromWork){
   show('home');night=false;lastAct=null;stopSong();$('avp4').classList.remove('night');$('wake').classList.add('hidden');
   const [bg,deco]=ROOM[S.creature];$('avp4').style.background=bg;
-  $('scene4').innerHTML=deco.map((e,i)=>`<span style="left:${[6,80,10,84,46][i]}%;top:${[8,10,72,68,4][i]}%">${e}</span>`).join('');
+  $('scene4').innerHTML=deco.map((e,i)=>`<span class="tap" data-i="${i}" role="button" style="left:${[5,82,6,84,4][i]}%;top:${[10,10,72,70,41][i]}%;animation-delay:-${(i*0.9).toFixed(1)}s">${e}</span>`).join('');
+  $('scene4').querySelectorAll('.tap').forEach(s=>s.onclick=ev=>{ev.stopPropagation();roomTap(+s.dataset.i,s);});
   $('avName4').textContent=S.name;$('homeTitle').innerHTML=`${S.name}'s <span>home</span>`;
   tickNeeds();
   if(fromWork){bump('food',-20);bump('water',-20);bump('energy',-30);bump('clean',-15);save();}
@@ -2199,6 +2207,28 @@ $('backH').onclick=()=>{stopSong();openBuild(true);};
 $('hWork').onclick=()=>{stopSong();goWork();};
 $('hDress').onclick=()=>{stopSong();openDress();};
 $('av4').onclick=()=>{if(!night)say(rnd(GIGGLE));};
+/* things in the room do something real when tapped */
+const ROOMACT={human:['sleep','picture','plant','cuddle','window'],dog:['eat','cuddle','play','sleep','plant'],bunny:['eat','teeth','sleep','flower','play'],
+ chick:['eat','sleep','plant','nest','sun'],bee:['eat','sleep','flower','play','wash'],fish:['bubbles','sleep','shell','eat','play']};
+const PICS=[['🖼️',['A picture of our family. Pictures help us remember happy days.','Zdjęcie naszej rodziny. Zdjęcia pomagają pamiętać szczęśliwe dni.']],['🌈',['A rainbow! Sunlight is made of many colours, and raindrops split them up into a rainbow.','Tęcza! Światło słońca składa się z wielu kolorów, a krople deszczu rozdzielają je w tęczę.']],['🦕',['A dinosaur! Dinosaurs lived millions of years ago, long before people.','Dinozaur! Dinozaury żyły miliony lat temu, dużo wcześniej niż ludzie.']],['🏰',['A castle! Long ago, kings and queens lived in castles with thick stone walls.','Zamek! Dawno temu w zamkach z grubymi kamiennymi murami mieszkali królowie i królowe.']],['🚀',['A rocket! Rockets carry astronauts all the way up into space.','Rakieta! Rakiety zabierają astronautów aż w kosmos.']]];
+function roomTap(i,el){
+  try{el.animate([{transform:'scale(1)'},{transform:'scale(1.35) rotate(-12deg)'},{transform:'scale(.95)'},{transform:'scale(1)'}],{duration:550,easing:SPRING});}catch(e){}
+  const act=(ROOMACT[S.creature]||[])[i];if(!act)return;
+  if(night){if(act==='sleep')say(TR(`Shh! ${S.name} is already asleep. Tap the sun to wake up.`,`Ciii! ${S.name} już śpi. Dotknij słoneczka, żeby się obudzić.`));else say(TR('Shh, everyone is sleeping now.','Ciii, wszyscy teraz śpią.'));return;}
+  const A=A_();
+  if(A[act]){doAct(act);return;}
+  const tip=(en,pl)=>{fx(el.textContent,3);careDone();bump('fun',5);afterAct();say(TR(en,pl));};
+  if(act==='picture'){S.pic=((S.pic||0)+1)%PICS.length;const p=PICS[S.pic];el.textContent=p[0];save();say(TR(...p[1]));return;}
+  if(act==='plant'){S.plant=(S.plant||0)+1;save();fx('💧',4);
+    if(S.plant%4===0){el.textContent='🌷';tip('It flowered! Plants drink water through their roots, and their leaves make oxygen, the air we breathe.','Zakwitł! Rośliny piją wodę korzeniami, a liście robią tlen, którym oddychamy.');}
+    else{el.textContent='🪴';el.style.fontSize=(1+0.12*(S.plant%4))+'em';tip('Splash! We are watering the plant. Plants need water, light and air to grow, just like you need food and sleep.','Chlust! Podlewamy kwiatek. Rośliny potrzebują wody, światła i powietrza, żeby rosnąć, tak jak ty potrzebujesz jedzenia i snu.');}return;}
+  if(act==='window')return tip('We open the window to let fresh air in. Fresh air has lots of oxygen, and our lungs love it!','Otwieramy okno i wpuszczamy świeże powietrze. Świeże powietrze ma dużo tlenu, a nasze płuca bardzo je lubią!');
+  if(act==='flower')return S.creature==='bee'?tip('Bees carry pollen from flower to flower. That helps plants make fruit and seeds!','Pszczoły przenoszą pyłek z kwiatka na kwiatek. Dzięki temu rośliny robią owoce i nasiona!'):tip('Sniff, sniff! Bunnies have a brilliant sense of smell, and their noses wiggle all the time.','Niuch, niuch! Króliki mają świetny węch, a ich noski cały czas się ruszają.');
+  if(act==='nest')return tip('Eggs in the nest! A mother hen keeps her eggs warm for about 21 days, until the chicks hatch.','Jajka w gnieździe! Kura ogrzewa jajka przez około 21 dni, aż wyklują się pisklęta.');
+  if(act==='sun')return tip('Birds love sunbathing! They spread out their feathers to warm up in the sunshine.','Ptaki uwielbiają się wygrzewać! Rozkładają piórka i grzeją się w słońcu.');
+  if(act==='shell')return tip('A seashell! It used to be the hard little house of a sea snail.','Muszelka! Kiedyś była twardym domkiem morskiego ślimaka.');
+  if(act==='bubbles')return tip('Pop, pop! Fish breathe with their gills. These bubbles come from the air pump, and they put oxygen into the water.','Pyk, pyk! Ryby oddychają skrzelami. Te bąbelki robi pompka, która dodaje do wody tlen.');
+}
 setInterval(()=>{if($('home').classList.contains('on')&&!night){tickNeeds();drawHome();}},60000);
 /* ---------- settings (grown-ups) ---------- */
 function setLang(l){try{localStorage.setItem('buddyLang',l);}catch(e){}if(l!==LANG){try{speechSynthesis.cancel()}catch(e){};location.reload();}}
@@ -5084,7 +5114,8 @@ function openMusic(){
 function openHome(fromWork){
   show('home');night=false;lastAct=null;stopSong();$('avp4').classList.remove('night');$('wake').classList.add('hidden');
   const [bg,deco]=ROOM[S.creature];$('avp4').style.background=bg;
-  $('scene4').innerHTML=deco.map((e,i)=>`<span style="left:${[6,80,10,84,46][i]}%;top:${[8,10,72,68,4][i]}%">${e}</span>`).join('');
+  $('scene4').innerHTML=deco.map((e,i)=>`<span class="tap" data-i="${i}" role="button" style="left:${[5,82,6,84,4][i]}%;top:${[10,10,72,70,41][i]}%;animation-delay:-${(i*0.9).toFixed(1)}s">${e}</span>`).join('');
+  $('scene4').querySelectorAll('.tap').forEach(s=>s.onclick=ev=>{ev.stopPropagation();roomTap(+s.dataset.i,s);});
   $('avName4').textContent=S.name;$('homeTitle').innerHTML=`Domek <span>${S.name}</span>`;
   tickNeeds();
   if(fromWork){bump('food',-20);bump('water',-20);bump('energy',-30);bump('clean',-15);save();}
@@ -5096,6 +5127,28 @@ $('backH').onclick=()=>{stopSong();openBuild(true);};
 $('hWork').onclick=()=>{stopSong();goWork();};
 $('hDress').onclick=()=>{stopSong();openDress();};
 $('av4').onclick=()=>{if(!night)say(rnd(GIGGLE));};
+/* things in the room do something real when tapped */
+const ROOMACT={human:['sleep','picture','plant','cuddle','window'],dog:['eat','cuddle','play','sleep','plant'],bunny:['eat','teeth','sleep','flower','play'],
+ chick:['eat','sleep','plant','nest','sun'],bee:['eat','sleep','flower','play','wash'],fish:['bubbles','sleep','shell','eat','play']};
+const PICS=[['🖼️',['A picture of our family. Pictures help us remember happy days.','Zdjęcie naszej rodziny. Zdjęcia pomagają pamiętać szczęśliwe dni.']],['🌈',['A rainbow! Sunlight is made of many colours, and raindrops split them up into a rainbow.','Tęcza! Światło słońca składa się z wielu kolorów, a krople deszczu rozdzielają je w tęczę.']],['🦕',['A dinosaur! Dinosaurs lived millions of years ago, long before people.','Dinozaur! Dinozaury żyły miliony lat temu, dużo wcześniej niż ludzie.']],['🏰',['A castle! Long ago, kings and queens lived in castles with thick stone walls.','Zamek! Dawno temu w zamkach z grubymi kamiennymi murami mieszkali królowie i królowe.']],['🚀',['A rocket! Rockets carry astronauts all the way up into space.','Rakieta! Rakiety zabierają astronautów aż w kosmos.']]];
+function roomTap(i,el){
+  try{el.animate([{transform:'scale(1)'},{transform:'scale(1.35) rotate(-12deg)'},{transform:'scale(.95)'},{transform:'scale(1)'}],{duration:550,easing:SPRING});}catch(e){}
+  const act=(ROOMACT[S.creature]||[])[i];if(!act)return;
+  if(night){if(act==='sleep')say(TR(`Shh! ${S.name} is already asleep. Tap the sun to wake up.`,`Ciii! ${S.name} już śpi. Dotknij słoneczka, żeby się obudzić.`));else say(TR('Shh, everyone is sleeping now.','Ciii, wszyscy teraz śpią.'));return;}
+  const A=A_();
+  if(A[act]){doAct(act);return;}
+  const tip=(en,pl)=>{fx(el.textContent,3);careDone();bump('fun',5);afterAct();say(TR(en,pl));};
+  if(act==='picture'){S.pic=((S.pic||0)+1)%PICS.length;const p=PICS[S.pic];el.textContent=p[0];save();say(TR(...p[1]));return;}
+  if(act==='plant'){S.plant=(S.plant||0)+1;save();fx('💧',4);
+    if(S.plant%4===0){el.textContent='🌷';tip('It flowered! Plants drink water through their roots, and their leaves make oxygen, the air we breathe.','Zakwitł! Rośliny piją wodę korzeniami, a liście robią tlen, którym oddychamy.');}
+    else{el.textContent='🪴';el.style.fontSize=(1+0.12*(S.plant%4))+'em';tip('Splash! We are watering the plant. Plants need water, light and air to grow, just like you need food and sleep.','Chlust! Podlewamy kwiatek. Rośliny potrzebują wody, światła i powietrza, żeby rosnąć, tak jak ty potrzebujesz jedzenia i snu.');}return;}
+  if(act==='window')return tip('We open the window to let fresh air in. Fresh air has lots of oxygen, and our lungs love it!','Otwieramy okno i wpuszczamy świeże powietrze. Świeże powietrze ma dużo tlenu, a nasze płuca bardzo je lubią!');
+  if(act==='flower')return S.creature==='bee'?tip('Bees carry pollen from flower to flower. That helps plants make fruit and seeds!','Pszczoły przenoszą pyłek z kwiatka na kwiatek. Dzięki temu rośliny robią owoce i nasiona!'):tip('Sniff, sniff! Bunnies have a brilliant sense of smell, and their noses wiggle all the time.','Niuch, niuch! Króliki mają świetny węch, a ich noski cały czas się ruszają.');
+  if(act==='nest')return tip('Eggs in the nest! A mother hen keeps her eggs warm for about 21 days, until the chicks hatch.','Jajka w gnieździe! Kura ogrzewa jajka przez około 21 dni, aż wyklują się pisklęta.');
+  if(act==='sun')return tip('Birds love sunbathing! They spread out their feathers to warm up in the sunshine.','Ptaki uwielbiają się wygrzewać! Rozkładają piórka i grzeją się w słońcu.');
+  if(act==='shell')return tip('A seashell! It used to be the hard little house of a sea snail.','Muszelka! Kiedyś była twardym domkiem morskiego ślimaka.');
+  if(act==='bubbles')return tip('Pop, pop! Fish breathe with their gills. These bubbles come from the air pump, and they put oxygen into the water.','Pyk, pyk! Ryby oddychają skrzelami. Te bąbelki robi pompka, która dodaje do wody tlen.');
+}
 setInterval(()=>{if($('home').classList.contains('on')&&!night){tickNeeds();drawHome();}},60000);
 /* ---------- settings (grown-ups) ---------- */
 function setLang(l){try{localStorage.setItem('buddyLang',l);}catch(e){}if(l!==LANG){try{speechSynthesis.cancel()}catch(e){};location.reload();}}
