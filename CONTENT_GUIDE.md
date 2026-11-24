@@ -4,13 +4,13 @@ New school content is published by adding it to `school/packs.json`. The app rea
 
 Who it is for: children about 5–10 years old, many of whom cannot read yet. **Every text is read aloud** by a British English or Polish voice, so it must sound natural when spoken.
 
-## Weekly update (automatic, every Monday)
+## Fortnightly update (automatic, every second Monday)
 
 1. `node _validate_pack.js` must print OK before you start (if not, fix the existing pack first).
 2. Read `school/packs.json` and the **Log** at the bottom of this file so you never repeat an exhibit or a subject.
 3. Add **3 new exhibits** to `exhibits`, in 3 different subjects, choosing the subjects with the fewest exhibits first (count bundled + pack). Prefer ideas from the **Ideas** list, and tick them.
-4. Every 4th week (when the Log has a multiple of 4 weekly lines), also add **one new subject** from the subject queue below, with at least 3 exhibits of its own that week (they count as that week's 3), and link existing famous people to it in `figs` where it fits (ids must already exist in the app: see the list below).
-5. Raise `v` by exactly 1, set `updated` to today (Europe/Warsaw), and set `newIds` to the ids added this week (exhibits and the new subject).
+4. Every 4th update (when the Log has a multiple of 4 update lines), also add **one new subject** from the subject queue below, with at least 3 exhibits of its own that update (they count as its 3), and link existing famous people to it in `figs` where it fits (ids must already exist in the app: see the list below).
+5. Raise `v` by exactly 1, set `updated` to today (Europe/Warsaw), and set `newIds` to the ids added in this update (exhibits and the new subject).
 6. Run `node _validate_pack.js` until it prints OK. Run `python3 _render_pack.py`, open `pack_preview.png` and **look at every new picture**: nothing cut off, parts recognisable, nothing overlapping badly, cute and tidy. Fix and re-render until good.
 7. Add one line to the Log, run `python3 _build_zip.py`, commit "School pack vN: …" and push `main`.
 
@@ -51,7 +51,7 @@ If anything cannot be fixed, do not push a broken pack: leave `school/packs.json
 - **No copyrighted works.** Paintings, sculptures, music: only works whose creator died more than 70 years ago, and draw them as a simple friendly impression, never a copy. No modern characters, logos or brands. No real people drawn as photographs.
 - Famous people are mentioned by name only; the app already has 40 portraits, linked through `figs`.
 
-## Subject queue (one new subject every 4th week, in this order)
+## Subject queue (one new subject every 4th update, in this order)
 
 | id | emoji | en | pl | ideas |
 |---|---|---|---|---|
