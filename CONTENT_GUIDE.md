@@ -1,6 +1,6 @@
 # PaKuBuddy School – content guide
 
-New school content is published by adding it to `school/packs.json`. The app reads that file every time it starts online, keeps a copy for offline use and marks new things with a **NEW** badge. The bundled content lives inside `index.html` (constants `SUBJ`, `SUBJ_FIG`, `EXH`) and is **never edited** by weekly updates – packs only add.
+New school content is published by adding it to `school/packs.json`. The app reads that file every time it starts online, keeps a copy for offline use and marks new things with a **NEW** badge. The bundled content lives inside `index.html` (constants `SUBJ`, `SUBJ_FIG`, `EXH`) and is **never edited** by regular updates – packs only add.
 
 Who it is for: children about 5–10 years old, many of whom cannot read yet. **Every text is read aloud** by a British English or Polish voice, so it must sound natural when spoken.
 
